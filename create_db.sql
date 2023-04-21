@@ -16,8 +16,8 @@ CREATE TABLE Storitev (
 CREATE TABLE Usluzbenec(
     id_usluzbenec serial,
     ime_priimek text unique not null,
-    id_storitev integer references Storitev(id_storitev),
-    primary key (id_usluzbenec, id_storitev)
+    ime_storitve text references Storitev(ime_storitve),
+    primary key (id_usluzbenec, ime_storitve)
    -- povprecna_ocena integer references Ocena()
 
 );
