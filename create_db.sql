@@ -1,3 +1,4 @@
+-- Active: 1682070737195@@baza.fmf.uni-lj.si@5432@sem2023_klarat
 CREATE TABLE Stranka (
     id_stranka SERIAL PRIMARY KEY,
     ime_priimek TEXT UNIQUE NOT NULL,

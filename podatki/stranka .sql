@@ -1,3 +1,4 @@
+-- Active: 1682070737195@@baza.fmf.uni-lj.si@5432@sem2023_klarat
 insert into stranka (id_stranka, ime_priimek, telefon, mail) values (1, 'Athene Verissimo', 101196049, 'averissimo0@gmail.com');
 insert into stranka (id_stranka, ime_priimek, telefon, mail) values (2, 'Lenard Klaiser', 874853467, 'lklaiser1@gmail.com');
 insert into stranka (id_stranka, ime_priimek, telefon, mail) values (3, 'Ichabod Farny', 304733130, 'ifarny2@gmail.com');
