@@ -28,8 +28,12 @@ def static(filename):
 
 @get('/')
 def index():
-    stranke = repo.Stranke()
-    return template('stranke.html', stranke=stranke)
+    'Začetna stran'
+#Ko poženeš, odpre, ampak je prazno ker ni return template(html).
+#Treba je bolj pogledati html od gašperja, ker nevem kako bi to zagnala da mi pokaže tabelo,
+#mogoče bi blo bolje, da bi gledale od janoša datoteko https://github.com/jaanos/OPB/blob/master/predavanja/primeri/banka/banka.py,
+#ker se mi zdi, da ni tako komlicirano kot tukaj... in tudi html-ji so lažji
+
 
 #@get('/dodaj_stranko')
 #def dodaj_stranko():

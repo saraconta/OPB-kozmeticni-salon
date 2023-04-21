@@ -14,15 +14,7 @@ class Repo:
     def __init__(self):
         self.conn = psycopg2.connect(database=auth.db, host=auth.host, user=auth.user, password=auth.password, port=5432)
         self.cur = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
-    
 
-    def Stranke(self) -> Stranka: 
-        stranke = self.cur.execute(
-            """
-            SELECT s.id_stranka, s.ime_priimek, s.telefon, s.mail FROM Stranka s
-            """)
-
-        return [Stranka(id_stranka, ime_priimek, telefon, mail) for (id_stranka, ime_priimek, telefon, mail) in stranke]
 
     def dobi_stranko(self, ime: str) -> Stranka:
         # Preverimo, če stranka že obstaja

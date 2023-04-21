@@ -23,4 +23,4 @@ def template(*largs, **kwargs):
     return bottle.template(*largs, **kwargs, url=bottle.url)
 
 
-bottle.Route = 
+bottle.Route = Route
