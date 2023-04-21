@@ -19,7 +19,7 @@ class Storitev:
 class Usluzbenec:
     id_usluzbenec: int = field(default=0)
     ime_priimek: str = field(default="")
-    id_storitve: int = field(default=0)
+    ime_storitve: str = field(default="")
 
 @dataclass
 class Ocena:
