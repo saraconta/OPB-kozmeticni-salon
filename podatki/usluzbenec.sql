@@ -1,4 +1,4 @@
-insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (1, 'Matelda Dunklee', 'depilacija celotnega telesa');
+insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (1, 'Matelda Dunklee', 'depilacija celega telesa');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (2, 'Roderich Novello', 'laminacija obrvi');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (3, 'Gerrie Kingaby', 'žensko striženje');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (4, 'Daryn Goodhew', 'lasersko odstranjevanje dlak');
@@ -60,7 +60,7 @@ insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (59, 'J
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (60, 'Karolina Paulino', 'barvanje');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (61, 'Boycey Janjusevic', 'nega las in lasišča');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (62, 'Claiborn Hanwell', 'nega las in lasišča');
-insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (63, 'Claudelle McFetrich', 'depilacija celotnega telesa');
+insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (63, 'Claudelle McFetrich', 'depilacija celega telesa');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (64, 'Sybilla Dimitriou', 'depilacija pazduh');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (65, 'Madelaine Wignall', 'laminacija obrvi');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (66, 'Lawton Piggens', 'lasersko odstranjevanje dlak');
@@ -70,7 +70,7 @@ insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (69, 'L
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (70, 'Salaidh Ackeroyd', 'barvanje');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (71, 'Audrie Haggidon', 'urejanje brade');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (72, 'Brnaby Argue', 'masaža');
-insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (73, 'Perceval Darrington', 'depilacija celotnega telesa');
+insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (73, 'Perceval Darrington', 'depilacija celega telesa');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (74, 'Sharl Sandry', 'laminacija obrvi');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (75, 'Betsey Baston', 'žensko striženje');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (76, 'Pennie Errington', 'urejanje brade');
@@ -114,7 +114,7 @@ insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (113, '
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (114, 'Leanora Hebner', 'masaža');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (115, 'Analise Aylmore', 'depilacija bikini predela');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (116, 'Kennan Gulliman', 'pedikura');
-insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (117, 'Vincenty Rehme', 'depilacija celotnega telesa');
+insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (117, 'Vincenty Rehme', 'depilacija celega telesa');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (118, 'Frances Camacho', 'žensko striženje');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (119, 'Marcy Silcock', 'ličenje');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (120, 'Wright Danielkiewicz', 'masaža');
@@ -123,7 +123,7 @@ insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (122, '
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (123, 'Rudiger Langthorne', 'urejanje brade');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (124, 'Connie Cockerton', 'nega las in lasišča');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (125, 'Demeter Musico', 'pedikura');
-insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (126, 'Angy Sorrill', 'depilacija celotnega telesa');
+insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (126, 'Angy Sorrill', 'depilacija celega telesa');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (127, 'Quillan McGurk', 'barvanje');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (128, 'Andrey Vallis', 'ličenje');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (129, 'Kariotta Bessent', 'podaljševanje trepalnic');
@@ -149,7 +149,7 @@ insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (148, '
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (149, 'Heath Woodington', 'laminacija obrvi');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (150, 'Mavis Tolan', 'ličenje');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (151, 'Zonda Fielden', 'barvanje');
-insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (152, 'Casandra Sangwin', 'depilacija celotnega telesa');
+insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (152, 'Casandra Sangwin', 'depilacija celega telesa');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (153, 'Dagny Cavan', 'depilacija nog');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (154, 'Martie Capozzi', 'ličenje');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (155, 'Tamera Maciejewski', 'podaljševanje trepalnic');
@@ -161,7 +161,7 @@ insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (160, '
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (161, 'Mechelle Butterley', 'depilacija bikini predela');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (162, 'Salomon Sowley', 'masaža');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (163, 'Leoine Fance', 'medicinska pedikura');
-insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (164, 'Celisse Tugman', 'depilacija celotnega telesa');
+insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (164, 'Celisse Tugman', 'depilacija celega telesa');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (165, 'Westleigh Miguet', 'ličenje');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (166, 'Stavros Dunlop', 'depilacija pazduh');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (167, 'Valentin Alstead', 'fen frizura');
@@ -169,7 +169,7 @@ insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (168, '
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (169, 'Broddie Shalloe', 'podaljševanje trepalnic');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (170, 'Phil Tremolieres', 'manikura');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (171, 'Ottilie Fabbri', 'masaža');
-insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (172, 'Emlyn Le febre', 'depilacija celotnega telesa');
+insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (172, 'Emlyn Le febre', 'depilacija celega telesa');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (173, 'Haily Grewes', 'manikura');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (174, 'Yolane Band', 'nega las in lasišča');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (175, 'Benjy Dondon', 'depilacija nog');
@@ -177,12 +177,12 @@ insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (176, '
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (177, 'Drake Lillistone', 'masaža');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (178, 'Maurine Behne', 'urejanje brade');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (179, 'Darren Mirando', 'laminacija obrvi');
-insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (180, 'Barnebas Delacour', 'depilacija celotnega telesa');
+insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (180, 'Barnebas Delacour', 'depilacija celega telesa');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (181, 'Scotty Teffrey', 'podaljševanje trepalnic');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (182, 'Hedvig Siley', 'nega las in lasišča');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (183, 'Sharity Alman', 'medicinska pedikura');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (184, 'Alvera Gouch', 'depilacija nog');
-insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (185, 'Joyann Damerell', 'depilacija celotnega telesa');
+insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (185, 'Joyann Damerell', 'depilacija celega telesa');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (186, 'Reina Salaman', 'urejanje brade');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (187, 'Hakim Laurentin', 'ličenje');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (188, 'Hermina Langlands', 'laminacija obrvi');
@@ -198,3 +198,5 @@ insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (197, '
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (198, 'Lynnell Cornes', 'nega las in lasišča');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (199, 'Brynna Aiskrigg', 'žensko striženje');
 insert into usluzbenec (id_usluzbenec, ime_priimek, ime_storitve) values (200, 'Abby Pechard', 'lasersko odstranjevanje dlak');
+
+
