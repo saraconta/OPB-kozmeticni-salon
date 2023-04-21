@@ -1,0 +1,31 @@
+%rebase('osnova.html', naslov='Stranke')
+<script src="{{url('static', filename='stranke.js')}}"></script>
+<div style="width: 85%; margin-left: 5%; margin-right: 5%;">
+    <a  href="{{url('dodaj_stranko')}}" class="button">
+        Dodaj novo stranko
+    </a>
+      <br>
+
+    </br>
+    <table  id="stranka" class="display compact table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Id stranke</th>
+                <th>Ime in priimek</th>
+                <th>Telefon</th>
+                <th>Mail</th>  
+             </tr>
+        </thead>
+     
+      %for stranka in stranke:
+        <tr>
+           <td>{{stranka.id_stranka}}</td>
+           <td>{{stranka.ime_priimek}}</td>
+           <td>{{stranka.telefon}}</td>
+           <td>{{stranka.mail}}</td>
+     
+        </tr>
+      %end
+      </table>
+</div>
+  

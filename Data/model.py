@@ -1,5 +1,8 @@
 from dataclasses import dataclass, field
 
+#Dto - ji so ko želiš dve tabeli joinat, recimo iz ocene in usluzbenca narediti tabelo
+# ki bo imela ime usluzb in povprecno oceno.
+
 @dataclass
 class Stranka:
     id_stranka: int = field(default=0)
