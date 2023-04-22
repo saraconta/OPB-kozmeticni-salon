@@ -33,7 +33,6 @@ class Repo:
 
     
     def dodaj_stranko(self, stranka: Stranka) -> Stranka:
-
         # Preverimo, če stranka že obstaja
         self.cur.execute("""
             SELECT id_stranka, ime_priimek, telefon, mail from Stranka
@@ -44,9 +43,6 @@ class Repo:
         if row:
             stranka.id_stranka = row[0]
             return stranka
-
-        
-    
 
         # Sedaj dodamo stranko
         self.cur.execute("""
@@ -76,7 +72,6 @@ class Repo:
 
 
     def dodaj_storitev(self, storitev: Storitev) -> Storitev:
-
         # Preverimo, če storitev že obstaja
         self.cur.execute("""
             SELECT id_storitev, ime_storitve, trajanje, cena, stroski from Storitev
@@ -88,7 +83,6 @@ class Repo:
             storitev.id_storitev = row[0]
             return storitev
 
-
         # Sedaj dodamo storitev
         self.cur.execute("""
             INSERT INTO Storitev (ime_storitve, trajanje, cena, stroski)
@@ -97,6 +91,63 @@ class Repo:
         storitev.id_storitev = self.cur.fetchone()[0]
         self.conn.commit()
         return storitev
+
+
+    def dobi_usluzbenca(self, ime: str) -> Usluzbenec:
+        # Preverimo, če uslužbenec že obstaja
+        self.cur.execute("""
+            SELECT id_usluzbenec, ime_priimek, ime_storitve from Usluzbenec
+            WHERE ime_priimek = %s
+          """, (ime,))
+        
+        row = self.cur.fetchone()
+
+        if row:
+            id_usluzbenec, ime_priimek, ime_storitve = row
+            return Usluzbenec(id_usluzbenec, ime_priimek, ime_storitve)
+        
+        raise Exception("Usluzbenec z imenom " + ime + " ni zaposlen pri nas.")
+
+
+    def dodaj_usluzbenca(self, usluzbenec: Usluzbenec) -> Usluzbenec:
+        # Preverimo, če usluzbenec že obstaja
+        self.cur.execute("""
+            SELECT id_usluzbenec, ime_priimek, ime_storitve from Usluzbenec
+            WHERE ime_priimek = %s
+          """, (usluzbenec.ime_priimek,))
+        
+        row = self.cur.fetchone()
+        if row:
+            usluzbenec.id_usluzbenec = row[0]
+            return usluzbenec
+
+        # Sedaj dodamo usluzbenca
+        self.cur.execute("""
+            INSERT INTO Usluzbenec (ime_priimek, ime_storitve)
+              VALUES (%s, %s) RETURNING id_usluzbenec; """, 
+              (usluzbenec.ime_priimek, usluzbenec.ime_storitve))
+        usluzbenec.id_usluzbenec = self.cur.fetchone()[0]
+        self.conn.commit()
+        return usluzbenec
+
+
+    def dodaj_oceno(self, ocena: Ocena) -> Ocena:
+        #preverimo ali usluzbenec obstaja
+        ocena.ime_priimek = dobi_usluzbenca(ime)
+        #dodamo oceno
+        self.cur.execute("""
+            INSERT INTO Ocena (ime_priimek, ocena)
+              VALUES (%s, %s) RETURNING id_ocena; """, 
+              (ocena.ime_priimek, ocena.ocena))
+        ocena.id_ocena = self.cur.fetchone()[0]
+        self.conn.commit()
+        return ocena
+    
+
+    #v katero tabelo se bo zapisavala povprecna ocena? (nevem kako napisat kodo)
+    def povprecna_ocena(self,):
+        pass
+        
 
 
 
