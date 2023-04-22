@@ -1,0 +1,29 @@
+%rebase('osnova.html', naslov='Usluzbenci in njihove storitve')
+<script src="{{url('static', filename='usluzbenci.js')}}"></script>
+<div style="width: 85%; margin-left: 5%; margin-right: 5%;">
+    <a  href="{{url('dodaj_usluzbenca')}}" class="button">
+        Dodaj novega usluzbenca in njegovo storitev
+    </a>
+      <br>
+
+    </br>
+    <table  id="usluzbenec" class="display compact table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Id usluzbenca</th>
+                <th>Ime in priimek</th>
+                <th>Storitev</th> 
+             </tr>
+        </thead>
+     
+      %for usluzbenec in Usluzbenec:
+        <tr>
+           <td>{{usluzbenec.id_usluzbenec}}</td>
+           <td>{{usluzbenec.ime_priimek}}</td>
+           <td>{{usluzbenec.ime_storitve}}</td>
+     
+        </tr>
+      %end
+      </table>
+</div>
+  
