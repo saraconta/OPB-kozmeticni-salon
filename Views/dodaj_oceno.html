@@ -1,0 +1,11 @@
+%rebase('osnova.html', naslov='Dodajanje ocene')
+
+%if napaka:
+  <p class="opozorilo">{{napaka}}</p>
+%end
+
+  <form action="{{url('dodaj_oceno')}}" method="POST">
+    <p>Ime in priimek: <input type="text" name="ime_priimek" value="{{ime_priimek}}"></p>
+    <p>Ocena: <input type="number" name="ocena" value="{{ocena}}" min="1" max="5"></p>
+    <p><input type="submit" value="Dodaj"></p>
+  </form>
