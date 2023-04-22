@@ -26,9 +26,9 @@ repo = Repo()
 def static(filename):
     return static_file(filename, root='static')
 
-@get('/')
-def index():
-   'Začetna stran'
+#@get('/')
+#def index():
+#   return bottle.template('zacetna_stran.html')
 
 @get('/stranke')
 def stranke():
@@ -51,3 +51,9 @@ def stranke():
 # poženemo strežnik na podanih vratih, npr. http://localhost:8080/
 if __name__ == "__main__":
     run(host='localhost', port=SERVER_PORT, reloader=RELOADER)
+
+@bottle.error(404)
+def error_404(error):
+    return "Ta stran ne obstaja!"
+
+bottle.run(reload=True, debug=True)

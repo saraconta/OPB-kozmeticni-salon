@@ -3,9 +3,9 @@ import psycopg2, psycopg2.extensions, psycopg2.extras
 psycopg2.extensions.register_type(psycopg2.extensions.UNICODE) # se znebimo problemov s šumniki
 
 from typing import List
-from Data.model import * #uvozimo classe tabel
+from model import * #uvozimo classe tabel
 
-import Data.auth as auth #uvozimo za delo z bazo
+import auth as auth #uvozimo za delo z bazo
 from datetime import date
 
 
@@ -98,12 +98,12 @@ class Repo:
         return storitev
 
 
-    def dobi_usluzbenca(self, ime: str) -> Usluzbenec:
+    def dobi_usluzbenca(self, ime_priimek: str) -> Usluzbenec:
         # Preverimo, če uslužbenec že obstaja
         self.cur.execute("""
             SELECT id_usluzbenec, ime_priimek, ime_storitve from Usluzbenec
             WHERE ime_priimek = %s
-          """, (ime,))
+          """, (ime_priimek,))
         
         row = self.cur.fetchone()
 
@@ -111,7 +111,7 @@ class Repo:
             id_usluzbenec, ime_priimek, ime_storitve = row
             return Usluzbenec(id_usluzbenec, ime_priimek, ime_storitve)
         
-        raise Exception("Usluzbenec z imenom " + ime + " ni zaposlen pri nas.")
+        raise Exception("Usluzbenec z imenom " + ime_priimek + " ni zaposlen pri nas.")
 
 
     def dodaj_usluzbenca(self, usluzbenec: Usluzbenec) -> Usluzbenec:
@@ -138,7 +138,7 @@ class Repo:
 
     def dodaj_oceno(self, ocena: Ocena) -> Ocena:
         #preverimo ali usluzbenec obstaja
-        ocena.ime_priimek = dobi_usluzbenca(ime)
+        #ocena.ime_priimek = dobi_usluzbenca(ocena.ime_priimek)
         #dodamo oceno
         self.cur.execute("""
             INSERT INTO Ocena (ime_priimek, ocena)
