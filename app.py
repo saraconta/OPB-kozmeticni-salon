@@ -35,9 +35,6 @@ def stranke():
     stranke = repo.tabela_stranka()
     return template('stranke.html', stranke=stranke)
 
-#Treba je bolj pogledati html od gašperja, ker nevem kako bi to zagnala da mi pokaže tabelo,
-#mogoče bi blo bolje, da bi gledale od janoša datoteko https://github.com/jaanos/OPB/blob/master/predavanja/primeri/banka/banka.py,
-#ker se mi zdi, da ni tako komlicirano kot tukaj... in tudi html-ji so lažji
 
 
 #@get('/dodaj_stranko')
