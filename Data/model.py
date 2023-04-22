@@ -11,6 +11,13 @@ class Stranka:
     mail: str = field(default="")
 
 @dataclass
+class TabelaStr:
+    id_stranka: int = field(default=0)
+    ime_priimek: str = field(default="")
+    telefon: int = field(default=0)
+    mail: str = field(default="")
+
+@dataclass
 class Storitev:
     id_storitev: int = field(default=0)
     ime_storitve: str = field(default="")

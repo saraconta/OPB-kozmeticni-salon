@@ -15,7 +15,12 @@ class Repo:
         self.conn = psycopg2.connect(database=auth.db, host=auth.host, user=auth.user, password=auth.password, port=5432)
         self.cur = self.conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
-
+    def tabela_stranka(self) -> List[TabelaStr]:
+        self.cur.execute(
+            """SELECT id_stranka, ime_priimek, telefon, mail from Stranka"""
+        )
+        return [TabelaStr(id_stranka, ime_priimek, telefon, mail) for (id_stranka, ime_priimek, telefon, mail) in self.cur.fetchall()]
+        
     def dobi_stranko(self, ime: str) -> Stranka:
         # Preverimo, če stranka že obstaja
         self.cur.execute("""
