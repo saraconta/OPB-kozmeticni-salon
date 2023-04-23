@@ -3,9 +3,9 @@ import psycopg2, psycopg2.extensions, psycopg2.extras
 psycopg2.extensions.register_type(psycopg2.extensions.UNICODE) # se znebimo problemov s šumniki
 
 from typing import List
-from model import * #uvozimo classe tabel
+from Data.model import * #uvozimo classe tabel
 
-import auth as auth #uvozimo za delo z bazo
+import Data.auth as auth #uvozimo za delo z bazo
 from datetime import date
 
 

@@ -6,9 +6,8 @@ from bottleext import get, post, run, request, template, redirect, static_file, 
 
 # uvozimo ustrezne podatke za povezavo
 
-from Data.Database import Repo
 from Data.model import *
-
+from Database import Repo
 
 import os
 
