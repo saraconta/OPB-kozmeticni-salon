@@ -63,6 +63,35 @@ def stranke():
    # return template('dodaj_stranko.html', stranka = Stranka())
 
 
+@get('/usluzbenci')
+def usluzbenci():
+    cur.execute("""
+      SELECT id_usluzbenec, ime_priimek, ime_storitve from Usluzbenec
+    """)
+    return bottle.template('usluzbenci.html', stranke=cur)
+
+
+@get('/dodaj_oceno')
+def dodaj_oceno():
+    return template('dodaj_oceno.html', ime_priimek='', ocena='', napaka=None)
+
+
+# @post('/dodaj_oceno')
+# def dodaj_oceno_post():
+#     ime_priimek = request.forms.ime_priimek
+#     ocena = request.forms.ocena
+#     try:
+#         cur.execute("INSERT INTO Ocena (ime_priimek, ocena) VALUES (%s, %s)",
+#                     (ime_priimek, ocena))
+#         conn.commit()
+#     except Exception as ex:
+#         conn.rollback()
+#         return template('dodaj_oceno.html', ime_priimek=ime_priimek, ocena=ocena,
+#                         napaka='Zgodila se je napaka: %s' % ex)
+#     redirect(url('index'))
+
+# metoda post ocitno se ni dovoljena
+
 ######################################################################
 # Glavni program
 
