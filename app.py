@@ -13,10 +13,24 @@ from Database import Repo
 import os
 import bottle
 
+
+import Data.auth as auth
+
+# uvozimo psycopg2
+import psycopg2, psycopg2.extensions, psycopg2.extras
+psycopg2.extensions.register_type(psycopg2.extensions.UNICODE) # se znebimo problemov s šumniki
+
+import os
+
 # privzete nastavitve
 SERVER_PORT = os.environ.get('BOTTLE_PORT', 8080)
 RELOADER = os.environ.get('BOTTLE_RELOADER', True)
 DB_PORT = os.environ.get('POSTGRES_PORT', 5432)
+
+# priklopimo se na bazo
+conn = psycopg2.connect(database=auth.db, host=auth.host, user=auth.user, password=auth.password, port=DB_PORT)
+#conn.set_isolation_level(psycopg2.extensions.ISOLATION_LEVEL_AUTOCOMMIT) # onemogočimo transakcije
+cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
 # odkomentiraj, če želiš sporočila o napakah
 # debug(True)
@@ -31,17 +45,17 @@ repo = Repo()
 def index():
    return bottle.template('zacetna_stran.html')
 
+#@get('/stranke')
+#def stranke():
+#    stranke = repo.tabela_stranka()
+ #   return bottle.template('stranke.html', stranke=stranke)
+
 @get('/stranke')
 def stranke():
-    stranke = repo.tabela_stranka()
-    return bottle.template('stranke.html', stranke=stranke)
-
-#@get('/stranke')
-#def stranke(cur):
-#    cur.execute(""""
-#      SELECT id_stranka, ime_priimek, telefon, mail from Stranka
-#    """)
-#    return bottle.template('stranke.html', stranke=cur)
+    cur.execute("""
+      SELECT id_stranka, ime_priimek, telefon, mail from Stranka
+    """)
+    return bottle.template('stranke.html', stranke=cur)
 
 #@get('/dodaj_stranko')
 #def dodaj_stranko():
@@ -51,6 +65,7 @@ def stranke():
 
 ######################################################################
 # Glavni program
+
 
 
 
