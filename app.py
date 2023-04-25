@@ -68,7 +68,7 @@ def usluzbenci():
     cur.execute("""
       SELECT id_usluzbenec, ime_priimek, ime_storitve from Usluzbenec
     """)
-    return bottle.template('usluzbenci.html', stranke=cur)
+    return bottle.template('usluzbenci.html', usluzbenci=cur)
 
 
 @get('/dodaj_oceno')

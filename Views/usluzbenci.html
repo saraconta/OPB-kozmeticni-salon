@@ -1,13 +1,10 @@
-%rebase('osnova.html', naslov='Usluzbenci in njihove storitve')
-<script src="{{url('static', filename='usluzbenci.js')}}"></script>
-<div style="width: 85%; margin-left: 5%; margin-right: 5%;">
-    <a  href="{{url('dodaj_usluzbenca')}}" class="button">
+%rebase('poskusna_osnova.html')
+
+    <a> <class="button" href="/dodaj_oceno">
         Dodaj novega usluzbenca in njegovo storitev
     </a>
-      <br>
 
-    </br>
-    <table  id="usluzbenec" class="display compact table-striped table-bordered">
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th>Id usluzbenca</th>
@@ -16,14 +13,13 @@
              </tr>
         </thead>
      
-      %for usluzbenec in Usluzbenec:
+      %for id_usluzbenec, ime_priimek, ime_storitve in usluzbenci:
         <tr>
-           <td>{{usluzbenec.id_usluzbenec}}</td>
-           <td>{{usluzbenec.ime_priimek}}</td>
-           <td>{{usluzbenec.ime_storitve}}</td>
-     
+           <td>{{id_usluzbenec}}</td>
+           <td>{{ime_priimek}}</td>
+           <td>{{ime_storitve}}</td>   
         </tr>
       %end
       </table>
-</div>
+
   
