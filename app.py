@@ -73,6 +73,29 @@ def usluzbenci():
     """)
     return bottle.template('usluzbenci.html', usluzbenci=cur)
 
+#nisem uspela usposobit da bi delala zato sem zakomentirala
+#@get('/dodaj_usluzbenca')
+#def dodaj_usluzbenca_get():
+#    return bottle.template('dodaj_usluzbenca.html', ime_priimek='',ime_storitve='', napake=None)
+
+#@post('/dodaj_usluzbenca')
+#def dodaj_usluzbenca_post():
+#  ime_priimek = request.forms.ime_priimek
+#  ime_storitve = request.forms.ime_storitve
+#  try:
+#    cur.execute("""
+#      INSERT INTO Usluzbenec (ime_priimek, ime_storitve)
+#      VALUES (%s, %s) RETURNING id_usluzbenec; 
+#    """, (ime_priimek, ime_storitve)
+#    )
+#    conn.commit()
+#  except Exception as ex:
+#    conn.rollback()
+#    return template('dodaj_usluzbenca.html', ime_priimek=ime_priimek, ime_storitve=ime_storitve,
+#      napaka='Zgodila se je napaka: %s' % ex)
+#  redirect(url('index'))
+#mogli bi še preverit: ali je storitev na ceniku ter ali ta usluzbenec že obstaja
+
 
 @get('/dodaj_oceno')
 def dodaj_oceno():
