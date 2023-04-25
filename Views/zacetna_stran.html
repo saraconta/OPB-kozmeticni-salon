@@ -3,6 +3,23 @@
 
 <div><strong>Pozdravljeni v našem kozmetičnem salonu.</strong></div>
 
+<div><p>Za vas nudimo naslednje storitve:</p></div>
+
+<table class="table table-striped">
+  <tr>
+    <th>Id</th>
+    <th>Storitev</th>
+    <th>Cena</th>
+  </tr>
+  %for id_storitev, ime_storitve, cena in storitve:
+  <tr>
+    <td>{{id_storitev}}</td>
+    <td>{{ime_storitve}}</td>
+    <td>{{cena}}€</td>
+  </tr>
+  %end
+</table>
+
 <div class="level-right">
     <a class="button" href="/stranke">
       <strong>Tabela strank</strong>

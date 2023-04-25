@@ -43,7 +43,10 @@ repo = Repo()
 
 @get('/')
 def index():
-   return bottle.template('zacetna_stran.html')
+   cur.execute("""
+      SELECT id_storitev, ime_storitve, cena from Storitev
+   """)
+   return bottle.template('zacetna_stran.html', storitve=cur)
 
 #@get('/stranke')
 #def stranke():
