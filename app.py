@@ -48,11 +48,7 @@ def index():
    """)
    return bottle.template('zacetna_stran.html', storitve=cur)
 
-#@get('/stranke')
-#def stranke():
-#    stranke = repo.tabela_stranka()
- #   return bottle.template('stranke.html', stranke=stranke)
-
+### STRANKE
 @get('/stranke')
 def stranke():
     cur.execute("""
@@ -60,12 +56,25 @@ def stranke():
     """)
     return bottle.template('stranke.html', stranke=cur)
 
-#@get('/dodaj_stranko')
-#def dodaj_stranko():
-    
-   # return template('dodaj_stranko.html', stranka = Stranka())
+
+@get('/dodaj_stranko')
+def dodaj_stranko():
+    return template('dodaj_stranko.html', ime_priimek='', telefon='', mail='', napake=None)
+
+@post('/dodaj_stranko')
+def dodaj_stranko_post():
+  ime_priimek = request.forms.ime_priimek
+  telefon = request.forms.telefon
+  mail = request.forms.mail
+  cur.execute("""
+      INSERT INTO Stranka (ime_priimek, telefon, mail)
+      VALUES (%s, %s, %s) RETURNING id_stranke; 
+    """, (ime_priimek, telefon, mail)
+    )
+  conn.commit()
 
 
+### USLUŽBENCI
 @get('/usluzbenci')
 def usluzbenci():
     cur.execute("""
@@ -73,7 +82,7 @@ def usluzbenci():
     """)
     return bottle.template('usluzbenci.html', usluzbenci=cur)
 
-#nisem uspela usposobit da bi delala zato sem zakomentirala
+
 @get('/dodaj_usluzbenca')
 def dodaj_usluzbenca_get():
     return bottle.template('dodaj_usluzbenca.html', ime_priimek='',ime_storitve='', napake=None)
@@ -97,6 +106,7 @@ def dodaj_usluzbenca_post():
 #mogli bi še preverit: ali je storitev na ceniku ter ali ta usluzbenec že obstaja
 
 
+### OCENE
 @get('/dodaj_oceno')
 def dodaj_oceno():
     return template('dodaj_oceno.html', ime_priimek='', ocena='', napaka=None)
