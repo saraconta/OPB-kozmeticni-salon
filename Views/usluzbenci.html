@@ -9,15 +9,13 @@
             <tr>
                 <th>Id usluzbenca</th>
                 <th>Ime in priimek</th>
-                <th>Storitev</th> 
              </tr>
         </thead>
      
-      %for id_usluzbenec, ime_priimek, ime_storitve in usluzbenci:
+      %for id_usluzbenec, ime_priimek in usluzbenci:
         <tr>
            <td>{{id_usluzbenec}}</td>
-           <td>{{ime_priimek}}</td>
-           <td>{{ime_storitve}}</td>   
+           <td>{{ime_priimek}}</td>  
         </tr>
       %end
 

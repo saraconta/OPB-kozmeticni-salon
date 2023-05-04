@@ -15,12 +15,16 @@ CREATE TABLE Storitev (
 );
 
 CREATE TABLE Usluzbenec(
-    id_usluzbenec serial,
-    ime_priimek text unique not null,
-    ime_storitve text references Storitev(ime_storitve),
-    primary key (id_usluzbenec, ime_storitve)
+    id_usluzbenec serial PRIMARY KEY,
+    ime_priimek text unique not null
+    --ime_storitve text references Storitev(ime_storitve),
    -- povprecna_ocena integer references Ocena()
 
+);
+
+CREATE TABLE Usluzb_storitve( 
+    id_usluzbenec INTEGER REFERENCES Usluzbenec(id_usluzbenec),
+    ime_storitve text REFERENCES Storitev(ime_storitve)
 );
 
 create table Ocena(

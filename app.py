@@ -68,7 +68,7 @@ def dodaj_stranko_post():
   mail = request.forms.mail
   cur.execute("""
       INSERT INTO Stranka (ime_priimek, telefon, mail)
-      VALUES (%s, %s, %s) RETURNING id_stranke; 
+      VALUES (%s, %s, %s) RETURNING id_stranka; 
     """, (ime_priimek, telefon, mail)
     )
   conn.commit()
@@ -78,14 +78,14 @@ def dodaj_stranko_post():
 @get('/usluzbenci')
 def usluzbenci():
     cur.execute("""
-      SELECT id_usluzbenec, ime_priimek, ime_storitve from Usluzbenec
+      SELECT id_usluzbenec, ime_priimek from Usluzbenec
     """)
     return bottle.template('usluzbenci.html', usluzbenci=cur)
 
 
 @get('/dodaj_usluzbenca')
 def dodaj_usluzbenca_get():
-    return bottle.template('dodaj_usluzbenca.html', ime_priimek='',ime_storitve='', napake=None)
+    return bottle.template('dodaj_usluzbenca.html', ime_priimek='', napake=None)
 
 @post('/dodaj_usluzbenca')
 def dodaj_usluzbenca_post():
@@ -93,9 +93,9 @@ def dodaj_usluzbenca_post():
   ime_storitve = request.forms.ime_storitve
 #  try:
   cur.execute("""
-      INSERT INTO Usluzbenec (ime_priimek, ime_storitve)
-      VALUES (%s, %s) RETURNING id_usluzbenec; 
-    """, (ime_priimek, ime_storitve)
+      INSERT INTO Usluzbenec (ime_priimek)
+      VALUES (%s) RETURNING id_usluzbenec; 
+    """, (ime_priimek)
     )
   conn.commit()
 #  except Exception as ex:
@@ -109,6 +109,7 @@ def dodaj_usluzbenca_post():
 ### OCENE
 @get('/dodaj_oceno')
 def dodaj_oceno():
+    
     return template('dodaj_oceno.html', ime_priimek='', ocena='', napaka=None)
 
 
