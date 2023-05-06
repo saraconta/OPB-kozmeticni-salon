@@ -113,21 +113,41 @@ def dodaj_oceno():
     return template('dodaj_oceno.html', ime_priimek='', ocena='', napaka=None)
 
 
-# @post('/dodaj_oceno')
-# def dodaj_oceno_post():
+@post('/dodaj_oceno')
+def dodaj_oceno_post():
+    ime_priimek = request.forms.ime_priimek
+    ocena = request.forms.ocena
+    try:
+        cur.execute("INSERT INTO Ocena (ime_priimek, ocena) VALUES (%s, %s)",
+                    (ime_priimek, ocena))
+        conn.commit()
+    except Exception as ex:
+        conn.rollback()
+        return template('dodaj_oceno.html', ime_priimek=ime_priimek, ocena=ocena,
+                        napaka='Zgodila se je napaka: %s' % ex)
+    redirect(url('index'))
+
+
+### STORITVE
+@get('/dodaj_storitev')
+def dodaj_storitev():
+    
+    return template('dodaj_storitev.html', ime_priimek='', storitev='', napaka=None)
+
+
+# @post('/dodaj_storitev')
+# def dodaj_storitev_post():
 #     ime_priimek = request.forms.ime_priimek
-#     ocena = request.forms.ocena
+#     storitev = request.forms.storitev
 #     try:
-#         cur.execute("INSERT INTO Ocena (ime_priimek, ocena) VALUES (%s, %s)",
-#                     (ime_priimek, ocena))
+#         cur.execute("INSERT INTO Usluzb_storitve (ime_priimek, storitev) VALUES (%s, %s)",
+#                     (ime_priimek, storitev))
 #         conn.commit()
 #     except Exception as ex:
 #         conn.rollback()
-#         return template('dodaj_oceno.html', ime_priimek=ime_priimek, ocena=ocena,
+#         return template('dodaj_storitev.html', ime_priimek=ime_priimek, storitev=ocena,
 #                         napaka='Zgodila se je napaka: %s' % ex)
 #     redirect(url('index'))
-
-# metoda post ocitno se ni dovoljena
 
 ######################################################################
 # Glavni program
