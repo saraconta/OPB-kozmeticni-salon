@@ -1,0 +1,54 @@
+%rebase('poskusna_osnova.html')
+
+<label class="label">Dodajanje nove storitve:</label>
+<table class="table is-hoverable is-fullwidth">
+    <thead>
+        <tr>
+            <form method="POST" action="/dodaj_storitev">
+                <td></td>
+                <tr>
+                    <td>
+                        <div class="control has-icons-left">
+                            <label for="ime_priimek">Ime in priimek</label>
+                            <input class="input is-small" type="text" 
+                                id="ime_priimek" name="ime_priimek" placeholder="Ime in priimek" required
+                                oninput="this.setCustomValidity('')"
+                                oninvalid="this.setCustomValidity('Obvezno polje')"
+                            />
+                            <span class="icon is-small is-left">
+                                <i class="far fa-clipboard-check"></i>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="control has-icons-left">
+                            <label for="storitev">Storitev</label>
+                            <input class="input is-small" type="text" 
+                                id="storitev" name="storitev" placeholder="storitev" required
+                                oninput="this.setCustomValidity('')"
+                                oninvalid="this.setCustomValidity('Obvezno polje')"
+                            />
+                            <span class="icon is-small is-left">
+                                <i class="far fa-clipboard-check"></i>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="field is-grouped">
+                            <div class="control">
+                                <button class="button is-link">Dodaj</button>
+                            </div>
+                            <div class="control">
+                                <a class="button is-link is-light" href="/">Prekliči</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </form>
+        </tr>
+    </thead>
+</table>
