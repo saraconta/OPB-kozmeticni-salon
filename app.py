@@ -135,19 +135,19 @@ def dodaj_storitev():
     return template('dodaj_storitev.html', ime_priimek='', storitev='', napaka=None)
 
 
-# @post('/dodaj_storitev')
-# def dodaj_storitev_post():
-#     ime_priimek = request.forms.ime_priimek
-#     storitev = request.forms.storitev
-#     try:
-#         cur.execute("INSERT INTO Usluzb_storitve (ime_priimek, storitev) VALUES (%s, %s)",
-#                     (ime_priimek, storitev))
-#         conn.commit()
-#     except Exception as ex:
-#         conn.rollback()
-#         return template('dodaj_storitev.html', ime_priimek=ime_priimek, storitev=ocena,
-#                         napaka='Zgodila se je napaka: %s' % ex)
-#     redirect(url('index'))
+@post('/dodaj_storitev')
+def dodaj_storitev_post():
+    ime_priimek = request.forms.ime_priimek
+    storitev = request.forms.storitev
+    try:
+        cur.execute("INSERT INTO Usluzb_storitve (ime_priimek, storitev) VALUES (%s, %s)",
+                    (ime_priimek, storitev))
+        conn.commit()
+    except Exception as ex:
+        conn.rollback()
+        return template('dodaj_storitev.html', ime_priimek=ime_priimek, storitev=ocena,
+                        napaka='Zgodila se je napaka: %s' % ex)
+    redirect(url('index'))
 
 ######################################################################
 # Glavni program
