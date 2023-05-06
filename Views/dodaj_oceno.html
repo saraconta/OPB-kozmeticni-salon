@@ -1,11 +1,55 @@
-%rebase('poskusna_osnova.html', naslov='Dodajanje ocene')
+%rebase('poskusna_osnova.html')
 
-%if napaka:
-  <p class="opozorilo">{{napaka}}</p>
-%end
-
-  <form action="{{url('dodaj_oceno')}}" method="POST">
-    <p>Ime in priimek: <input type="text" name="ime_priimek" value="{{ime_priimek}}"></p>
-    <p>Ocena: <input type="number" name="ocena" value="{{ocena}}" min="1" max="5"></p>
-    <p><input type="submit" value="Dodaj"></p>
-  </form>
+<label class="label">Ocenite uslužbenca:</label>
+<table class="table is-hoverable is-fullwidth">
+    <thead>
+        <tr>
+            <form method="POST" action="/dodaj_stranko">
+                <td></td>
+                <tr>
+                    <td>
+                        <div class="control has-icons-left">
+                            <label for="ime_priimek">Ime in priimek</label>
+                            <input class="input is-small" type="text" 
+                                id="ime_priimek" name="ime_priimek" placeholder="Ime in priimek" required
+                                oninput="this.setCustomValidity('')"
+                                oninvalid="this.setCustomValidity('Obvezno polje')"
+                            />
+                            <span class="icon is-small is-left">
+                                <i class="far fa-clipboard-check"></i>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="control has-icons-left">
+                            <label for="ocena">Ocena</label>
+                            <input class="input is-small" type="number" 
+                                id="ocena" name="ocena" placeholder="Ocena" required
+                                oninput="this.setCustomValidity('')"
+                                oninvalid="this.setCustomValidity('Obvezno polje')"
+                                min="1" max="5"
+                            />
+                            <span class="icon is-small is-left">
+                                <i class="far fa-clipboard-check"></i>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="field is-grouped">
+                            <div class="control">
+                                <button class="button is-link">Dodaj</button>
+                            </div>
+                            <div class="control">
+                                <a class="button is-link is-light" href="/">Prekliči</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </form>
+        </tr>
+    </thead>
+</table>
