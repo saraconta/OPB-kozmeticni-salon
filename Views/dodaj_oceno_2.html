@@ -4,22 +4,10 @@
 <table class="table is-hoverable is-fullwidth">
     <thead>
         <tr>
-            <form method="POST" action="/dodaj_oceno">
+            <form method="POST" action="/dodaj_oceno/{{ime_priimek}}">
                 <td></td>
                 <tr>
-                    <td>
-                        <div class="control has-icons-left">
-                            <label for="ime_priimek">Ime in priimek</label>
-                            <input class="input is-small" type="text" 
-                                id="ime_priimek" name="ime_priimek" placeholder="Ime in priimek" required
-                                oninput="this.setCustomValidity('')"
-                                oninvalid="this.setCustomValidity('Obvezno polje')"
-                            />
-                            <span class="icon is-small is-left">
-                                <i class="far fa-clipboard-check"></i>
-                            </span>
-                        </div>
-                    </td>
+                    <td>{{ime_priimek}}</td>
                 </tr>
                 <tr>
                     <td>

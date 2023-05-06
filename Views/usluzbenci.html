@@ -9,13 +9,21 @@
             <tr>
                 <th>Id usluzbenca</th>
                 <th>Ime in priimek</th>
+                <th>Povprečna ocena</th>
+                <th>Dodaj oceno</th>
              </tr>
         </thead>
      
       %for id_usluzbenec, ime_priimek in usluzbenci:
         <tr>
            <td>{{id_usluzbenec}}</td>
-           <td>{{ime_priimek}}</td>  
+           <td>{{ime_priimek}}</td> 
+           <td>izračunava povprečna ocena</td> 
+           <td>
+            <form method="POST" action="/dodaj_oceno/{{ime_priimek}}">
+              <button class="button is-primary is-light">+</button>
+            </form>
+           </td>
         </tr>
       %end
 
