@@ -41,6 +41,14 @@ class Ocena:
     ime_priimek: str = field(default="")
     ocena: int = field(default=0)
 
+# A bi to funkcijo blo treba sem napisat al kam drugam?
+#    def povpr_ocena(self):
+#        vsota = cur.execute("SELECT sum(ocena) FROM Ocena WHERE ime_priimek=ime_priimek",
+#                (self.ime_priimek, self.ocena))
+#        stevilo = cur.execute("SELECT count(*) FROM Ocena WHERE ime_priimek=ime_priimek",
+#                (self.ime_priimek, self.ocena))
+#        return vsota / stevilo
+
 @dataclass
 class Influencer:
     id_kode: int = field(default=0)

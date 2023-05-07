@@ -169,6 +169,15 @@ def dodaj_storitev_post():
                         napaka='Zgodila se je napaka: %s' % ex)
     redirect(url('index'))
 
+@get('/storitev_usluzbenci_get/<id_storitve:int>')
+def storitev_usluzbenci_get(id_storitve):
+    cur.execute("""SELECT Storitev.id_storitve, id_usluzbenec, ime_priimek, Usluzb_storitve.ime_storitve
+                FROM Usluzbenec 
+                LEFT JOIN Storitev ON Usluzb_storitve.ime_storitve = ime_storitve
+                LEFT JOIN Usluzb_storitve ON Usluzbenec.id_usluzbenec = id_usluzbenec
+                WHERE id_storitve = %s""", [id_storitve])
+    return template('storitev_usluzbenci.html', id_storitve=id_storitve, usluzbenci=cur)
+
 ######################################################################
 # Glavni program
 

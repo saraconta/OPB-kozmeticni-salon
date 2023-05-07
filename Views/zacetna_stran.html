@@ -7,7 +7,7 @@
 <div class="columns">
   <div class="column">
     <div class="level-item has-text-centered">
-      <div class="card" style="width: 22rem;">
+      <div class="card" style="width: 30rem;">
         <div class="card-body">
           <div>
             <p class="card-title"><strong>CENIK STORITEV</strong></p>
@@ -18,12 +18,16 @@
                 <th>Id</th>
                 <th>Storitev</th>
                 <th>Cena</th>
+                <th>Uslužbenci, ki opravljajo to storitev</th>
               </tr>
               %for id_storitev, ime_storitve, cena in storitve:
               <tr>
                 <td>{{id_storitev}}</td>
                 <td>{{ime_storitve}}</td>
                 <td>{{cena}}€</td>
+                <td>
+                  <a class="button" href="/storitev_usluzbenci_get/{{id_storitev}}">Poglej</a>
+                </td>
               </tr>
               %end
             </table>

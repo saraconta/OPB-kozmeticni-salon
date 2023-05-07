@@ -1,0 +1,14 @@
+%rebase('poskusna_osnova.html')
+
+<table class="table table-hover"> 
+    <tr>
+       <th>ID</th>
+       <th>Ime in priimek</th>
+    </tr>
+    %for id_usluzbenec, ime_priimek in usluzbenci:
+      <tr>
+         <td>{{id_usluzbenec}}</td>
+         <td>{{ime_priimek}}</td>
+      </tr>
+    %end
+    </table>
