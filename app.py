@@ -128,20 +128,20 @@ def dodaj_oceno_post():
     redirect(url('index'))
 
 # drugi način: da ni treba vpisat ime_priimek ampak klikneš na + in samo dodas oceno temu uslužbencu (ne dela nevem zakaj)
-@get('/dodaj_oceno/<ime_priimek:str>')
-def dodaj_oceno_get(ime_priimek):   
-    return template('dodaj_oceno_2.html', ime_priimek=ime_priimek, ocena='', napaka=None)
+# @get('/dodaj_oceno/<ime_priimek:str>')
+# def dodaj_oceno_get(ime_priimek):   
+#     return template('dodaj_oceno_2.html', ime_priimek=ime_priimek, ocena='', napaka=None)
 
 
-@post('/dodaj_oceno/<ime_priimek:str>')
-def dodaj_oceno_post(ime_priimek):
-    ime_priimek = Usluzbenec.ime_priimek
-    ocena = request.forms.ocena
-#    try:
-    cur.execute("INSERT INTO Ocena (id_usluzbenec, ocena) VALUES (%s, %s)",
-                (ime_priimek, ocena)
-                )
-    conn.commit()
+# @post('/dodaj_oceno/<ime_priimek:str>')
+# def dodaj_oceno_post(ime_priimek):
+#     ime_priimek = Usluzbenec.ime_priimek
+#     ocena = request.forms.ocena
+# #    try:
+#     cur.execute("INSERT INTO Ocena (id_usluzbenec, ocena) VALUES (%s, %s)",
+#                 (ime_priimek, ocena)
+#                 )
+#     conn.commit()
 #    except Exception as ex:
 #        conn.rollback()
 #        return template('dodaj_oceno.html', ime_priimek=ime_priimek, ocena=ocena,
