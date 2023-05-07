@@ -165,7 +165,7 @@ def dodaj_storitev_post():
         conn.commit()
     except Exception as ex:
         conn.rollback()
-        return template('dodaj_storitev.html', ime_priimek=ime_priimek, storitev=ocena,
+        return template('dodaj_storitev.html', ime_priimek=ime_priimek, storitev=storitev,
                         napaka='Zgodila se je napaka: %s' % ex)
     redirect(url('index'))
 
