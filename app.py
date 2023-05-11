@@ -78,14 +78,13 @@ def dodaj_stranko_post():
 @get('/usluzbenci')
 def usluzbenci():
     cur.execute("""
-      with povpr as (select ime_priimek, round(avg(ocena),2) povprecna_ocena
-        from Ocena
-        group by ime_priimek) 
-        select u.*, p.povprecna_ocena
-        from usluzbenec u
-        left join povpr p on p.ime_priimek = u.ime_priimek;
-    """)
-
+        WITH povpr AS (SELECT ime_priimek, round(avg(ocena),2) povprecna_ocena
+          FROM Ocena
+          GROUP BY ime_priimek) 
+        SELECT u.*, p.povprecna_ocena
+        FROM usluzbenec u
+        LEFT JOIN povpr p ON p.ime_priimek = u.ime_priimek;
+      """)
     return bottle.template('usluzbenci.html', usluzbenci=cur)
 
 
@@ -122,10 +121,13 @@ def dodaj_oceno(id_usluzbenec):
                     WHERE u.id_usluzbenec = %s""", [id_usluzbenec])
     return template('dodaj_oceno.html', id_usluzbenec = id_usluzbenec, ime_priimek=cur.fetchone()[0], ocena='', napaka=None)
 
-
-@post('/dodaj_oceno')
-def dodaj_oceno_post():
-    ime_priimek = request.forms.get("ime_priimek")
+@post('/dodaj_oceno/<id_usluzbenec:int>')
+def dodaj_oceno_post(id_usluzbenec):
+    cur.execute("""SELECT  
+                    u.ime_priimek
+                    FROM Usluzbenec u
+                    WHERE u.id_usluzbenec = %s""", [id_usluzbenec])
+    ime_priimek = cur.fetchone()[0]
     ocena = int(request.forms.get("ocena"))
 
     cur.execute("""
@@ -136,26 +138,6 @@ def dodaj_oceno_post():
     conn.commit()
     redirect(url('/'))
 
-# drugi način: da ni treba vpisat ime_priimek ampak klikneš na + in samo dodas oceno temu uslužbencu (ne dela nevem zakaj)
-# @get('/dodaj_oceno/<ime_priimek:str>')
-# def dodaj_oceno_get(ime_priimek):   
-#     return template('dodaj_oceno_2.html', ime_priimek=ime_priimek, ocena='', napaka=None)
-
-
-# @post('/dodaj_oceno/<ime_priimek:str>')
-# def dodaj_oceno_post(ime_priimek):
-#     ime_priimek = Usluzbenec.ime_priimek
-#     ocena = request.forms.ocena
-# #    try:
-#     cur.execute("INSERT INTO Ocena (id_usluzbenec, ocena) VALUES (%s, %s)",
-#                 (ime_priimek, ocena)
-#                 )
-#     conn.commit()
-#    except Exception as ex:
-#        conn.rollback()
-#        return template('dodaj_oceno.html', ime_priimek=ime_priimek, ocena=ocena,
-#                        napaka='Zgodila se je napaka: %s' % ex)
-#    redirect(url('index'))
 
 ### STORITVE
 @get('/dodaj_storitev')
