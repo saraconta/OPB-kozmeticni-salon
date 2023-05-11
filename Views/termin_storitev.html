@@ -1,0 +1,35 @@
+%rebase('poskusna_osnova.html')
+
+<label class="label">Termin:</label>
+
+<div class="tabs is-toggle is-fullwidth is-large">
+  <ul>
+    <li class="is-active">
+      <a>
+        <span>Storitev</span>
+      </a>
+    </li>
+    <li>
+      <a>
+        <span>Uslužbenec</span>
+      </a>
+    </li>
+    <li>
+      <a>
+        <span>Datum in ura</span>
+      </a>
+    </li>
+    <li>
+      <a>
+        <span>Koda za popust</span>
+      </a>
+    </li>
+  </ul>
+</div>
+
+<label class="label">Izberite storitev na katero se želite naročiti.</label>
+%for id_storitev, ime_storitve in storitve:    
+  <a href="/termin/{{id_storitev}}" class="dropdown-item">
+    {{ime_storitve}}
+  </a> 
+%end

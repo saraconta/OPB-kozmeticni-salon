@@ -141,8 +141,7 @@ def dodaj_oceno_post(id_usluzbenec):
 
 ### STORITVE
 @get('/dodaj_storitev')
-def dodaj_storitev():
-    
+def dodaj_storitev():  
     return template('dodaj_storitev.html', ime_priimek='', storitev='', napaka=None)
 
 
@@ -162,29 +161,46 @@ def dodaj_storitev_post():
 
 @get('/storitev_usluzbenci_get/<id_storitev:int>')
 def storitev_usluzbenci_get(id_storitev):
-    cur.execute("""SELECT  
-                    u.id_usluzbenec, u.ime_priimek
+    cur.execute("""SELECT u.id_usluzbenec, u.ime_priimek
                     FROM Storitev s
-                    left JOIN Usluzb_storitve us ON us.ime_storitve = s.ime_storitve
-                    left JOIN Usluzbenec u ON u.id_usluzbenec = us.id_usluzbenec
+                    LEFT JOIN Usluzb_storitve us ON us.ime_storitve = s.ime_storitve
+                    LEFT JOIN Usluzbenec u ON u.id_usluzbenec = us.id_usluzbenec
                     WHERE s.id_storitev = %s""", [id_storitev])
     return template('storitev_usluzbenci.html', id_storitev=id_storitev, usluzbenci=cur)
 
 
+### TERMIN
 @get('/termin')
 def vpis_termina_get():
-    pass
-
-@post('/termin')
-def vpis_termina_post():
-    ime_priimek_stranke = request.forms.ime_priimek_stranke
-    datum = request.forms.datum
-    ime_storitve = request.forms.ime_storitve
-    ime_priimek_usluzbenca = request.forms.ime_priimek_usluzbenca
-    koda = request.forms.koda
-    #cur = baza.cursor
     cur.execute("""
+      SELECT id_storitev, ime_storitve FROM Storitev
     """)
+    return bottle.template('termin_storitev.html', storitve=cur)
+
+  
+@get('/termin/<id_storitev:int>')
+def termina_storitev(id_storitev):
+    cur.execute("""SELECT s.id_storitev, s.ime_storitve, us.ime_priimek, u.id_usluzbenec
+                    FROM Storitev s
+                    LEFT JOIN Usluzb_storitve us ON us.ime_storitve = s.ime_storitve
+                    LEFT JOIN Usluzbenec u ON u.id_usluzbenec = us.id_usluzbenec
+                    WHERE s.id_storitev = %s""", [id_storitev])
+    return template('termin_usluzbenec.html', id_storitev = id_storitev, ime_priimek=cur.fetchone()[2], id_usluzbenec='', usluzbenci_storitve=cur)
+
+#@get('/termin/<id_storitev:int>/<id_usluzbenec>')
+#def vpis_termina_get():
+#     pass
+
+#@post('/termin')
+#def vpis_termina_post():
+#    ime_priimek_stranke = request.forms.ime_priimek_stranke
+#    datum = request.forms.datum
+#    ime_storitve = request.forms.ime_storitve
+#    ime_priimek_usluzbenca = request.forms.ime_priimek_usluzbenca
+#    koda = request.forms.koda
+#    #cur = baza.cursor
+#    cur.execute("""
+#    """)
 
 
 ######################################################################
