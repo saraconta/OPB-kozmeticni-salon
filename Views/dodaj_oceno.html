@@ -11,7 +11,7 @@
                         <div class="control has-icons-left">
                             <label for="ime_priimek">Ime in priimek</label>
                             <input class="input is-small" type="text" 
-                                id="ime_priimek" name="ime_priimek" placeholder="Ime in priimek" required
+                                name="ime_priimek" value="{{ime_priimek}}" disabled name="ime_priimek" placeholder="Ime in priimek" required
                                 oninput="this.setCustomValidity('')"
                                 oninvalid="this.setCustomValidity('Obvezno polje')"
                             />
