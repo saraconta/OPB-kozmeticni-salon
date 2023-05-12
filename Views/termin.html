@@ -1,0 +1,104 @@
+%rebase('poskusna_osnova.html')
+
+<label class="label">Izpolnite polja za rezervacijo termina:</label>
+<table class="table is-hoverable is-fullwidth">
+    <thead>
+        <tr>
+            <form method="POST" action="/termin/{{id_storitev}}/{{id_usluzbenec}}">
+                <td></td>
+                <tr>
+                    <td>
+                        <div class="control has-icons-left">
+                            <label for="ime_storitve">Ime storitve</label>
+                            <input class="input is-small" type="text" 
+                                name="ime_storitve" value="{{ime_storitve}}" disabled name="ime_storitve" placeholder="Storitev" required
+                                oninput="this.setCustomValidity('')"
+                                oninvalid="this.setCustomValidity('Obvezno polje')"
+                            />
+                            <span class="icon is-small is-left">
+                                <i class="far fa-clipboard-check"></i>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="control has-icons-left">
+                            <label for="ime_priimek_usluzbenca">Ime usluzbenca</label>
+                            <input class="input is-small" type="text" 
+                                name="ime_priimek_usluzbenca" value="{{ime_priimek_usluzbenca}}" disabled name="ime_priimek_usluzbenca" placeholder="Ime uslužbenca" required
+                                oninput="this.setCustomValidity('')"
+                                oninvalid="this.setCustomValidity('Obvezno polje')"
+                            />
+                            <span class="icon is-small is-left">
+                                <i class="far fa-clipboard-check"></i>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="control has-icons-left">
+                            <label for="ime_priimek_stranke">Ime in priimek</label>
+                            <input class="input is-small" type="number" 
+                                id="ime_priimek_stranke" name="ime_priimek_stranke" placeholder="Ime in priimek stranke" required
+                                oninput="this.setCustomValidity('')"
+                                oninvalid="this.setCustomValidity('Obvezno polje')"
+                            />
+                            <span class="icon is-small is-left">
+                                <i class="far fa-clipboard-check"></i>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="control has-icons-left">
+                            <label for="datum">Datum in ura</label>
+                            <input class="input is-small" type="number" 
+                                id="datum" name="datum" placeholder="Datum in ura" required
+                                oninput="this.setCustomValidity('')"
+                                oninvalid="this.setCustomValidity('Obvezno polje')"
+                            />
+                            <span class="icon is-small is-left">
+                                <i class="far fa-clipboard-check"></i>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="control has-icons-left">
+                            <label for="koda">Koda za popust</label>
+                            <input class="input is-small" type="number" 
+                                id="koda" name="koda" placeholder="Koda za popust" required
+                                oninput="this.setCustomValidity('')"
+                                oninvalid="this.setCustomValidity('Obvezno polje')"
+                            />
+                            <span class="icon is-small is-left">
+                                <i class="far fa-clipboard-check"></i>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="field is-grouped">
+                            <div class="control">
+                                <button class="button is-link">Dodaj</button>
+                            </div>
+                            <div class="control">
+                                <a class="button is-link is-light" href="/">Prekliči</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </form>
+        </tr>
+    </thead>
+</table>

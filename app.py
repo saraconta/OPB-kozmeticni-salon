@@ -161,17 +161,18 @@ def dodaj_storitev_post():
 
 @get('/storitev_usluzbenci_get/<id_storitev:int>')
 def storitev_usluzbenci_get(id_storitev):
-    cur.execute("""SELECT u.id_usluzbenec, u.ime_priimek
-                    FROM Storitev s
-                    LEFT JOIN Usluzb_storitve us ON us.ime_storitve = s.ime_storitve
-                    LEFT JOIN Usluzbenec u ON u.id_usluzbenec = us.id_usluzbenec
-                    WHERE s.id_storitev = %s""", [id_storitev])
+    cur.execute("""
+      SELECT u.id_usluzbenec, u.ime_priimek
+      FROM Storitev s
+      LEFT JOIN Usluzb_storitve us ON us.ime_storitve = s.ime_storitve
+      LEFT JOIN Usluzbenec u ON u.id_usluzbenec = us.id_usluzbenec
+      WHERE s.id_storitev = %s""", [id_storitev])
     return template('storitev_usluzbenci.html', id_storitev=id_storitev, usluzbenci=cur)
 
 
 ### TERMIN
 @get('/termin')
-def vpis_termina_get():
+def termina_storitev():
     cur.execute("""
       SELECT id_storitev, ime_storitve FROM Storitev
     """)
@@ -179,20 +180,30 @@ def vpis_termina_get():
 
   
 @get('/termin/<id_storitev:int>')
-def termina_storitev(id_storitev):
-    cur.execute("""SELECT s.id_storitev, s.ime_storitve, us.ime_priimek, u.id_usluzbenec
-                    FROM Storitev s
-                    LEFT JOIN Usluzb_storitve us ON us.ime_storitve = s.ime_storitve
-                    LEFT JOIN Usluzbenec u ON u.id_usluzbenec = us.id_usluzbenec
-                    WHERE s.id_storitev = %s""", [id_storitev])
-    return template('termin_usluzbenec.html', id_storitev = id_storitev, ime_priimek=cur.fetchone()[2], id_usluzbenec='', usluzbenci_storitve=cur)
+def termina_usluzbenec(id_storitev):
+    cur.execute("""
+      SELECT u.id_usluzbenec, u.ime_priimek
+      FROM Storitev s
+      LEFT JOIN Usluzb_storitve us ON us.ime_storitve = s.ime_storitve
+      LEFT JOIN Usluzbenec u ON u.id_usluzbenec = us.id_usluzbenec
+      WHERE s.id_storitev = %s""", [id_storitev])
+    return template('termin_usluzbenec.html', id_storitev = id_storitev, usluzbenci_storitve=cur)
 
-#@get('/termin/<id_storitev:int>/<id_usluzbenec>')
-#def vpis_termina_get():
-#     pass
-
+@get('/termin/<id_storitev:int>/<id_usluzbenec:int>')
+def termin_datum(id_usluzbenec, id_storitev):
+    cur.execute("""
+      SELECT u.ime_priimek, s.ime_storitve, s.trajanje
+      FROM Storitev s
+      LEFT JOIN Usluzb_storitev us ON ON us.ime_storitve = s.ime_storitve
+      LEFT JOIN Usluzbenec u ON u.id_usluzbenec = us.id_usluzbenec
+      WHERE (id_uslubenec, id_storitev) = (%s, %s)""", [id_usluzbenec, id_storitev])
+    return template('termin.html', id_storitev = id_storitev, id_usluzbenec = id_usluzbenec, 
+                    ime_priimek_usluzbenca=cur.fetchone()[0], ime_storitve=cur.fetchone()[0],
+                    ime_priimek_stranke='', datum='', koda='', napaka=None)
 #@post('/termin')
 #def vpis_termina_post():
+#    cur.execute(
+#     )
 #    ime_priimek_stranke = request.forms.ime_priimek_stranke
 #    datum = request.forms.datum
 #    ime_storitve = request.forms.ime_storitve
@@ -200,7 +211,12 @@ def termina_storitev(id_storitev):
 #    koda = request.forms.koda
 #    #cur = baza.cursor
 #    cur.execute("""
-#    """)
+#      INSERT INTO Termin (ime_priimek_stranke, datum, ime_storitve, ime_priimek_usluzbenca, koda)
+#      VALUES (%s, %s, %s, %s, %s) RETURNING id_termina; 
+#    """, (ime_priimek_stranke, datum, ime_storitve, ime_priimek_usluzbenca, koda)
+#        )
+#    conn.commit()
+#    redirect(url('/'))
 
 
 ######################################################################
