@@ -1,5 +1,29 @@
 %rebase('poskusna_osnova.html')
 
+<div class="tabs is-toggle is-fullwidth is-large">
+    <ul>
+
+      <li>
+        <a>
+          <span>Storitev</span>
+        </a>
+      </li>
+
+      <li>
+        <a>
+          <span>Uslužbenec</span>
+        </a>
+      </li>
+
+      <li class="is-active">
+        <a>
+          <span>Datum in ura</span>
+        </a>
+      </li>
+
+    </ul>
+  </div>
+
 <label class="label">Izpolnite polja za rezervacijo termina:</label>
 <table class="table is-hoverable is-fullwidth">
     <thead>
@@ -42,7 +66,7 @@
                     <td>
                         <div class="control has-icons-left">
                             <label for="ime_priimek_stranke">Ime in priimek</label>
-                            <input class="input is-small" type="number" 
+                            <input class="input is-small" type="text" 
                                 id="ime_priimek_stranke" name="ime_priimek_stranke" placeholder="Ime in priimek stranke" required
                                 oninput="this.setCustomValidity('')"
                                 oninvalid="this.setCustomValidity('Obvezno polje')"
@@ -58,7 +82,7 @@
                     <td>
                         <div class="control has-icons-left">
                             <label for="datum">Datum in ura</label>
-                            <input class="input is-small" type="number" 
+                            <input class="input is-small" type="datetime" 
                                 id="datum" name="datum" placeholder="Datum in ura" required
                                 oninput="this.setCustomValidity('')"
                                 oninvalid="this.setCustomValidity('Obvezno polje')"
@@ -74,7 +98,7 @@
                     <td>
                         <div class="control has-icons-left">
                             <label for="koda">Koda za popust</label>
-                            <input class="input is-small" type="number" 
+                            <input class="input is-small" type="text" 
                                 id="koda" name="koda" placeholder="Koda za popust" required
                                 oninput="this.setCustomValidity('')"
                                 oninvalid="this.setCustomValidity('Obvezno polje')"
@@ -102,3 +126,5 @@
         </tr>
     </thead>
 </table>
+
+ <progress class="progress is-info" value="60" max="100">60%</progress>
