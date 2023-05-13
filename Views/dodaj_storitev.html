@@ -1,5 +1,8 @@
 %rebase('poskusna_osnova.html')
 
+% if rola == 'admin':
+
+
 <label class="label">Dodajanje nove storitve:</label>
 <table class="table is-hoverable is-fullwidth">
     <thead>
@@ -52,3 +55,8 @@
         </tr>
     </thead>
 </table>
+
+%else:
+<p> Nimaš dovoljenja za ogled te strani!</p>
+
+%end

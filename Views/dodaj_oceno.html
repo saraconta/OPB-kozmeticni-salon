@@ -1,5 +1,7 @@
 %rebase('poskusna_osnova.html')
 
+% if rola == 'user':
+
 <label class="label">Ocenite uslužbenca:</label>
 <table class="table is-hoverable is-fullwidth">
     <thead>
@@ -53,3 +55,9 @@
         </tr>
     </thead>
 </table>
+
+
+%else:
+<p> Nimaš dovoljenja za ogled te strani!</p>
+
+%end

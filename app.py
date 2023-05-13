@@ -10,6 +10,9 @@ import sqlite3
 from Data.model import *
 from Database import Repo
 
+from Data.services import AuthService
+from functools import wraps
+
 import os
 import bottle
 
@@ -37,6 +40,29 @@ cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
 repo = Repo()
 
+
+auth = AuthService(repo)
+
+def cookie_required(f):
+    """
+    Dekorator, ki zahteva veljaven piškotek. Če piškotka ni, uporabnika preusmeri na stran za prijavo.
+    """
+    @wraps(f)
+    def decorated( *args, **kwargs):
+
+
+        cookie = request.get_cookie("uporabnik")
+        if cookie:
+            return f(*args, **kwargs)
+
+        return template("prijava.html", napaka="Potrebna je prijava!")
+
+
+
+
+    return decorated
+
+
 #@get('/static/<filename:path>')
 #def static(filename):
 #    return static_file(filename, root='static')
@@ -50,6 +76,7 @@ def index():
 
 ### STRANKE
 @get('/stranke')
+@cookie_required
 def stranke():
     cur.execute("""
       SELECT id_stranka, ime_priimek, telefon, mail from Stranka
@@ -58,6 +85,7 @@ def stranke():
 
 
 @get('/dodaj_stranko')
+@cookie_required
 def dodaj_stranko():
     return template('dodaj_stranko.html', ime_priimek='', telefon='', mail='', napake=None)
 
@@ -89,6 +117,7 @@ def usluzbenci():
 
 
 @get('/dodaj_usluzbenca')
+@cookie_required
 def dodaj_usluzbenca_get():
     return bottle.template('dodaj_usluzbenca.html', ime_priimek='', napake=None)
 
@@ -114,6 +143,7 @@ def dodaj_usluzbenca_post():
 
 ### OCENE
 @get('/dodaj_oceno/<id_usluzbenec:int>')
+@cookie_required
 def dodaj_oceno(id_usluzbenec):
     cur.execute("""SELECT  
                     u.ime_priimek
@@ -141,6 +171,7 @@ def dodaj_oceno_post(id_usluzbenec):
 
 ### STORITVE
 @get('/dodaj_storitev')
+@cookie_required
 def dodaj_storitev():  
     return template('dodaj_storitev.html', ime_priimek='', storitev='', napaka=None)
 
@@ -172,6 +203,7 @@ def storitev_usluzbenci_get(id_storitev):
 
 ### TERMIN
 @get('/termin')
+@cookie_required
 def termina_storitev():
     cur.execute("""
       SELECT id_storitev, ime_storitve FROM Storitev
@@ -180,6 +212,7 @@ def termina_storitev():
 
   
 @get('/termin/<id_storitev:int>')
+@cookie_required
 def termina_usluzbenec(id_storitev):
     cur.execute("""
       SELECT u.id_usluzbenec, u.ime_priimek
@@ -190,6 +223,7 @@ def termina_usluzbenec(id_storitev):
     return template('termin_usluzbenec.html', id_storitev = id_storitev, usluzbenci_storitve=cur)
 
 @get('/termin/<id_storitev:int>/<id_usluzbenec:int>')
+@cookie_required
 def termin_datum(id_usluzbenec, id_storitev):
     cur.execute("""
       SELECT u.ime_priimek, s.ime_storitve, s.trajanje, u.id_usluzbenec, s.id_storitev
