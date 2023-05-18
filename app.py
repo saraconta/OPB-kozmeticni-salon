@@ -255,7 +255,7 @@ def vpis_termina_post(id_usluzbenec, id_storitev):
     koda = request.forms.koda
     #cur = baza.cursor
     cur.execute("""
-      INSERT INTO Termin (ime_priimek_stranke, datum, ime_storitve, ime_priimek_usluzbenca, koda)
+      INSERT INTO Termin1 (ime_priimek_stranke, datum, ime_storitve, ime_priimek_usluzbenca, koda)
       VALUES (%s, %s, %s, %s, %s) RETURNING id_termin; 
       """, (ime_priimek_stranke, datum_ura, ime_storitve, ime_priimek_usluzbenca, koda)
       )
