@@ -50,7 +50,7 @@ class Influencer:
 
 @dataclass
 class Termin:
-    id_termina: int = field(default=0)
+    id_termin: int = field(default=0)
     ime_priimek_stranke: str = field(default="")
     datum: str = field(default="")
     ime_storitve: str = field(default="")

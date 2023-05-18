@@ -81,15 +81,28 @@
                 <tr>
                     <td>
                         <div class="control has-icons-left">
-                            <label for="datum">Datum in ura</label>
-                            <input class="input is-small" type="datetime" 
-                                id="datum" name="datum" placeholder="Datum in ura" required
+                            <label for="datum">Datum</label>
+                            <input class="input is-small" type="date" data-date-format="YYYY-MM-DD"
+                                id="datum" name="datum" placeholder="YYYY-MM-DD" required
                                 oninput="this.setCustomValidity('')"
                                 oninvalid="this.setCustomValidity('Obvezno polje')"
                             />
                             <span class="icon is-small is-left">
                                 <i class="far fa-clipboard-check"></i>
                             </span>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="control has-icons-left">
+                            <label for="ura">Ura</label>
+                            <select class="input is-small" type="time" aria-label="Default select example"
+                            id="ura" name="ura" placeholder="hh:mm:ss">
+                                <option value="08:00:00">8:00</option>
+                                <option value="08:30:00">8:30</option>
+                            </select>
                         </div>
                     </td>
                 </tr>

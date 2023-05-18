@@ -248,14 +248,16 @@ def vpis_termina_post(id_usluzbenec, id_storitev):
     vrstica=cur.fetchone()
     ime_priimek_stranke = request.forms.ime_priimek_stranke
     datum = request.forms.datum
+    ura = request.forms.ura
+    datum_ura = datum + ' ' + ura
     ime_storitve = vrstica[1]
     ime_priimek_usluzbenca = vrstica[0]
     koda = request.forms.koda
     #cur = baza.cursor
     cur.execute("""
       INSERT INTO Termin (ime_priimek_stranke, datum, ime_storitve, ime_priimek_usluzbenca, koda)
-      VALUES (%s, %s, %s, %s, %s) RETURNING id_termina; 
-      """, (ime_priimek_stranke, datum, ime_storitve, ime_priimek_usluzbenca, koda)
+      VALUES (%s, %s, %s, %s, %s) RETURNING id_termin; 
+      """, (ime_priimek_stranke, datum_ura, ime_storitve, ime_priimek_usluzbenca, koda)
       )
     conn.commit()
     redirect(url('/'))
