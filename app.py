@@ -178,7 +178,15 @@ def dodaj_oceno_post(id_usluzbenec):
 @get('/dodaj_storitev')
 #@cookie_required
 def dodaj_storitev():  
-    return template('dodaj_storitev.html', ime_priimek='', storitev='', napaka=None)
+    cur.execute("""
+
+      SELECT ime_priimek from Usluzbenec
+      order by ime_priimek
+
+   """)
+    
+
+    return template('dodaj_storitev.html', ime_priimek='', storitev='', usluzbenec1 = cur, napaka=None)
 
 
 @post('/dodaj_storitev')

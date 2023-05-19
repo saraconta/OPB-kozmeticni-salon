@@ -9,15 +9,13 @@
                 <tr>
                     <td>
                         <div class="control has-icons-left">
-                            <label for="ime_priimek">Ime in priimek</label>
-                            <input class="input is-small" type="text" 
-                                id="ime_priimek" name="ime_priimek" placeholder="Ime in priimek" required
-                                oninput="this.setCustomValidity('')"
-                                oninvalid="this.setCustomValidity('Obvezno polje')"
-                            />
-                            <span class="icon is-small is-left">
-                                <i class="far fa-clipboard-check"></i>
-                            </span>
+                            <label for="ime_priimek" class="form-label my-3">Izberi ime in priimek uslužbenca</label>
+                            <select class="input is-small" type="text" aria-label="Default select example"
+                            id="ime_priimek" name="ime_priimek" placeholder="ime_priimek">
+                                %for ime_priimek in usluzbenec1:
+                                    <option value={{ime_priimek}}>{{ime_priimek}}</option>
+                                %end
+                            </select>
                         </div>
                     </td>
                 </tr>
