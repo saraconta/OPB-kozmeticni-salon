@@ -23,6 +23,21 @@
                 </tr>
                 <tr>
                     <td>
+                        <div class="control has-icons-left">
+                            <label for="ime_priimek">Storitev</label>
+                            <input class="input is-small" type="text" 
+                                id="storitev" name="storitev" placeholder="Storitev, ki jo opravlja uslužbenec" required
+                                oninput="this.setCustomValidity('')"
+                                oninvalid="this.setCustomValidity('Obvezno polje')"
+                            />
+                            <span class="icon is-small is-left">
+                                <i class="far fa-clipboard-check"></i>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
                         <div class="field is-grouped">
                             <div class="control">
                                 <button class="button is-link">Dodaj</button>

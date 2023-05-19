@@ -119,17 +119,30 @@ def usluzbenci():
 @get('/dodaj_usluzbenca')
 #@cookie_required
 def dodaj_usluzbenca_get():
-    return bottle.template('dodaj_usluzbenca.html', ime_priimek='', napake=None)
+    return bottle.template('dodaj_usluzbenca.html', ime_priimek='', storitev='', napake=None)
 
 @post('/dodaj_usluzbenca')
 def dodaj_usluzbenca_post():
   ime_priimek = request.forms.ime_priimek
-  ime_storitve = request.forms.ime_storitve
+  storitev = request.forms.storitev
 #  try:
   cur.execute("""
       INSERT INTO Usluzbenec (ime_priimek)
       VALUES (%s) RETURNING id_usluzbenec; 
     """, (ime_priimek)
+    )
+  conn.commit()
+
+  cur.execute("""
+      SELECT u.id_usluzbenec
+      FROM Usluzbenec u
+      WHERE (u.ime_priimek) = (%s)""", (ime_priimek))
+  vrstica=cur.fetchone()
+  id_usluzbenec = vrstica
+
+  cur.execute("""
+      INSERT INTO Usluzb_storitve (id_usluzbenec, ime_storitve)
+      VALUES (%s, %s)""", (id_usluzbenec, storitev)
     )
   conn.commit()
   redirect(url('/'))
@@ -180,15 +193,26 @@ def dodaj_storitev():
 def dodaj_storitev_post():
     ime_priimek = request.forms.ime_priimek
     storitev = request.forms.storitev
+
+    cur.execute("""
+      SELECT id_usluzbenec
+      FROM Usluzbenec 
+      WHERE ime_priimek = %s;""", (ime_priimek))
+    vrstica = cur.fetchone()[0]
+    id_usluzbenec = int(vrstica)
+
+    cur.nextset()
+
     try:
-        cur.execute("INSERT INTO Usluzb_storitve (ime_priimek, storitev) VALUES (%s, %s)",
-                    (ime_priimek, storitev))
+        cur.execute("""INSERT INTO Usluzb_storitve (id_usluzbenec, ime_storitve) VALUES (%s, %s);""",
+                    (id_usluzbenec, storitev))
         conn.commit()
     except Exception as ex:
         conn.rollback()
         return template('dodaj_storitev.html', ime_priimek=ime_priimek, storitev=storitev,
                         napaka='Zgodila se je napaka: %s' % ex)
     redirect(url('/'))
+
 
 @get('/storitev_usluzbenci_get/<id_storitev:int>')
 def storitev_usluzbenci_get(id_storitev):
