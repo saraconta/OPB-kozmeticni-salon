@@ -127,24 +127,16 @@ def dodaj_usluzbenca_post():
   storitev = request.forms.storitev
 #  try:
   cur.execute("""
-      INSERT INTO Usluzbenec (ime_priimek)
-      VALUES (%s) RETURNING id_usluzbenec; 
-    """, (ime_priimek)
-    )
-  conn.commit()
-
-  cur.execute("""
-      SELECT u.id_usluzbenec
-      FROM Usluzbenec u
-      WHERE (u.ime_priimek) = (%s)""", (ime_priimek))
-  vrstica=cur.fetchone()
-  id_usluzbenec = vrstica
-
-  cur.execute("""
+      with ins1 as(
+      INSERT INTO Usluzbenec (ime_priimek) VALUES (%s) RETURNING id_usluzbenec
+      )
       INSERT INTO Usluzb_storitve (id_usluzbenec, ime_storitve)
-      VALUES (%s, %s)""", (id_usluzbenec, storitev)
+      SELECT id_usluzbenec, %s FROM ins1;
+
+    """, (ime_priimek, storitev)
     )
   conn.commit()
+
   redirect(url('/'))
 #  except Exception as ex:
 #    conn.rollback()
@@ -194,19 +186,17 @@ def dodaj_storitev_post():
     ime_priimek = request.forms.ime_priimek
     storitev = request.forms.storitev
 
-    cur.execute("""
-      SELECT id_usluzbenec
-      FROM Usluzbenec 
-      WHERE ime_priimek = %s;""", (ime_priimek))
-    vrstica = cur.fetchone()[0]
-    id_usluzbenec = int(vrstica)
-
-    cur.nextset()
-
     try:
-        cur.execute("""INSERT INTO Usluzb_storitve (id_usluzbenec, ime_storitve) VALUES (%s, %s);""",
-                    (id_usluzbenec, storitev))
-        conn.commit()
+      cur.execute("""
+      with view1 as(
+      SELECT id_usluzbenec FROM Usluzbenec WHERE ime_priimek = %s
+      )
+      INSERT INTO Usluzb_storitve (id_usluzbenec, ime_storitve)
+      SELECT id_usluzbenec, %s FROM view1;
+
+    """, (ime_priimek, storitev)
+    )
+      conn.commit()
     except Exception as ex:
         conn.rollback()
         return template('dodaj_storitev.html', ime_priimek=ime_priimek, storitev=storitev,
