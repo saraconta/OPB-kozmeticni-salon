@@ -282,11 +282,22 @@ def vpis_termina_post(id_usluzbenec, id_storitev):
       """, (ime_priimek_stranke, datum_ura, ime_storitve, ime_priimek_usluzbenca, koda)
       )
     conn.commit()
-    redirect(url('/'))
+    redirect(url('/prikazi_termin/<id_stranka:int>'))
+
+# to mi sploh ne dela, nevem kaj ne štima
+@get('/prikazi_termin/<id_stranka:int>')
+def prikazi_termin(id_stranka):
+    cur.execute("""
+      SELECT t.id_termin, s.id_stranka, s.ime_priimek, t.datum, t.ime_storitve, t.ime_priimek_usluzbenca, st.trajanje, st.cena, i.popust
+      FROM Termin1 t
+      LEFT JOIN Stranka s ON s.ime_priimek = t.ime_priimek_stranke
+      LEFT JOIN Storitev st ON st.ime_storitve = t.ime_storitve
+      LEFT JOIN Influencer i ON i.koda = t.koda
+      WHERE id_stranka = %s""", (id_stranka))
+
+    return template('termin_prikazi.html', id_stranka = id_stranka, termin=cur)
 
 
-######################################################################
-# Glavni program
 
 
 

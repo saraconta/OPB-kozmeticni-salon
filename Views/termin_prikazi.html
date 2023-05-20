@@ -1,0 +1,56 @@
+%rebase('poskusna_osnova.html')
+
+<div class="tabs is-toggle is-fullwidth is-large">
+    <ul>
+
+      <li>
+        <a>
+          <span>Storitev</span>
+        </a>
+      </li>
+
+      <li>
+        <a>
+          <span>Uslužbenec</span>
+        </a>
+      </li>
+
+      <li class="is-active">
+        <a>
+          <span>Datum in ura</span>
+        </a>
+      </li>
+
+    </ul>
+</div>
+
+%for id_termin, id_stranka, ime_priimek, datum, ime_storitve, ime_priimek_usluzbenca, trajanje, cena, popust in termin
+<div class="card">
+    <header class="card-header">
+      <p class="card-header-title">
+        Termin
+      </p>
+    </header>
+    <div class="card-content">
+      <div class="content">
+            <p>{{ime_priimek}}</p>
+            <p><strong>Datum:</strong> <br>
+                <time datetime="2016-1-1">{{datum}}</time> 
+            </p>
+            <p><strong>Strotitev:</strong> {{ime_storitve}} </p>
+            <p><strong>Usluzbenec:</strong> {{ime_priimek_usluzbenca}} </p>
+            <p><strong>Cena:</strong> {{cena}} * {{popust}} </p>
+      </div>
+    </div>
+    <footer class="card-footer">
+      <a href="/" class="card-footer-item">Zacetna stran</a>
+      <a href="/termin" class="card-footer-item">Nov termin</a>
+      <a href="#" class="card-footer-item">Odpoved termina</a>
+    </footer>
+  </div>
+%end
+
+
+
+<progress class="progress is-info" value="100" max="100">100%</progress>
+
