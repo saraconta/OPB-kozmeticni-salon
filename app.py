@@ -306,12 +306,19 @@ def prikazi_termin(id_stranka):
 @get('/urnik')
 def urnik():
     cur.execute("""
-        SELECT id_termin, ime_priimek_stranke, datum, ime_storitve, ime_priimek_usluzbenca
-         FROM Termin1;
+      SELECT u.* FROM usluzbenec u;
       """)
-    return bottle.template('urnik.html', urnik=cur)
+    return bottle.template('urnik.html', usluzbenci=cur)
 
-
+@get('/urnik/<id_usluzbenec:int>')
+def prikazi_urnik(id_usluzbenec):
+    cur.execute("""
+        SELECT id_termin, ime_priimek_stranke, datum, ime_storitve, ime_priimek_usluzbenca, u.id_usluzbenec
+        FROM Termin1 t
+        LEFT JOIN Usluzbenec u ON u.ime_priimek = t.ime_priimek_usluzbenca 
+        WHERE id_usluzbenec = %s; """, (id_usluzbenec))
+    
+    return template('urnik_usluzbenca.html', id_usluzbenec = id_usluzbenec, urnik=cur)
 
 
 

@@ -1,23 +1,72 @@
 %rebase('poskusna_osnova.html')
 
-%for ime_priimek_usluzbenca in urnik:
-<p><strong>{{ime_priimek_usluzbenca}}</strong></p>
-    <table class="table table-striped">
-        <tr>
-            <th>Id</th>
-            <th>Datum</th>
-            <th>Storitev</th>
-            <th>Stranka</th>
-        </tr>
+<nav class="level is-mobile">
+    <div class="level-item has-text-centered">
+      <div>
+        <p class="heading">URNIK</p>
+            <div class="dropdown is-active">
 
-        %for id_termin, ime_priimek_stranke, datum, ime_storitve in urnik:
-        <tr>
-            <td>{{id_termin}}</td>
-            <td>{{datum}}</td>
-            <td>{{ime_storitve}}</td>
-            <td>{{ime_priimek_stranke}}</td>
-        </tr>
-        %end
+                <div class="dropdown-trigger">
+                <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
+                    <span>Usluzbenci</span>
+                    <span class="icon is-small">
+                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                    </span>
+                </button>
+                </div>
 
-    </table>
-%end
+                <div class="dropdown-menu" id="dropdown-menu" role="menu">
+                <div class="dropdown-content">
+                    %for id_usluzbenec, ime_priimek in usluzbenci:
+                        <a href="/urnik/{{id_usluzbenec}}" class="dropdown-item">
+                            {{ime_priimek}}
+                        </a>
+                    %end
+                </div>
+            </div>
+
+        </div>
+      </div>
+    </div>
+
+    <div class="level-item has-text-centered">
+      <div>
+        <table class="table is-striped">
+            <thead>
+                <tr>
+                    <th></th>
+                    <th>Od</th>
+                    <th>Do</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr>
+                    <th>PON</th>
+                    <th>8:00</th>
+                    <th>16:00</th>
+                </tr>
+                <tr>
+                    <th>TOR</th>
+                    <th>8:00</th>
+                    <th>16:00</th>
+                </tr>
+                <tr>
+                    <th>SRE</th>
+                    <th>8:00</th>
+                    <th>16:00</th>
+                </tr>
+                <tr>
+                    <th>ČET</th>
+                    <th>8:00</th>
+                    <th>16:00</th>
+                </tr>
+                <tr>
+                    <th>PET</th>
+                    <th>8:00</th>
+                    <th>16:00</th>
+                </tr>
+            </tbody>
+      </div>
+    </div>
+
+  </nav>

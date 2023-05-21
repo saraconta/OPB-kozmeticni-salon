@@ -1,13 +1,39 @@
 % rebase('poskusna_osnova.html')
 <!-- Main container -->
 
-<a class="button is-link is-large" href="/termin">NOV TERMIN</a>
+
 
 <nav class="level">
-<div class="columns">
-  <div class="column">
-    <div class="level-item has-text-centered">
-      <div class="card" style="width: 30rem;">
+  <!-- Left side -->
+  <div class="level-left">
+    <aside class="menu">
+      <p class="menu-label">
+        Splošno
+      </p>
+      <ul class="menu-list">
+        <li><a href="/" class="is-active">Cenik</a></li>
+        <li><a href="/usluzbenci">Usluzbenci</a></li>
+      </ul>
+      <p class="menu-label">
+        Za stranke
+      </p>
+      <ul class="menu-list">
+        <li><a href="/termin">Nov termin</a></li>
+        <li><a href="/usluzbenci">Oceni usluzbenca</a></li>
+      </ul>
+      <p class="menu-label">
+        Za usluzbence
+      </p>
+      <ul class="menu-list">
+        <li><a href="/urnik">Urnik</a></li>
+        <li><a href="/stranke">Stranke in njihovi podatki</a></li>
+        <li><a>Poslovanje in dobiček</a></li>
+      </ul>
+    </aside>
+  </div>
+
+  <!-- Right side -->
+  <div class="level-right">
         <div class="card-body">
           <div>
             <p class="card-title"><strong>CENIK STORITEV</strong></p>
@@ -33,9 +59,10 @@
             </table>
           </p>
         </div>
-      </div>
     </div>
-  </div>
+  </nav>
+
+<a class="button is-link is-large" href="/termin">NOV TERMIN</a>
 
   <div class="column">
     <div class="card" style="width: 18rem;">
