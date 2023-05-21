@@ -288,15 +288,28 @@ def vpis_termina_post(id_usluzbenec, id_storitev):
 @get('/prikazi_termin/<id_stranka:int>')
 def prikazi_termin(id_stranka):
     cur.execute("""
-      SELECT t.id_termin, s.id_stranka, s.ime_priimek, t.datum, t.ime_storitve, t.ime_priimek_usluzbenca, st.trajanje, st.cena, i.popust
+      WITH kcena AS (SELECT ime_priimek, cena * popust) koncna_cena
+      FROM Termin1
+
+      SELECT t.id_termin, s.id_stranka, s.ime_priimek, t.datum, t.ime_storitve, t.ime_priimek_usluzbenca, st.trajanje, st.cena, i.popust, k.koncna_cena
       FROM Termin1 t
       LEFT JOIN Stranka s ON s.ime_priimek = t.ime_priimek_stranke
       LEFT JOIN Storitev st ON st.ime_storitve = t.ime_storitve
       LEFT JOIN Influencer i ON i.koda = t.koda
-      WHERE id_stranka = %s""", (id_stranka))
+      LEFT JOIN kcena k ON k.ime_priimek = t.ime_priimek_stranke
+      WHERE id_stranka = %s;""", (id_stranka))
 
     return template('termin_prikazi.html', id_stranka = id_stranka, termin=cur)
 
+
+### URNIK
+@get('/urnik')
+def urnik():
+    cur.execute("""
+        SELECT id_termin, ime_priimek_stranke, datum, ime_storitve, ime_priimek_usluzbenca
+         FROM Termin1;
+      """)
+    return bottle.template('urnik.html', urnik=cur)
 
 
 
