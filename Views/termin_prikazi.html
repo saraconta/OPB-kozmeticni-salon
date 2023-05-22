@@ -24,7 +24,7 @@
     </ul>
 </div>
 
-%for id_termin, id_stranka, ime_priimek, datum, ime_storitve, ime_priimek_usluzbenca, trajanje, cena, popust in termin
+%for id_termin, id_stranka, ime_priimek, datum, ime_storitve, ime_priimek_usluzbenca, trajanje, cena, popust, koncna_cena in termin
 <div class="card">
     <header class="card-header">
       <p class="card-header-title">
@@ -37,9 +37,9 @@
             <p><strong>Datum:</strong> <br>
                 <time datetime="2016-1-1">{{datum}}</time> 
             </p>
-            <p><strong>Strotitev:</strong> {{ime_storitve}} </p>
+            <p><strong>Stroitev:</strong> {{ime_storitve}} </p>
             <p><strong>Usluzbenec:</strong> {{ime_priimek_usluzbenca}} </p>
-            <p><strong>Cena:</strong> {{cena}} * {{popust}} </p>
+            <p><strong>Cena:</strong>{{koncna_cena}}</p>
       </div>
     </div>
     <footer class="card-footer">

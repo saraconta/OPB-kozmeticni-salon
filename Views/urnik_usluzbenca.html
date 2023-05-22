@@ -1,16 +1,16 @@
+
+% rebase('poskusna_osnova.html')
+
 <table class="table table-striped">
     <tr>
-        <th>Id</th>
-        <th>Datum</th>
+        <th>Datum in ura</th>
         <th>Storitev</th>
         <th>Stranka</th>
     </tr>
 
-    %for id_termin, ime_priimek_stranke, datum, ime_storitve, ime_priimek_usluzbenca in urnik:
+    %for ime_priimek_stranke, datum, ime_storitve in urnik:
         <tr>
-            <td>{{id_termin}}</td>
             <td>{{datum}}</td>
-            <td>{{ime_priimek_usluzbenca}}</td>
             <td>{{ime_storitve}}</td>
             <td>{{ime_priimek_stranke}}</td>
         </tr>

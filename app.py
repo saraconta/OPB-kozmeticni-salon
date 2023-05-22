@@ -278,47 +278,74 @@ def vpis_termina_post(id_usluzbenec, id_storitev):
     #cur = baza.cursor
     cur.execute("""
       INSERT INTO Termin1 (ime_priimek_stranke, datum, ime_storitve, ime_priimek_usluzbenca, koda)
-      VALUES (%s, %s, %s, %s, %s) RETURNING id_termin; 
+      VALUES (%s, %s, %s, %s, %s) RETURNING id_termin;
       """, (ime_priimek_stranke, datum_ura, ime_storitve, ime_priimek_usluzbenca, koda)
       )
     conn.commit()
-    redirect(url('/prikazi_termin/<id_stranka:int>'))
+    redirect(url('/prikazi_termin/<id_stranka:int>')) #kako bi pridobili ta id_stranka??
 
-# to mi sploh ne dela, nevem kaj ne štima
+
+#sem spremenila select, zdaj bi moglo pravilno use pokazat in izračunat končno ceno, samo za ta
+#id_stranka neki teži, najbrž ker v zgornjem post ne zna pridobiti id_stranka
 @get('/prikazi_termin/<id_stranka:int>')
 def prikazi_termin(id_stranka):
     cur.execute("""
-      WITH kcena AS (SELECT ime_priimek, cena * popust) koncna_cena
-      FROM Termin1
-
-      SELECT t.id_termin, s.id_stranka, s.ime_priimek, t.datum, t.ime_storitve, t.ime_priimek_usluzbenca, st.trajanje, st.cena, i.popust, k.koncna_cena
+      SELECT t.id_termin, s.id_stranka, s.ime_priimek, t.datum, t.ime_storitve, t.ime_priimek_usluzbenca, st.trajanje, st.cena, i.popust,
+      CASE 
+          WHEN i.popust IS NULL THEN cena
+          ELSE(1-i.popust) * st.cena 
+      END AS koncna_cena
       FROM Termin1 t
       LEFT JOIN Stranka s ON s.ime_priimek = t.ime_priimek_stranke
       LEFT JOIN Storitev st ON st.ime_storitve = t.ime_storitve
       LEFT JOIN Influencer i ON i.koda = t.koda
-      LEFT JOIN kcena k ON k.ime_priimek = t.ime_priimek_stranke
-      WHERE id_stranka = %s;""", (id_stranka))
+      WHERE s.id_stranka = %s;""", [id_stranka])
 
-    return template('termin_prikazi.html', id_stranka = id_stranka, termin=cur)
+    return template('termin_prikazi.html', id_stranka=id_stranka, termin=cur)
 
 
 ### URNIK
 @get('/urnik')
 def urnik():
     cur.execute("""
-      SELECT u.* FROM usluzbenec u;
+      SELECT u.* FROM usluzbenec u
+      ORDER BY ime_priimek;
       """)
     return bottle.template('urnik.html', usluzbenci=cur)
 
 @get('/urnik/<id_usluzbenec:int>')
 def prikazi_urnik(id_usluzbenec):
     cur.execute("""
-        SELECT id_termin, ime_priimek_stranke, datum, ime_storitve, ime_priimek_usluzbenca, u.id_usluzbenec
+        SELECT ime_priimek_stranke, datum, ime_storitve
         FROM Termin1 t
-        LEFT JOIN Usluzbenec u ON u.ime_priimek = t.ime_priimek_usluzbenca 
-        WHERE id_usluzbenec = %s; """, (id_usluzbenec))
+        JOIN Usluzbenec u ON u.ime_priimek = t.ime_priimek_usluzbenca 
+        WHERE id_usluzbenec = %s
+        AND datum >= CURRENT_TIMESTAMP; """, [id_usluzbenec])
     
-    return template('urnik_usluzbenca.html', id_usluzbenec = id_usluzbenec, urnik=cur)
+    return template('urnik_usluzbenca.html', id_usluzbenec=id_usluzbenec, urnik=cur)
+
+#POSLOVANJE
+@get('/poslovanje')
+def poslovanje():
+    cur.execute("""
+        with a as 
+          (SELECT t.id_termin, s.id_stranka, s.ime_priimek, t.datum, t.ime_storitve, t.ime_priimek_usluzbenca, st.trajanje, st.cena, i.popust,
+              CASE WHEN i.popust IS NULL THEN cena
+                  ELSE(1-i.popust) * st.cena 
+              END AS koncna_cena, st.stroski, DATE_PART('month', datum) mesec, DATE_PART('year', datum) leto
+          FROM Termin1 t
+          LEFT JOIN Stranka s ON s.ime_priimek = t.ime_priimek_stranke
+          LEFT JOIN Storitev st ON st.ime_storitve = t.ime_storitve
+          LEFT JOIN Influencer i ON i.koda = t.koda),
+        b as 
+          (SELECT DISTINCT leto, mesec, sum(koncna_cena) OVER(PARTITION BY leto, mesec) prihodki, 
+          sum(stroski) OVER(PARTITION BY leto, mesec) odhodki
+          FROM a)
+        SELECT leto, mesec, prihodki, odhodki, prihodki - odhodki dobicek
+        FROM b
+        ORDER BY leto, mesec ASC;
+    """)
+    return bottle.template('poslovanje.html', poslovanje=cur)
 
 
 
