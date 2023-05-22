@@ -320,7 +320,8 @@ def prikazi_urnik(id_usluzbenec):
         FROM Termin1 t
         JOIN Usluzbenec u ON u.ime_priimek = t.ime_priimek_usluzbenca 
         WHERE id_usluzbenec = %s
-        AND datum >= CURRENT_TIMESTAMP; """, [id_usluzbenec])
+        AND datum >= CURRENT_TIMESTAMP
+        ORDER BY datum ASC; """, [id_usluzbenec])
     
     return template('urnik_usluzbenca.html', id_usluzbenec=id_usluzbenec, urnik=cur)
 
