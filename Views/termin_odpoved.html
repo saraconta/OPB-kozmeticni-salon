@@ -1,0 +1,13 @@
+%rebase('poskusna_osnova.html')
+
+<p>Ali ste prepričani, da želite odpovedati ta termin?</p>
+
+<form method="POST" action="/odpoved_termina/{{id_termin}}"></form>
+<div class="field is-grouped">
+    <div class="control">
+        <button class="button is-link">DA</button>
+    </div>
+    <div class="control">
+        <a class="button is-link is-light" href="/">NE</a>
+    </div>
+</div>

@@ -303,6 +303,17 @@ def prikazi_termin(id_stranka):
 
     return template('termin_prikazi.html', id_stranka=id_stranka, termin=cur)
 
+# to je treba se napisat
+@get('odpoved_termina/<id_termin:int>')
+def odpoved_termina(id_termin):
+    pass
+    return template('termin_odpoved.html', id_termin=id_termin)
+
+@post('odpoved_termina/<id_termin:int>')
+def odpoved_termina_post(id_termin):
+    pass
+    return template('termin_odpoved.html', id_termin=id_termin)
+
 
 ### URNIK
 @get('/urnik')
