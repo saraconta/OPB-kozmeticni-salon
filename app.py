@@ -11,7 +11,7 @@ from Data.model import *
 from Database import Repo
 
 # from Data.services import AuthService
-# from functools import wraps
+from functools import wraps
 
 import os
 import bottle
@@ -41,26 +41,91 @@ cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 repo = Repo()
 
 
-# auth = AuthService(repo)
+auth = AuthService(repo)
 
-# def cookie_required(f):
-#     """
-#     Dekorator, ki zahteva veljaven piškotek. Če piškotka ni, uporabnika preusmeri na stran za prijavo.
-#     """
-#     @wraps(f)
-#     def decorated( *args, **kwargs):
-
-
-#         cookie = request.get_cookie("uporabnik")
-#         if cookie:
-#             return f(*args, **kwargs)
-
-#         return template("prijava.html", napaka="Potrebna je prijava!")
+def cookie_required(f):
+    """
+    Dekorator, ki zahteva veljaven piškotek. Če piškotka ni, uporabnika preusmeri na stran za prijavo.
+    """
+    @wraps(f)
+    def decorated( *args, **kwargs):
 
 
+        cookie = request.get_cookie("uporabnik")
+        if cookie:
+            return f(*args, **kwargs)
+
+        return template("prijava.html", napaka="Potrebna je prijava!")
 
 
-#     return decorated
+
+
+    return decorated
+  
+@get('/odjava')
+def odjava():
+    """
+    Odjavi uporabnika iz aplikacije. Pobriše piškotke o uporabniku in njegovi roli.
+    """
+    
+    response.delete_cookie("uporabnik")
+    response.delete_cookie("rola")
+    
+    return template('zacetna_stran.html', napaka=None)
+  
+@get('/usluzbenec/prijava') 
+def prijava_usluzbenec_get():
+    return template("usluzbenec_prijava.html")
+
+#manjka post za prijavo usluzbenca
+# @post('/usluzbenec/prijava') 
+# def prijava_usluzbenec_post():
+#     uporabnisko_ime = request.forms.get('uporabnisko_ime')
+#     geslo = request.forms.get('geslo')
+#     if uporabnisko_ime is None or geslo is None:
+#         redirect(url('prijava_usluzbenec_get'))
+#     hashBaza = None
+#     try: 
+#         cur.execute("SELECT geslo FROM usluzbenec WHERE uporabnisko_ime = %s", [uporabnisko_ime])
+#         hashBaza = cur.fetchall()[0][0]
+#     except:
+#         hashBaza = None
+#     if hashBaza is None:
+#         redirect(url('prijava_usluzbenec_get'))
+#         return
+#     if geslo != hashBaza:
+#       #  nastaviSporocilo('Nekaj je šlo narobe.') 
+#         redirect(url('prijava_usluzbenec_get'))
+#         return
+#     response.set_cookie("uporabnisko_ime", uporabnisko_ime,  path = "/") #secret = "secret_value",, httponly = True)
+#     response.set_cookie("rola", "usluzbenec",  path = "/")
+  
+@get('/stranka/prijava') 
+def prijava_stranka_get():
+    return template("stranka_prijava.html")
+  
+#manjka post za prijavo stranke
+# @post('/stranka/prijava') 
+# def prijava_stranka_post():
+#     uporabnisko_ime = request.forms.get('uporabnisko_ime')
+#     geslo = request.forms.get('geslo')
+#     if uporabnisko_ime is None or geslo is None:
+#         redirect(url('prijava_usluzbenec_get'))
+#     hashBaza = None
+#     try: 
+#         cur.execute("SELECT geslo FROM stranka WHERE uporabnisko_ime = %s", [uporabnisko_ime])
+#         hashBaza = cur.fetchall()[0][0]
+#     except:
+#         hashBaza = None
+#     if hashBaza is None:
+#         redirect(url('prijava_stranka_get'))
+#         return
+#     if geslo != hashBaza:
+#       #  nastaviSporocilo('Nekaj je šlo narobe.') 
+#         redirect(url('prijava_stranka_get'))
+#         return
+#     response.set_cookie("uporabnisko_ime", uporabnisko_ime,  path = "/") #secret = "secret_value",, httponly = True)
+#     response.set_cookie("rola", "stranka",  path = "/")
 
 
 #@get('/static/<filename:path>')

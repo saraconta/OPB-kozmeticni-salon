@@ -1,6 +1,6 @@
-from Data.Database import Repo
-from Data.Modeli import *
-from Data.Services import AuthService
+from Database import Repo
+from Data.model import *
+from Data.services import AuthService
 from typing import Dict
 from re import sub
 import dataclasses
@@ -12,7 +12,7 @@ auth = AuthService(repo)
 
 
 
-@@ -106,6 +108,13 @@ def uvozi_csv(pot, ime):
+# @@ -106,6 +108,13 @@ def uvozi_csv(pot, ime):
 
 # uvozi_csv(pot, "NovaTabela")
 
