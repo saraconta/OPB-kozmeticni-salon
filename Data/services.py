@@ -1,6 +1,6 @@
 
-from Data.Database import Repo
-from Data.Modeli import *
+from Database import Repo
+from Data.model import *
 from typing import Dict
 from re import sub
 import dataclasses
