@@ -256,7 +256,32 @@ def termin_datum(id_usluzbenec, id_storitev):
     vrstica=cur.fetchone()
     return template('termin.html', id_storitev = id_storitev, id_usluzbenec = id_usluzbenec, 
       ime_priimek_usluzbenca=vrstica[0], ime_storitve=vrstica[1],
-      ime_priimek_stranke='', datum='', koda='', napaka=None)
+      ime_priimek_stranke='', datum='', napaka=None)
+#, koda='', napaka=None)
+
+@get('/termin/<id_storitev:int>/<id_usluzbenec:int>/<datum:date>')
+def termin_ura(id_usluzbenec, id_storitev, datum):
+    cur.execute("""
+      select 
+      t.datum::time zacetek,  t.datum::time + (s.trajanje * interval '1 Minute' ) konec
+      from termin1 t
+      left join usluzbenec u on t.ime_priimek_usluzbenca = u.ime_priimek
+      left join storitev s on t.ime_storitve = s.ime_storitve
+      where id_usluzbenec  = %s
+      and t.datum::date = %s""", [id_usluzbenec, datum] )
+    zasedene_ure = cur.fetchall()
+    mozni_termini = []
+    for i in range(8, 16):
+        mozni_termini.append((f"{i}::00", f"{i+1}::00", False))
+
+    prosti_termini = []
+    for z, k, zs in mozni_termini:
+        for z1 in zasedene_ure:
+            if z1 == datetime.strptime(z, '%H::%M').time():
+                zs = True
+            if zs == False:
+                prosti_termini.append(z)
+#spustni seznam kjer izbere zacetek, ki je še na voljo tisti datum in za tistega uslužbenca, in še napiše kodo za popust
 
 @post('/termin/<id_storitev:int>/<id_usluzbenec:int>')
 def vpis_termina_post(id_usluzbenec, id_storitev):
