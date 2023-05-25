@@ -191,7 +191,8 @@ def usluzbenci():
 @get('/dodaj_usluzbenca')
 #@cookie_required
 def dodaj_usluzbenca_get():
-    return bottle.template('dodaj_usluzbenca.html', ime_priimek='', storitev='', napake=None)
+    cur.execute("""select ime_storitve, trajanje from storitev;""")
+    return bottle.template('dodaj_usluzbenca.html', ime_priimek='', storitev=cur, napake=None)
 
 @post('/dodaj_usluzbenca')
 def dodaj_usluzbenca_post():
