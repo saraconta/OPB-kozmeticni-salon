@@ -1,26 +1,36 @@
 %rebase('poskusna_osnova.html')
 
     <a class="button" href="/dodaj_usluzbenca">
-        Dodaj novega usluzbenca
+        Dodaj novega uslužbenca
     </a>
 
     <table class="table table-striped">
         <thead>
             <tr>
-                <th>Id usluzbenca</th>
                 <th>Ime in priimek</th>
+                <th>Storitve, ki jih ponujajo</th>
                 <th>Povprečna ocena</th>
                 <th>Dodaj oceno</th>
+                <th>Dodaj storitev</th>
              </tr>
         </thead>
      
       %for id_usluzbenec, ime_priimek, povprecna_ocena in usluzbenci:
         <tr>
-           <td>{{id_usluzbenec}}</td>
            <td>{{ime_priimek}}</td> 
+           <td>
+            <a href="/storitve/{{id_usluzbenec}}" class="button is-primary is-light">
+              Poglej
+            </a>
+           </td>
            <td>{{povprecna_ocena}}</td> 
            <td>
             <a href="/dodaj_oceno/{{id_usluzbenec}}" class="button is-primary is-light">
+              +
+            </a>
+           </td>
+           <td>
+            <a href="/dodaj_storitev/{{id_usluzbenec}}" class="button is-primary is-light">
               +
             </a>
            </td>

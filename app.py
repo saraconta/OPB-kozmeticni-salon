@@ -41,43 +41,43 @@ cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 repo = Repo()
 
 
-auth = AuthService(repo)
+#auth = AuthService(repo)
 
-def cookie_required(f):
-    """
-    Dekorator, ki zahteva veljaven piškotek. Če piškotka ni, uporabnika preusmeri na stran za prijavo.
-    """
-    @wraps(f)
-    def decorated( *args, **kwargs):
-
-
-        cookie = request.get_cookie("uporabnik")
-        if cookie:
-            return f(*args, **kwargs)
-
-        return template("prijava.html", napaka="Potrebna je prijava!")
-
-
-
-
-    return decorated
-  
-@get('/odjava')
-def odjava():
-    """
-    Odjavi uporabnika iz aplikacije. Pobriše piškotke o uporabniku in njegovi roli.
-    """
-    
-    response.delete_cookie("uporabnik")
-    response.delete_cookie("rola")
-    
-    return template('zacetna_stran.html', napaka=None)
-  
-@get('/usluzbenec/prijava') 
-def prijava_usluzbenec_get():
-    return template("usluzbenec_prijava.html")
-
-#manjka post za prijavo usluzbenca
+#def cookie_required(f):
+#    """
+#    Dekorator, ki zahteva veljaven piškotek. Če piškotka ni, uporabnika preusmeri na stran za prijavo.
+#    """
+#    @wraps(f)
+#    def decorated( *args, **kwargs):
+#
+#
+#        cookie = request.get_cookie("uporabnik")
+#        if cookie:
+#            return f(*args, **kwargs)
+#
+#        return template("prijava.html", napaka="Potrebna je prijava!")
+#
+#
+#
+#
+#    return decorated
+#  
+#@get('/odjava')
+#def odjava():
+#    """
+#    Odjavi uporabnika iz aplikacije. Pobriše piškotke o uporabniku in njegovi roli.
+#    """
+#    
+#    response.delete_cookie("uporabnik")
+#    response.delete_cookie("rola")
+#    
+#    return template('zacetna_stran.html', napaka=None)
+#  
+#@get('/usluzbenec/prijava') 
+#def prijava_usluzbenec_get():
+#    return template("usluzbenec_prijava.html")
+#
+##manjka post za prijavo usluzbenca
 # @post('/usluzbenec/prijava') 
 # def prijava_usluzbenec_post():
 #     uporabnisko_ime = request.forms.get('uporabnisko_ime')
@@ -100,10 +100,10 @@ def prijava_usluzbenec_get():
 #     response.set_cookie("uporabnisko_ime", uporabnisko_ime,  path = "/") #secret = "secret_value",, httponly = True)
 #     response.set_cookie("rola", "usluzbenec",  path = "/")
   
-@get('/stranka/prijava') 
-def prijava_stranka_get():
-    return template("stranka_prijava.html")
-  
+#@get('/stranka/prijava') 
+#def prijava_stranka_get():
+#    return template("stranka_prijava.html")
+#  
 #manjka post za prijavo stranke
 # @post('/stranka/prijava') 
 # def prijava_stranka_post():
@@ -159,13 +159,19 @@ def dodaj_stranko_post():
   ime_priimek = request.forms.ime_priimek
   telefon = request.forms.telefon
   mail = request.forms.mail
-  cur.execute("""
+  try:
+      cur.execute("""
       INSERT INTO Stranka (ime_priimek, telefon, mail)
       VALUES (%s, %s, %s) RETURNING id_stranka; 
     """, (ime_priimek, telefon, mail)
     )
-  conn.commit()
+      conn.commit()
+  except Exception as ex:
+      conn.rollback()
+      return template('dodaj_stranko.html', ime_priimek=ime_priimek, telefon=telefon,mail = mail,
+                    napaka='Zgodila se je napaka: (%s, %s, %s)' % ex)
   redirect(url('/'))
+  
 
 ### USLUŽBENCI
 @get('/usluzbenci')
@@ -176,7 +182,8 @@ def usluzbenci():
           GROUP BY ime_priimek) 
         SELECT u.*, p.povprecna_ocena
         FROM usluzbenec u
-        LEFT JOIN povpr p ON p.ime_priimek = u.ime_priimek;
+        LEFT JOIN povpr p ON p.ime_priimek = u.ime_priimek
+        order by u.ime_priimek asc;
       """)
     return bottle.template('usluzbenci.html', usluzbenci=cur)
 
@@ -190,25 +197,23 @@ def dodaj_usluzbenca_get():
 def dodaj_usluzbenca_post():
   ime_priimek = request.forms.ime_priimek
   storitev = request.forms.storitev
-#  try:
-  cur.execute("""
-      with ins1 as(
-      INSERT INTO Usluzbenec (ime_priimek) VALUES (%s) RETURNING id_usluzbenec
-      )
-      INSERT INTO Usluzb_storitve (id_usluzbenec, ime_storitve)
-      SELECT id_usluzbenec, %s FROM ins1;
+  try:
+      cur.execute("""
+          with ins1 as(
+          INSERT INTO Usluzbenec (ime_priimek) VALUES (%s) RETURNING id_usluzbenec
+          )
+          INSERT INTO Usluzb_storitve (id_usluzbenec, ime_storitve)
+          SELECT id_usluzbenec, %s FROM ins1;
 
-    """, (ime_priimek, storitev)
-    )
-  conn.commit()
-
+        """, (ime_priimek, storitev)
+        )
+      conn.commit()
+  except Exception as ex:
+      conn.rollback()
+      return template('dodaj_usluzbenca.html', ime_priimek=ime_priimek, storitev=storitev,
+                    napaka='Zgodila se je napaka: %s' % ex)
   redirect(url('/'))
-#  except Exception as ex:
-#    conn.rollback()
-#    return template('dodaj_usluzbenca.html', ime_priimek=ime_priimek, ime_storitve=ime_storitve,
-#      napaka='Zgodila se je napaka: %s' % ex)
-#  redirect(url('index'))
-#mogli bi še preverit: ali je storitev na ceniku ter ali ta usluzbenec že obstaja
+
 
 
 ### OCENE
@@ -236,45 +241,47 @@ def dodaj_oceno_post(id_usluzbenec):
     """, (ime_priimek, ocena)
         )
     conn.commit()
-    redirect(url('/'))
+    redirect(url('/usluzbenci'))
+
+@get('/storitve/<id_usluzbenec:int>')
+def storitve(id_usluzbenec):
+    cur.execute("""SELECT us.ime_storitve ime1, 1 ime2
+                  FROM Usluzb_storitve us
+                  WHERE us.id_usluzbenec = %s""", [id_usluzbenec])
+    return template('storitve.html', id_usluzbenec = id_usluzbenec, storitve=cur, napaka=None)
 
 
 ### STORITVE
-@get('/dodaj_storitev')
+@get('/dodaj_storitev/<id_usluzbenec:int>')
 #@cookie_required
-def dodaj_storitev():  
-    cur.execute("""
-
-      SELECT ime_priimek from Usluzbenec
-      order by ime_priimek
-
-   """)
+def dodaj_storitev(id_usluzbenec): 
+    cur.execute("""SELECT  
+                    u.ime_priimek
+                    FROM Usluzbenec u
+                    WHERE u.id_usluzbenec = %s;""",
+                    [id_usluzbenec])
+    
     
 
-    return template('dodaj_storitev.html', ime_priimek='', storitev='', usluzbenec1 = cur, napaka=None)
+    return template('dodaj_storitev.html', id_usluzbenec = id_usluzbenec,
+                    ime_priimek=cur.fetchone()[0], storitev='',
+                    napaka=None)
 
 
-@post('/dodaj_storitev')
-def dodaj_storitev_post():
-    ime_priimek = request.forms.ime_priimek
-    storitev = request.forms.storitev
+@post('/dodaj_storitev/<id_usluzbenec:int>')
+def dodaj_storitev_post(id_usluzbenec):
+  storitev = request.forms.storitev
+  #storitev = request.forms.get('storitev')
+  cur.execute("""
 
-    try:
-      cur.execute("""
-      with view1 as(
-      SELECT id_usluzbenec FROM Usluzbenec WHERE ime_priimek = %s
-      )
-      INSERT INTO Usluzb_storitve (id_usluzbenec, ime_storitve)
-      SELECT id_usluzbenec, %s FROM view1;
+        INSERT INTO Usluzb_storitve (id_usluzbenec, ime_storitve) VALUES (%s, %s);
 
-    """, (ime_priimek, storitev)
-    )
-      conn.commit()
-    except Exception as ex:
-        conn.rollback()
-        return template('dodaj_storitev.html', ime_priimek=ime_priimek, storitev=storitev,
-                        napaka='Zgodila se je napaka: %s' % ex)
-    redirect(url('/'))
+        """, (id_usluzbenec, storitev)
+  )
+  conn.commit()
+  redirect(url('/usluzbenci'))
+
+
 
 
 @get('/storitev_usluzbenci_get/<id_storitev:int>')
@@ -324,29 +331,29 @@ def termin_datum(id_usluzbenec, id_storitev):
       ime_priimek_stranke='', datum='', napaka=None)
 #, koda='', napaka=None)
 
-@get('/termin/<id_storitev:int>/<id_usluzbenec:int>/<datum:date>')
-def termin_ura(id_usluzbenec, id_storitev, datum):
-    cur.execute("""
-      select 
-      t.datum::time zacetek,  t.datum::time + (s.trajanje * interval '1 Minute' ) konec
-      from termin1 t
-      left join usluzbenec u on t.ime_priimek_usluzbenca = u.ime_priimek
-      left join storitev s on t.ime_storitve = s.ime_storitve
-      where id_usluzbenec  = %s
-      and t.datum::date = %s""", [id_usluzbenec, datum] )
-    zasedene_ure = cur.fetchall()
-    mozni_termini = []
-    for i in range(8, 16):
-        mozni_termini.append((f"{i}::00", f"{i+1}::00", False))
-
-    prosti_termini = []
-    for z, k, zs in mozni_termini:
-        for z1 in zasedene_ure:
-            if z1 == datetime.strptime(z, '%H::%M').time():
-                zs = True
-            if zs == False:
-                prosti_termini.append(z)
-#spustni seznam kjer izbere zacetek, ki je še na voljo tisti datum in za tistega uslužbenca, in še napiše kodo za popust
+#@get('/termin/<id_storitev:int>/<id_usluzbenec:int>/<datum:date>')
+#def termin_ura(id_usluzbenec, id_storitev, datum):
+#    cur.execute("""
+#      select 
+#      t.datum::time zacetek,  t.datum::time + (s.trajanje * interval '1 Minute' ) konec
+#      from termin1 t
+#      left join usluzbenec u on t.ime_priimek_usluzbenca = u.ime_priimek
+#      left join storitev s on t.ime_storitve = s.ime_storitve
+#      where id_usluzbenec  = %s
+#      and t.datum::date = %s""", [id_usluzbenec, datum] )
+#    zasedene_ure = cur.fetchall()
+#    mozni_termini = []
+#    for i in range(8, 16):
+#        mozni_termini.append((f"{i}::00", f"{i+1}::00", False))
+#
+#    prosti_termini = []
+#    for z, k, zs in mozni_termini:
+#        for z1 in zasedene_ure:
+#            if z1 == datetime.strptime(z, '%H::%M').time():
+#                zs = True
+#            if zs == False:
+#                prosti_termini.append(z)
+##spustni seznam kjer izbere zacetek, ki je še na voljo tisti datum in za tistega uslužbenca, in še napiše kodo za popust
 
 @post('/termin/<id_storitev:int>/<id_usluzbenec:int>')
 def vpis_termina_post(id_usluzbenec, id_storitev):
