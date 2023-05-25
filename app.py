@@ -191,8 +191,7 @@ def usluzbenci():
 @get('/dodaj_usluzbenca')
 #@cookie_required
 def dodaj_usluzbenca_get():
-    cur.execute("""select ime_storitve, trajanje from storitev;""")
-    return bottle.template('dodaj_usluzbenca.html', ime_priimek='', storitev=cur, napake=None)
+    return bottle.template('dodaj_usluzbenca.html', ime_priimek='', storitev='', napake=None)
 
 @post('/dodaj_usluzbenca')
 def dodaj_usluzbenca_post():
@@ -213,7 +212,7 @@ def dodaj_usluzbenca_post():
       conn.rollback()
       return template('dodaj_usluzbenca.html', ime_priimek=ime_priimek, storitev=storitev,
                     napaka='Zgodila se je napaka: %s' % ex)
-  redirect(url('/'))
+  redirect(url('/uluzbenci'))
 
 
 
@@ -261,7 +260,10 @@ def dodaj_storitev(id_usluzbenec):
                     FROM Usluzbenec u
                     WHERE u.id_usluzbenec = %s;""",
                     [id_usluzbenec])
-    
+
+
+
+
     
 
     return template('dodaj_storitev.html', id_usluzbenec = id_usluzbenec,
