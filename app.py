@@ -171,6 +171,13 @@ def dodaj_stranko_post():
       return template('dodaj_stranko.html', ime_priimek=ime_priimek, telefon=telefon,mail = mail,
                     napaka='Zgodila se je napaka: (%s, %s, %s)' % ex)
   redirect(url('/'))
+
+@get('/prijava_stranka')
+#@cookie_required
+def prijava_stranka():
+    return template('prijava_stranka.html', uporabnisko_ime='', geslo='', napake=None)
+
+#manjka post poizvedba, pride ko bodo urejene prijave
   
 
 ### USLUŽBENCI
@@ -214,6 +221,12 @@ def dodaj_usluzbenca_post():
                     napaka='Zgodila se je napaka: %s' % ex)
   redirect(url('/uluzbenci'))
 
+@get('/prijava_usluzbenec')
+#@cookie_required
+def prijava_usluzbenec():
+    return template('prijava_usluzbenec.html', uporabnisko_ime='', geslo='', napake=None)
+
+#manjka post poizvedba, pride ko bodo urejene prijave
 
 
 ### OCENE
