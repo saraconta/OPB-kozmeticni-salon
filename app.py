@@ -172,36 +172,6 @@ def dodaj_stranko_post():
                     napaka='Zgodila se je napaka: (%s, %s, %s)' % ex)
   redirect(url('/'))
 
-@get('/pregled_terminov')
-def pregled_terminov():
-    cur.execute("""
-      SELECT id_stranka, ime_priimek from Stranka 
-      order by ime_priimek
-    """)
-    return bottle.template('pregled_terminov.html', stranke=cur)
-
-
-@get('/pregled_termina/<id_stranka:int>')
-#@cookie_required
-def pregled_termina(id_stranka): 
-    cur.execute("""SELECT id_termin, datum, ime_storitve
-                    FROM termin1
-                    LEFT JOIN stranka
-                    ON termin1.ime_priimek_stranke = stranka.ime_priimek
-                    WHERE id_stranka = %s
-                    ;""",
-                    [id_stranka])
-    return template('pregled_termina.html',
-                    tabela=cur,
-                    napaka=None)
-
-@post('/izbrisi_termin')
-def pobrisi_termin():
-    id_termin = request.forms.id_termin
-    cur.execute("""DELETE FROM termin1 WHERE id_termin = %s""", [id_termin])
-    conn.commit()
-    redirect(url('/pregled_terminov'))
-
 @get('/prijava_stranka')
 #@cookie_required
 def prijava_stranka():
@@ -492,16 +462,36 @@ def prikazi_termin(id_stranka):
 
     return template('termin_prikazi.html', id_stranka=id_stranka, termin=cur)
 
-# to je treba se napisat
-@get('odpoved_termina/<id_termin:int>')
-def odpoved_termina(id_termin):
-    pass
-    return template('termin_odpoved.html', id_termin=id_termin)
+@get('/pregled_terminov')
+def pregled_terminov():
+    cur.execute("""
+      SELECT id_stranka, ime_priimek from Stranka 
+      order by ime_priimek
+    """)
+    return bottle.template('pregled_terminov.html', stranke=cur)
 
-@post('odpoved_termina/<id_termin:int>')
-def odpoved_termina_post(id_termin):
-    pass
-    return template('termin_odpoved.html', id_termin=id_termin)
+
+@get('/pregled_termina/<id_stranka:int>')
+#@cookie_required
+def pregled_termina(id_stranka): 
+    cur.execute("""SELECT id_termin, datum, ime_storitve
+                    FROM termin1
+                    LEFT JOIN stranka
+                    ON termin1.ime_priimek_stranke = stranka.ime_priimek
+                    WHERE id_stranka = %s
+                    ;""",
+                    [id_stranka])
+    return template('pregled_termina.html',
+                    tabela=cur,
+                    napaka=None)
+
+@post('/izbrisi_termin')
+def pobrisi_termin():
+    id_termin = request.forms.id_termin
+    cur.execute("""DELETE FROM termin1 WHERE id_termin = %s""", [id_termin])
+    conn.commit()
+    redirect(url('/pregled_terminov'))
+
 
 
 ### URNIK
