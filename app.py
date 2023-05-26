@@ -175,7 +175,8 @@ def dodaj_stranko_post():
 @get('/pregled_terminov')
 def pregled_terminov():
     cur.execute("""
-      SELECT id_stranka, ime_priimek from Stranka
+      SELECT id_stranka, ime_priimek from Stranka 
+      order by ime_priimek
     """)
     return bottle.template('pregled_terminov.html', stranke=cur)
 
@@ -187,16 +188,18 @@ def pregled_termina(id_stranka):
                     FROM termin1
                     LEFT JOIN stranka
                     ON termin1.ime_priimek_stranke = stranka.ime_priimek
-                    WHERE id_stranka = %s;""",
+                    WHERE id_stranka = %s
+                    ;""",
                     [id_stranka])
     return template('pregled_termina.html',
-                    ime_priimek_stranke=cur.fetchone()[0], tabela=cur,
+                    tabela=cur,
                     napaka=None)
 
 @post('/izbrisi_termin')
-def izbrisi_termin():
+def pobrisi_termin():
     id_termin = request.forms.id_termin
-    Repo.izbrisi_termin(id_termin)
+    cur.execute("""DELETE FROM termin1 WHERE id_termin = %s""", [id_termin])
+    conn.commit()
     redirect(url('/pregled_terminov'))
 
 @get('/prijava_stranka')
