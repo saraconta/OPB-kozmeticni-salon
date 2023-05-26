@@ -1,0 +1,21 @@
+%rebase('poskusna_osnova.html')
+
+    <table class="table table-striped">
+        <tr>
+        <th>Ime in priimek</th>
+        <th>Termini</th>
+        </tr>
+
+        %for id_stranka, ime_priimek in stranke:
+            <tr>
+                <td>{{ime_priimek}}</td>
+                <td>
+                    <a href="/pregled_termina/{{id_stranka}}" class="button is-primary is-light">
+                        Preglej
+                    </a>
+                </td>
+            </tr>
+        %end
+
+    </table>
+

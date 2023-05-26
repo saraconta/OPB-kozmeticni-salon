@@ -1,0 +1,26 @@
+%rebase('poskusna_osnova.html')
+
+<table class="table table-striped"> 
+    <thead>
+        <tr>
+            <th>Termini</th>
+        </tr>
+        <tr>
+            <th>Datum</th>
+            <th>Storitev</th>
+            <th>Odstrani</th>
+        </tr>
+    </thead>
+
+    %for id_termin, datum, ime_storitve in tabela:
+        <tr>
+            <td>{{datum}}</td>
+            <td>{{ime_storitve}}</td>
+            <td>
+                <form method = "POST" action="/izbrisi_termin">
+                    <button class="button is-primary" type="submit" name="id_termin" value={{id_termin}}>-</button>
+                </form>
+            </td>
+        </tr>
+    %end
+</table>

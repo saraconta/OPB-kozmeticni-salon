@@ -153,7 +153,10 @@ class Repo:
     def povprecna_ocena(self,):
         pass
         
-
+    def izbrisi_termin(self, id_termin):
+        self.cur.execute("""DELETE FROM termin1 WHERE id_termin = %s""", (id_termin))
+        self.conn.commit()
+        return 
 
 
 

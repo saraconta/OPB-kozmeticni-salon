@@ -172,6 +172,33 @@ def dodaj_stranko_post():
                     napaka='Zgodila se je napaka: (%s, %s, %s)' % ex)
   redirect(url('/'))
 
+@get('/pregled_terminov')
+def pregled_terminov():
+    cur.execute("""
+      SELECT id_stranka, ime_priimek from Stranka
+    """)
+    return bottle.template('pregled_terminov.html', stranke=cur)
+
+
+@get('/pregled_termina/<id_stranka:int>')
+#@cookie_required
+def pregled_termina(id_stranka): 
+    cur.execute("""SELECT id_termin, datum, ime_storitve
+                    FROM termin1
+                    LEFT JOIN stranka
+                    ON termin1.ime_priimek_stranke = stranka.ime_priimek
+                    WHERE id_stranka = %s;""",
+                    [id_stranka])
+    return template('pregled_termina.html',
+                    ime_priimek_stranke=cur.fetchone()[0], tabela=cur,
+                    napaka=None)
+
+@post('/izbrisi_termin')
+def izbrisi_termin():
+    id_termin = request.forms.id_termin
+    Repo.izbrisi_termin(id_termin)
+    redirect(url('/pregled_terminov'))
+
 @get('/prijava_stranka')
 #@cookie_required
 def prijava_stranka():
