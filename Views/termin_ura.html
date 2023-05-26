@@ -15,15 +15,13 @@
         </a>
       </li>
 
-
-
-      <li class="is-active">
+      <li>
         <a>
           <span>Datum</span>
         </a>
       </li>
 
-      <li>
+      <li class="is-active">
         <a>
           <span>Ura, ime stranke in koda za popust</span>
         </a>
@@ -32,55 +30,38 @@
     </ul>
   </div>
 
-<label class="label">Izpolnite polja za rezervacijo termina:</label>
-<table class="table is-hoverable is-fullwidth">
-    <thead>
-        <tr>
-            <form method="GET" action="/termin/{{id_storitev}}/{{id_usluzbenec}}/{{datum}}">
-                <td></td>
-                <tr>
-                    <td>
-                        <div class="control has-icons-left">
-                            <label for="ime_storitve">Ime storitve</label>
-                            <input class="input is-small" type="text" 
-                                name="ime_storitve" value="{{ime_storitve}}" disabled name="ime_storitve" placeholder="Storitev" required
-                                oninput="this.setCustomValidity('')"
-                                oninvalid="this.setCustomValidity('Obvezno polje')"
-                            />
-                            <span class="icon is-small is-left">
-                                <i class="far fa-clipboard-check"></i>
-                            </span>
-                        </div>
-                    </td>
-                </tr>
 
-                <tr>
+  <label class="label">Izpolnite polja za rezervacijo termina:</label>
+  <table class="table is-hoverable is-fullwidth">
+      <thead>
+          <tr>
+              <form method="POST" action="/termin/{{id_storitev}}/{{id_usluzbenec}}/{{datum}}">
+                  <td></td>
+                  
+                  <tr>
                     <td>
                         <div class="control has-icons-left">
-                            <label for="ime_priimek_usluzbenca">Ime usluzbenca</label>
-                            <input class="input is-small" type="text" 
-                                name="ime_priimek_usluzbenca" value="{{ime_priimek_usluzbenca}}" disabled name="ime_priimek_usluzbenca" placeholder="Ime uslužbenca" required
-                                oninput="this.setCustomValidity('')"
-                                oninvalid="this.setCustomValidity('Obvezno polje')"
-                            />
-                            <span class="icon is-small is-left">
-                                <i class="far fa-clipboard-check"></i>
-                            </span>
-                        </div>
-                    </td>
-                </tr>
-
-  
-                <tr>
-                    <td>
-                        <div class="control has-icons-left">
-                            <label for="datum">Datum</label>
-                            <input  
-                            class="input is-small" type="date" data-date-format="YYYY-MM-DD"
-                                id="datum" name="datum" placeholder="YYYY-MM-DD" required
-                                oninput="this.setCustomValidity('')"
-                                oninvalid="this.setCustomValidity('Obvezno polje')"
+                            <label for="ura">Ura</label>
+                            <select class="input is-small" type="time" aria-label="Default select example"
+                            id="ura" name="ura" placeholder="hh:mm:ss">
+                                % for z in ura:
+                                <option value={{z}}>{{z}}</option>
+                                %end 
+                
                                 
+                            </select>
+                        </div>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td>
+                        <div class="control has-icons-left">
+                            <label for="ime_priimek_stranke">Ime in priimek</label>
+                            <input class="input is-small" type="text" 
+                                id="ime_priimek_stranke" name="ime_priimek_stranke" placeholder="Ime in priimek stranke" required
+                                oninput="this.setCustomValidity('')"
+                                oninvalid="this.setCustomValidity('Obvezno polje')"
                             />
                             <span class="icon is-small is-left">
                                 <i class="far fa-clipboard-check"></i>
@@ -88,13 +69,26 @@
                         </div>
                     </td>
                 </tr>
-
-
+                
+                <tr>
+                    <td>
+                        <div class="control has-icons-left">
+                            <label for="koda">Koda za popust</label>
+                            <input class="input is-small" type="text" 
+                                id="koda" name="koda" placeholder="Koda za popust" 
+                            />
+                            <span class="icon is-small is-left">
+                                <i class="far fa-clipboard-check"></i>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                
                 <tr>
                     <td>
                         <div class="field is-grouped">
                             <div class="control">
-                                <button class="button is-link">Naprej</button>
+                                <button class="button is-link">Dodaj</button>
                             </div>
                             <div class="control">
                                 <a class="button is-link is-light" href="/">Prekliči</a>
@@ -104,11 +98,14 @@
                 </tr>
                 </form>
                 </tr>
+  
+        </thead>
+    </table>
+        
+    <progress class="progress is-info" value="60" max="100">60%</progress>
 
-                
-                
-    </thead>
-</table>
 
- <progress class="progress is-info" value="60" max="100">60%</progress>
+
+
+   
 

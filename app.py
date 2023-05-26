@@ -361,20 +361,59 @@ def termina_usluzbenec(id_storitev):
 
 @get('/termin/<id_storitev:int>/<id_usluzbenec:int>')
 #@cookie_required
-def termin_datum(id_usluzbenec, id_storitev):
+def termin_stranka(id_usluzbenec, id_storitev):
     cur.execute("""
       SELECT u.ime_priimek, s.ime_storitve, s.trajanje, u.id_usluzbenec, s.id_storitev
       FROM Storitev s
       LEFT JOIN Usluzb_storitve us ON us.ime_storitve = s.ime_storitve
       LEFT JOIN Usluzbenec u ON u.id_usluzbenec = us.id_usluzbenec
-      WHERE (u.id_usluzbenec, s.id_storitev) = (%s, %s)""", (id_usluzbenec, id_storitev))
+      WHERE (u.id_usluzbenec, s.id_storitev) = (%s, %s);""", (id_usluzbenec, id_storitev))
     vrstica=cur.fetchone()
     return template('termin.html', id_storitev = id_storitev, id_usluzbenec = id_usluzbenec, 
       ime_priimek_usluzbenca=vrstica[0], ime_storitve=vrstica[1],
-      ime_priimek_stranke='', datum='', napaka=None)
-#, koda='', napaka=None)
+      datum='', 
+      napaka=None)
+#, , ime_priimek_stranke='', koda='', napaka=None)
 
-#@get('/termin/<id_storitev:int>/<id_usluzbenec:int>/<datum:date>')
+@get('/termin/<id_storitev:int>/<id_usluzbenec:int>/<datum:YYYY-MM-DD>')
+#@cookie_required
+def termin_ura(id_usluzbenec, id_storitev, datum):
+    cur.execute("""
+      select 
+      t.datum::time zacetek,  t.datum::time + (s.trajanje * interval '1 Minute' ) konec
+      from termin1 t
+      left join usluzbenec u on t.ime_priimek_usluzbenca = u.ime_priimek
+      left join storitev s on t.ime_storitve = s.ime_storitve
+      where id_usluzbenec  = %s
+      and t.datum::date = %s""", [id_usluzbenec, datum] )
+    zasedene_ure = cur.fetchall()
+    mozni_termini = []
+    for i in range(8, 16):
+        mozni_termini.append((f"{i}::00", f"{i+1}::00", False))
+
+    prosti_termini = []
+    for z, k, zs in mozni_termini:
+        for z1 in zasedene_ure:
+            if z1 == datetime.strptime(z, '%H::%M').time():
+                zs = True
+            if zs == False:
+                prosti_termini.append(z)
+#def termin_datum(id_usluzbenec, id_storitev, datum):
+    #cur.execute("""
+    #  SELECT u.ime_priimek, s.ime_storitve, s.trajanje, u.id_usluzbenec, s.id_storitev
+    #  FROM Storitev s
+    #  LEFT JOIN Usluzb_storitve us ON us.ime_storitve = s.ime_storitve
+    #  LEFT JOIN Usluzbenec u ON u.id_usluzbenec = us.id_usluzbenec
+    #  WHERE (u.id_usluzbenec, s.id_storitev) = (%s, %s); select ime_priimek from
+    #  Stranka where id_stranka = %s;""", (id_usluzbenec, id_storitev, id_stranka))
+    #vrstica=cur.fetchone()
+    return template('termin_ura.html', id_storitev = id_storitev, id_usluzbenec = id_usluzbenec,
+                    datum = datum,
+      #ime_priimek_usluzbenca=vrstica[0], ime_storitve=vrstica[1],
+      #ime_priimek_stranke=vrstica[5], 
+      ura = prosti_termini, ime_priimek_stranke = '', koda = '', napaka=None)
+
+#@get('/termin/<id_storitev:int>/<id_usluzbenec:int>/<datum:YYYY-MM-DD>')
 #def termin_ura(id_usluzbenec, id_storitev, datum):
 #    cur.execute("""
 #      select 
@@ -396,10 +435,17 @@ def termin_datum(id_usluzbenec, id_storitev):
 #                zs = True
 #            if zs == False:
 #                prosti_termini.append(z)
+#    
+#    return template('termin_ura.html', id_storitev = id_storitev, id_usluzbenec = id_usluzbenec, datum = datum,
+#                    id_stranka = id_stranka,
+#      #ime_priimek_usluzbenca=vrstica[0], ime_storitve=vrstica[1],
+#      #ime_priimek_stranke='', datum=''
+#      ura=prosti_termini, koda = '', napaka=None)
 ##spustni seznam kjer izbere zacetek, ki je še na voljo tisti datum in za tistega uslužbenca, in še napiše kodo za popust
 
-@post('/termin/<id_storitev:int>/<id_usluzbenec:int>')
-def vpis_termina_post(id_usluzbenec, id_storitev):
+
+@post('/termin/<id_storitev:int>/<id_usluzbenec:int>/<datum:YYYY-MM-DD>')
+def vpis_termina_post(id_usluzbenec, id_storitev, datum):
     cur.execute("""
       SELECT u.ime_priimek, s.ime_storitve, s.trajanje, u.id_usluzbenec, s.id_storitev
       FROM Storitev s
@@ -409,7 +455,7 @@ def vpis_termina_post(id_usluzbenec, id_storitev):
     
     vrstica=cur.fetchone()
     ime_priimek_stranke = request.forms.ime_priimek_stranke
-    datum = request.forms.datum
+    datum = datum
     ura = request.forms.ura
     datum_ura = datum + " " + ura
     ime_storitve = vrstica[1]
@@ -422,8 +468,8 @@ def vpis_termina_post(id_usluzbenec, id_storitev):
       """, (ime_priimek_stranke, datum_ura, ime_storitve, ime_priimek_usluzbenca, koda)
       )
     conn.commit()
-    redirect(url('/prikazi_termin/<id_stranka:int>')) #kako bi pridobili ta id_stranka??
-
+    #redirect(url('/prikazi_termin/<id_stranka:int>')) #kako bi pridobili ta id_stranka?? ZAMENJAJ NA ID_TERMIN!!!!
+    redirect(url('/'))
 
 #sem spremenila select, zdaj bi moglo pravilno use pokazat in izračunat končno ceno, samo za ta
 #id_stranka neki teži, najbrž ker v zgornjem post ne zna pridobiti id_stranka
