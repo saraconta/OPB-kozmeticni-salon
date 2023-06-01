@@ -348,7 +348,7 @@ def termin_stranka(id_usluzbenec, id_storitev):
       napaka=None)
 #, , ime_priimek_stranke='', koda='', napaka=None)
 
-@get('/termin/<id_storitev:int>/<id_usluzbenec:int>/<datum:YYYY-MM-DD>')
+@get('/termin/<id_storitev:int>/<id_usluzbenec:int>/<datum>')
 #@cookie_required
 def termin_ura(id_usluzbenec, id_storitev, datum):
     cur.execute("""
@@ -417,7 +417,7 @@ def termin_ura(id_usluzbenec, id_storitev, datum):
 ##spustni seznam kjer izbere zacetek, ki je še na voljo tisti datum in za tistega uslužbenca, in še napiše kodo za popust
 
 
-@post('/termin/<id_storitev:int>/<id_usluzbenec:int>/<datum:YYYY-MM-DD>')
+@post('/termin/<id_storitev:int>/<id_usluzbenec:int>/<datum>')
 def vpis_termina_post(id_usluzbenec, id_storitev, datum):
     cur.execute("""
       SELECT u.ime_priimek, s.ime_storitve, s.trajanje, u.id_usluzbenec, s.id_storitev

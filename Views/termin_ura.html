@@ -35,7 +35,8 @@
   <table class="table is-hoverable is-fullwidth">
       <thead>
           <tr>
-              <form method="POST" action="/termin/{{id_storitev}}/{{id_usluzbenec}}/{{datum}}">
+            <form action="{{url('vpis_termina_post', id_usluzbenec=id_usluzbenec, id_storitev=id_storitev, datum=datum)}}" method="POST">
+              
                   <td></td>
                   
                   <tr>
