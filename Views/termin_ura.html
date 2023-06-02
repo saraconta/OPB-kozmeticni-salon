@@ -45,8 +45,8 @@
                             <label for="ura">Ura</label>
                             <select class="input is-small" type="time" aria-label="Default select example"
                             id="ura" name="ura" placeholder="hh:mm:ss">
-                                % for z in ura:
-                                <option value={{z}}>{{z}}</option>
+                                % for zacetek, konec in ura:
+                                <option value={{zacetek}}>{{zacetek}}</option>
                                 %end 
                 
                                 

@@ -370,7 +370,7 @@ def termin_ura(id_usluzbenec, id_storitev, year, month, day):
       left join storitev s on t.ime_storitve = s.ime_storitve
       where id_usluzbenec  = %s
       and t.datum::date = %s)
-      select ur.zacetek
+      select ur.zacetek, a.konec
       from Ure ur
       left join a on a.zacetek = ur.zacetek
       where a.zacetek is null;""", [id_usluzbenec, datum])
@@ -421,14 +421,15 @@ def vpis_termina_post(id_usluzbenec, id_storitev, year, month, day):
     ime_storitve = vrstica[1]
     ime_priimek_usluzbenca = vrstica[0]
     koda = request.forms.koda
-    #cur = baza.cursor
+    
     cur.execute("""
       INSERT INTO Termin1 (ime_priimek_stranke, datum, ime_storitve, ime_priimek_usluzbenca, koda)
       VALUES (%s, %s, %s, %s, %s) RETURNING id_termin;
       """, (ime_priimek_stranke, datum_ura, ime_storitve, ime_priimek_usluzbenca, koda)
       )
     conn.commit()
-    #redirect(url('/prikazi_termin/<id_stranka:int>')) #kako bi pridobili ta id_stranka?? ZAMENJAJ NA ID_TERMIN!!!!
+
+    #redirect(url('/prikazi_termin/<id_termin:int>')) #kako bi pridobili ta id_termin?? 
     redirect(url('/'))
 
 #sem spremenila select, zdaj bi moglo pravilno use pokazat in izračunat končno ceno, samo za ta
