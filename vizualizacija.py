@@ -1,5 +1,6 @@
 import plotly.graph_objects as go
 import pandas as pd
+import plotly.express as px
 import psycopg2
 import Data.auth as auth
 import random
@@ -34,36 +35,29 @@ poslovanje = """with a as
 df = pd.read_sql_query(poslovanje, connection)
 compile
 
-fig = go.Figure()
 
 
+fig = px.scatter(df, x="mesec", y="dobicek", symbol='leto')
+
+fig.update_traces(marker_size=10)
 
 
-
-
-for leto in df:
-    # Filter the DataFrame for the current country
-    
-    # Add a trace for each country
-    fig.add_trace(
-        go.Line(
-            x=df['mesec'],
-            y=df['dobicek']
-            #color=leto,
-            #width=0.5
-        )
-    )
 
 fig.update_layout(
     title='Dobiček po mesecih',
     xaxis_title='Mesec',
-    yaxis_title='Dobiček'
-    # barmode='group',  # To group the bars by player
-    #legend_title='Leto'  # Set the legend title
+    yaxis_title='Dobiček [€]',
+    legend_title='Leto' 
 )
+
 
 folder_path = "/Users/travn/OneDrive/Namizje/Kozmetični salon/OPB-kozmeticni-salon/Views/graphs"
 file_path1 = f"{folder_path}/poslovanje.html"
-fig.write_html(file_path1, include_plotlyjs = "cdn")
-#fig.show()
+##fig.write_html(file_path1, include_plotlyjs = "cdn")
+##
+##fig.show()
 
+
+fig.write_html(file_path1,
+                full_html=False,
+                include_plotlyjs='cdn')
