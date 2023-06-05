@@ -346,7 +346,7 @@ def termin_stranka(id_usluzbenec, id_storitev):
       ime_priimek_usluzbenca=vrstica[0], ime_storitve=vrstica[1],
       datum='', 
       napaka=None)
-#, , ime_priimek_stranke='', koda='', napaka=None)
+
 
 @get('/termin/<id_storitev:int>/<id_usluzbenec:int>/')
 def termin_date_conversion(id_usluzbenec, id_storitev):
@@ -374,27 +374,7 @@ def termin_ura(id_usluzbenec, id_storitev, year, month, day):
       from Ure ur
       left join a on a.zacetek = ur.zacetek
       where a.zacetek is null;""", [id_usluzbenec, datum])
-    #prosti_termini = cur.fetchall()
-    #cur.execute("""
-    #  select 
-    #  t.datum::time zacetek,  t.datum::time + (s.trajanje * interval '1 Minute' ) konec
-    #  from termin1 t
-    #  left join usluzbenec u on t.ime_priimek_usluzbenca = u.ime_priimek
-    #  left join storitev s on t.ime_storitve = s.ime_storitve
-    #  where id_usluzbenec  = %s
-    #  and t.datum::date = %s""", [id_usluzbenec, datum] )
-    #zasedene_ure = cur.fetchall()
-    #mozni_termini = []
-    #for i in range(8, 16):
-    #    mozni_termini.append((f"{i}::00", f"{i+1}::00", False))
-#
-    #prosti_termini = []
-    #for z, k, zs in mozni_termini:
-    #    for z1 in zasedene_ure:
-    #        if z1 == datetime.strptime(z, '%H::%M').time():
-    #            zs = True
-    #        if zs == False:
-    #            prosti_termini.append(z)
+
 
 
     return template('termin_ura.html', id_storitev = id_storitev, id_usluzbenec = id_usluzbenec,
@@ -421,19 +401,18 @@ def vpis_termina_post(id_usluzbenec, id_storitev, year, month, day):
     ime_storitve = vrstica[1]
     ime_priimek_usluzbenca = vrstica[0]
     koda = request.forms.koda
-    
+
     cur.execute("""
       INSERT INTO Termin1 (ime_priimek_stranke, datum, ime_storitve, ime_priimek_usluzbenca, koda)
-      VALUES (%s, %s, %s, %s, %s) RETURNING id_termin;
+      VALUES (%s, %s, %s, %s, %s) RETURNING id_termin;  
       """, (ime_priimek_stranke, datum_ura, ime_storitve, ime_priimek_usluzbenca, koda)
       )
+    id_termin = cur.fetchone()[0]
     conn.commit()
 
-    #redirect(url('/prikazi_termin/<id_termin:int>')) #kako bi pridobili ta id_termin?? 
-    redirect(url('/'))
+    redirect(url('prikazi_termin', id_termin=id_termin))
+    #redirect(url('/'))
 
-#sem spremenila select, zdaj bi moglo pravilno use pokazat in izračunat končno ceno, samo za ta
-#id_stranka neki teži, najbrž ker v zgornjem post ne zna pridobiti id_stranka
 @get('/prikazi_termin/<id_termin:int>')
 def prikazi_termin(id_termin):
     cur.execute("""
@@ -526,7 +505,7 @@ def poslovanje():
         FROM b
         ORDER BY leto, mesec ASC;
     """)
-    return bottle.template('poslovanje.html', poslovanje=cur)
+    return bottle.template('poslovanje1.html', poslovanje=cur)
 
 
 
