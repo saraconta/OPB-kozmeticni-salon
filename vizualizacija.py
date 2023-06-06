@@ -23,7 +23,8 @@ poslovanje = """with a as
           FROM Termin1 t
           LEFT JOIN Stranka s ON s.ime_priimek = t.ime_priimek_stranke
           LEFT JOIN Storitev st ON st.ime_storitve = t.ime_storitve
-          LEFT JOIN Influencer i ON i.koda = t.koda),
+          LEFT JOIN Influencer i ON i.koda = t.koda
+          WHERE t.datum <= CURRENT_TIMESTAMP),
         b as 
           (SELECT DISTINCT leto, mesec, sum(koncna_cena) OVER(PARTITION BY leto, mesec) prihodki, 
           sum(stroski) OVER(PARTITION BY leto, mesec) odhodki
@@ -51,13 +52,13 @@ fig.update_layout(
 )
 
 
-folder_path = "/Users/travn/OneDrive/Namizje/Kozmetični salon/OPB-kozmeticni-salon/Views/graphs"
-file_path1 = f"{folder_path}/poslovanje.html"
+#folder_path = "/Users/travn/OneDrive/Namizje/Kozmetični salon/OPB-kozmeticni-salon/Views/graphs"
+file_path1 = "Views/graphs/poslovanje.html"
 ##fig.write_html(file_path1, include_plotlyjs = "cdn")
 ##
 ##fig.show()
 
 
 fig.write_html(file_path1,
-                full_html=False,
+                full_html=True,
                 include_plotlyjs='cdn')

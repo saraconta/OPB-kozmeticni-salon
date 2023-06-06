@@ -16,6 +16,9 @@ from functools import wraps
 import os
 import bottle
 
+from datetime import date
+
+
 
 import Data.auth as auth
 
@@ -342,8 +345,9 @@ def termin_stranka(id_usluzbenec, id_storitev):
       LEFT JOIN Usluzbenec u ON u.id_usluzbenec = us.id_usluzbenec
       WHERE (u.id_usluzbenec, s.id_storitev) = (%s, %s);""", (id_usluzbenec, id_storitev))
     vrstica=cur.fetchone()
+    today = str(date.today())
     return template('termin.html', id_storitev = id_storitev, id_usluzbenec = id_usluzbenec, 
-      ime_priimek_usluzbenca=vrstica[0], ime_storitve=vrstica[1],
+      ime_priimek_usluzbenca=vrstica[0], ime_storitve=vrstica[1], danes = today,
       datum='', 
       napaka=None)
 
@@ -448,6 +452,7 @@ def pregled_termina(id_stranka):
                     LEFT JOIN stranka
                     ON termin1.ime_priimek_stranke = stranka.ime_priimek
                     WHERE id_stranka = %s
+                    AND datum >= CURRENT_TIMESTAMP
                     ;""",
                     [id_stranka])
     return template('pregled_termina.html',
@@ -496,7 +501,8 @@ def poslovanje():
           FROM Termin1 t
           LEFT JOIN Stranka s ON s.ime_priimek = t.ime_priimek_stranke
           LEFT JOIN Storitev st ON st.ime_storitve = t.ime_storitve
-          LEFT JOIN Influencer i ON i.koda = t.koda),
+          LEFT JOIN Influencer i ON i.koda = t.koda
+          WHERE t.datum <= CURRENT_TIMESTAMP),
         b as 
           (SELECT DISTINCT leto, mesec, sum(koncna_cena) OVER(PARTITION BY leto, mesec) prihodki, 
           sum(stroski) OVER(PARTITION BY leto, mesec) odhodki

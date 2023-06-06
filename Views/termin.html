@@ -83,7 +83,7 @@
                             <label for="datum">Datum</label>
                             <input  
                             class="input is-small" type="date" data-date-format="YYYY-MM-DD"
-                                id="datum" name="datum" placeholder="YYYY-MM-DD" required
+                                id="datum" name="datum" placeholder="YYYY-MM-DD" required min={{danes}}
                                 oninput="this.setCustomValidity('')"
                                 oninvalid="this.setCustomValidity('Obvezno polje')"
                                 
