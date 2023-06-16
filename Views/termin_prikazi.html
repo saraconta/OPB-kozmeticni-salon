@@ -15,9 +15,21 @@
         </a>
       </li>
 
+      <li>
+        <a>
+          <span>Datum</span>
+        </a>
+      </li>
+
+      <li>
+        <a>
+          <span>Ura, ime stranke in koda za popust</span>
+        </a>
+      </li>
+
       <li class="is-active">
         <a>
-          <span>Datum in ura</span>
+          <span>Povzetek rezerviranega termina</span>
         </a>
       </li>
 
@@ -28,22 +40,22 @@
 <div class="card">
     <header class="card-header">
       <p class="card-header-title">
-        Termin
+        Podrobnosti vaše rezervacije:
       </p>
     </header>
     <div class="card-content">
       <div class="content">
-            <p>{{ime_priimek}}</p>
-            <p><strong>Datum:</strong> <br>
+            <p><strong>Rezervacija na ime:</strong> {{ime_priimek}}</p>
+            <p><strong>Datum in ura:</strong> <br>
                 <time datetime="2016-1-1">{{datum}}</time> 
             </p>
-            <p><strong>Stroitev:</strong> {{ime_storitve}} </p>
-            <p><strong>Usluzbenec:</strong> {{ime_priimek_usluzbenca}} </p>
-            <p><strong>Cena:</strong> {{koncna_cena}}€</p>
+            <p><strong>Storitev:</strong> {{ime_storitve}} </p>
+            <p><strong>Uslužbenec:</strong> {{ime_priimek_usluzbenca}} </p>
+            <p style="font-size:160%; color:blue;"><strong>Cena:</strong> {{koncna_cena}}€</p>
       </div>
     </div>
     <footer class="card-footer">
-      <a href="/" class="card-footer-item">Zacetna stran</a>
+      <a href="/" class="card-footer-item">Začetna stran</a>
       <a href="/termin" class="card-footer-item">Nov termin</a>
       <a href="#" class="card-footer-item">Odpoved termina</a>
     </footer>

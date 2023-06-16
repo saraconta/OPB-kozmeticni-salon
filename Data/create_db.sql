@@ -1,4 +1,4 @@
--- Active: 1682070737195@@baza.fmf.uni-lj.si@5432@sem2023_klarat
+-- Active: 1686118732232@@baza.fmf.uni-lj.si@5432@sem2023_klarat
 CREATE TABLE Stranka (
     id_stranka SERIAL PRIMARY KEY,
     ime_priimek TEXT UNIQUE NOT NULL,
@@ -66,4 +66,10 @@ GRANT ALL ON ALL TABLES IN SCHEMA public TO majak WITH GRANT OPTION;
 GRANT ALL ON ALL SEQUENCES IN SCHEMA public TO majak WITH GRANT OPTION;
 
 
+ALTER TABLE stranka ADD COLUMN up_ime TEXT;
+ALTER TABLE stranka ADD COLUMN geslo BLOB;
+ALTER TABLE stranka ADD COLUMN admin INTEGER NOT NULL DEFAULT 0;
 
+ALTER TABLE usluzbenec ADD COLUMN up_ime TEXT;
+ALTER TABLE usluzbenec ADD COLUMN geslo BLOB;
+ALTER TABLE usluzbenec ADD COLUMN admin INTEGER NOT NULL DEFAULT 1;

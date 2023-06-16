@@ -1,6 +1,22 @@
 import os
 import bottle
 from bottle import *
+import bcrypt
+from functools import wraps
+
+SKRIVNOST = os.environ.get('BOTTLE_SECRET', "rODX3ulHw3ZYRdbIVcp1IfJTDn8iQTH6TFaNBgrSkjIulr")
+
+def nastavi_geslo(geslo):
+    geslo = geslo.encode("utf-8")
+    sol = bcrypt.gensalt()
+    return bcrypt.hashpw(geslo, sol)
+
+
+def preveri_geslo(geslo, zgostitev):
+    geslo = geslo.encode("utf-8")
+    return bcrypt.checkpw(geslo, zgostitev)
+
+
 
 
 class Route(bottle.Route):

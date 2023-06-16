@@ -1,0 +1,114 @@
+%rebase('poskusna_osnova.html')
+
+<label class="label">Registrirajte se</label>
+<table class="table is-hoverable is-fullwidth">
+    <thead>
+        <tr>
+            <form method="POST" action="/registracija">
+                <td></td>
+                <tr>
+                    <td>
+                        <div class="control has-icons-left">
+                            <label for="ime_priimek">Ime in priimek</label>
+                            <input class="input is-small" type="text" 
+                                id="ime_priimek" name="ime_priimek" placeholder="Ime in priimek" required
+                                oninput="this.setCustomValidity('')"
+                                oninvalid="this.setCustomValidity('Obvezno polje')"
+                            />
+                            <span class="icon is-small is-left">
+                                <i class="far fa-clipboard-check"></i>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="control has-icons-left">
+                            <label for="telefon">Telefonska številka</label>
+                            <input class="input is-small" type="integer" 
+                                id="telefon" name="telefon" placeholder="Telefonska številka" required
+                                oninput="this.setCustomValidity('')"
+                                oninvalid="this.setCustomValidity('Obvezno polje')"
+                            />
+                            <span class="icon is-small is-left">
+                                <i class="far fa-clipboard-check"></i>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="control has-icons-left">
+                            <label for="mail">Elektronski naslov</label>
+                            <input class="input is-small" type="integer" 
+                                id="mail" name="mail" placeholder="primer@gmail.com" required
+                                oninput="this.setCustomValidity('')"
+                                oninvalid="this.setCustomValidity('Obvezno polje')"
+                            />
+                            <span class="icon is-small is-left">
+                                <i class="far fa-clipboard-check"></i>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="control has-icons-left">
+                            <label for="uporabnisko_ime">Uporabniško ime</label>
+                            <input class="input is-small" type="text" 
+                                id="uporabnisko_ime" name="uporabnisko_ime" placeholder="Uporabniško ime" required
+                                oninput="this.setCustomValidity('')"
+                                oninvalid="this.setCustomValidity('Obvezno polje')"
+                            />
+                            <span class="icon is-small is-left">
+                                <i class="far fa-clipboard-check"></i>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="control has-icons-left">
+                            <label for="geslo">Geslo</label>
+                            <input class="input is-small" type="password" 
+                                id="geslo" name="geslo" placeholder="Geslo" required
+                                oninput="this.setCustomValidity('')"
+                                oninvalid="this.setCustomValidity('Obvezno polje')"
+                            />
+                            <span class="icon is-small is-left">
+                                <i class="far fa-clipboard-check"></i>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="control has-icons-left">
+                            <label for="geslo2">Ponovite geslo</label>
+                            <input class="input is-small" type="password" 
+                                id="geslo2" name="geslo2" placeholder="Geslo" required
+                                oninput="this.setCustomValidity('')"
+                                oninvalid="this.setCustomValidity('Obvezno polje')"
+                            />
+                            <span class="icon is-small is-left">
+                                <i class="far fa-clipboard-check"></i>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="field is-grouped">
+                            <div class="control">
+                                <button class="button is-link">Registracija</button>
+                            </div>
+                            <div class="control">
+                                <a class="button is-link is-light" href="/">Prekliči</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </form>
+        </tr>
+    </thead>
+</table>

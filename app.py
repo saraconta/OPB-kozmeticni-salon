@@ -16,6 +16,9 @@ from functools import wraps
 import os
 import bottle
 
+from datetime import date
+
+
 
 import Data.auth as auth
 
@@ -61,71 +64,19 @@ repo = Repo()
 #
 #
 #    return decorated
-#  
-#@get('/odjava')
-#def odjava():
-#    """
-#    Odjavi uporabnika iz aplikacije. Pobriše piškotke o uporabniku in njegovi roli.
-#    """
-#    
-#    response.delete_cookie("uporabnik")
-#    response.delete_cookie("rola")
-#    
-#    return template('zacetna_stran.html', napaka=None)
-#  
-#@get('/usluzbenec/prijava') 
-#def prijava_usluzbenec_get():
-#    return template("usluzbenec_prijava.html")
-#
-##manjka post za prijavo usluzbenca
-# @post('/usluzbenec/prijava') 
-# def prijava_usluzbenec_post():
-#     uporabnisko_ime = request.forms.get('uporabnisko_ime')
-#     geslo = request.forms.get('geslo')
-#     if uporabnisko_ime is None or geslo is None:
-#         redirect(url('prijava_usluzbenec_get'))
-#     hashBaza = None
-#     try: 
-#         cur.execute("SELECT geslo FROM usluzbenec WHERE uporabnisko_ime = %s", [uporabnisko_ime])
-#         hashBaza = cur.fetchall()[0][0]
-#     except:
-#         hashBaza = None
-#     if hashBaza is None:
-#         redirect(url('prijava_usluzbenec_get'))
-#         return
-#     if geslo != hashBaza:
-#       #  nastaviSporocilo('Nekaj je šlo narobe.') 
-#         redirect(url('prijava_usluzbenec_get'))
-#         return
-#     response.set_cookie("uporabnisko_ime", uporabnisko_ime,  path = "/") #secret = "secret_value",, httponly = True)
-#     response.set_cookie("rola", "usluzbenec",  path = "/")
+
   
-#@get('/stranka/prijava') 
-#def prijava_stranka_get():
-#    return template("stranka_prijava.html")
-#  
-#manjka post za prijavo stranke
-# @post('/stranka/prijava') 
-# def prijava_stranka_post():
-#     uporabnisko_ime = request.forms.get('uporabnisko_ime')
-#     geslo = request.forms.get('geslo')
-#     if uporabnisko_ime is None or geslo is None:
-#         redirect(url('prijava_usluzbenec_get'))
-#     hashBaza = None
-#     try: 
-#         cur.execute("SELECT geslo FROM stranka WHERE uporabnisko_ime = %s", [uporabnisko_ime])
-#         hashBaza = cur.fetchall()[0][0]
-#     except:
-#         hashBaza = None
-#     if hashBaza is None:
-#         redirect(url('prijava_stranka_get'))
-#         return
-#     if geslo != hashBaza:
-#       #  nastaviSporocilo('Nekaj je šlo narobe.') 
-#         redirect(url('prijava_stranka_get'))
-#         return
-#     response.set_cookie("uporabnisko_ime", uporabnisko_ime,  path = "/") #secret = "secret_value",, httponly = True)
-#     response.set_cookie("rola", "stranka",  path = "/")
+@get('/prijava')
+#@cookie_required
+def prijava():
+    return template('prijava.html', uporabnisko_ime='', geslo='', napake=None)
+  
+  
+@get('/registracija')
+#@cookie_required
+def registracija():
+    return template('registracija.html', ime_priimek='', telefon='', mail='', uporabnisko_ime='', geslo='', geslo2='', napake=None)
+  
 
 
 #@get('/static/<filename:path>')
@@ -172,13 +123,6 @@ def dodaj_stranko_post():
                     napaka='Zgodila se je napaka: (%s, %s, %s)' % ex)
   redirect(url('/'))
 
-@get('/prijava_stranka')
-#@cookie_required
-def prijava_stranka():
-    return template('prijava_stranka.html', uporabnisko_ime='', geslo='', napake=None)
-
-#manjka post poizvedba, pride ko bodo urejene prijave
-  
 
 ### USLUŽBENCI
 @get('/usluzbenci')
@@ -221,12 +165,6 @@ def dodaj_usluzbenca_post():
                     napaka='Zgodila se je napaka: %s' % ex)
   redirect(url('/uluzbenci'))
 
-@get('/prijava_usluzbenec')
-#@cookie_required
-def prijava_usluzbenec():
-    return template('prijava_usluzbenec.html', uporabnisko_ime='', geslo='', napake=None)
-
-#manjka post poizvedba, pride ko bodo urejene prijave
 
 
 ### OCENE
@@ -342,83 +280,52 @@ def termin_stranka(id_usluzbenec, id_storitev):
       LEFT JOIN Usluzbenec u ON u.id_usluzbenec = us.id_usluzbenec
       WHERE (u.id_usluzbenec, s.id_storitev) = (%s, %s);""", (id_usluzbenec, id_storitev))
     vrstica=cur.fetchone()
+    today = str(date.today())
     return template('termin.html', id_storitev = id_storitev, id_usluzbenec = id_usluzbenec, 
-      ime_priimek_usluzbenca=vrstica[0], ime_storitve=vrstica[1],
+      ime_priimek_usluzbenca=vrstica[0], ime_storitve=vrstica[1], danes = today,
       datum='', 
       napaka=None)
-#, , ime_priimek_stranke='', koda='', napaka=None)
 
-@get('/termin/<id_storitev:int>/<id_usluzbenec:int>/<datum:YYYY-MM-DD>')
+
+@get('/termin/<id_storitev:int>/<id_usluzbenec:int>/')
+def termin_date_conversion(id_usluzbenec, id_storitev):
+    datum = request.query.datum # dobimo datum iz urlja
+    year = datum[0:4]
+    month = datum[5:7]
+    day = datum[8:10]
+    
+    # redirect na termin_ura s pravilno oblikovanim datumom
+    return redirect(url('termin_ura', id_usluzbenec=id_usluzbenec, id_storitev=id_storitev, year=year, month=month, day=day))
+
+
+@get('/termin/<id_storitev:int>/<id_usluzbenec:int>/<year:int>-<month:int>-<day:int>')
 #@cookie_required
-def termin_ura(id_usluzbenec, id_storitev, datum):
-    cur.execute("""
-      select 
-      t.datum::time zacetek,  t.datum::time + (s.trajanje * interval '1 Minute' ) konec
+def termin_ura(id_usluzbenec, id_storitev, year, month, day):
+    datum = f"{year}-{month}-{day}"  # nastavimo parameter datum
+    cur.execute("""with a as (select 
+      t.datum::time zacetek,   t.datum::time + (s.trajanje * interval '1 Minute' ) konec
       from termin1 t
       left join usluzbenec u on t.ime_priimek_usluzbenca = u.ime_priimek
       left join storitev s on t.ime_storitve = s.ime_storitve
       where id_usluzbenec  = %s
-      and t.datum::date = %s""", [id_usluzbenec, datum] )
-    zasedene_ure = cur.fetchall()
-    mozni_termini = []
-    for i in range(8, 16):
-        mozni_termini.append((f"{i}::00", f"{i+1}::00", False))
+      and t.datum::date = %s)
+      select ur.zacetek, a.konec
+      from Ure ur
+      left join a on a.zacetek = ur.zacetek
+      where a.zacetek is null;""", [id_usluzbenec, datum])
 
-    prosti_termini = []
-    for z, k, zs in mozni_termini:
-        for z1 in zasedene_ure:
-            if z1 == datetime.strptime(z, '%H::%M').time():
-                zs = True
-            if zs == False:
-                prosti_termini.append(z)
-#def termin_datum(id_usluzbenec, id_storitev, datum):
-    #cur.execute("""
-    #  SELECT u.ime_priimek, s.ime_storitve, s.trajanje, u.id_usluzbenec, s.id_storitev
-    #  FROM Storitev s
-    #  LEFT JOIN Usluzb_storitve us ON us.ime_storitve = s.ime_storitve
-    #  LEFT JOIN Usluzbenec u ON u.id_usluzbenec = us.id_usluzbenec
-    #  WHERE (u.id_usluzbenec, s.id_storitev) = (%s, %s); select ime_priimek from
-    #  Stranka where id_stranka = %s;""", (id_usluzbenec, id_storitev, id_stranka))
-    #vrstica=cur.fetchone()
+
+
     return template('termin_ura.html', id_storitev = id_storitev, id_usluzbenec = id_usluzbenec,
-                    datum = datum,
-      #ime_priimek_usluzbenca=vrstica[0], ime_storitve=vrstica[1],
-      #ime_priimek_stranke=vrstica[5], 
-      ura = prosti_termini, ime_priimek_stranke = '', koda = '', napaka=None)
-
-#@get('/termin/<id_storitev:int>/<id_usluzbenec:int>/<datum:YYYY-MM-DD>')
-#def termin_ura(id_usluzbenec, id_storitev, datum):
-#    cur.execute("""
-#      select 
-#      t.datum::time zacetek,  t.datum::time + (s.trajanje * interval '1 Minute' ) konec
-#      from termin1 t
-#      left join usluzbenec u on t.ime_priimek_usluzbenca = u.ime_priimek
-#      left join storitev s on t.ime_storitve = s.ime_storitve
-#      where id_usluzbenec  = %s
-#      and t.datum::date = %s""", [id_usluzbenec, datum] )
-#    zasedene_ure = cur.fetchall()
-#    mozni_termini = []
-#    for i in range(8, 16):
-#        mozni_termini.append((f"{i}::00", f"{i+1}::00", False))
-#
-#    prosti_termini = []
-#    for z, k, zs in mozni_termini:
-#        for z1 in zasedene_ure:
-#            if z1 == datetime.strptime(z, '%H::%M').time():
-#                zs = True
-#            if zs == False:
-#                prosti_termini.append(z)
-#    
-#    return template('termin_ura.html', id_storitev = id_storitev, id_usluzbenec = id_usluzbenec, datum = datum,
-#                    id_stranka = id_stranka,
-#      #ime_priimek_usluzbenca=vrstica[0], ime_storitve=vrstica[1],
-#      #ime_priimek_stranke='', datum=''
-#      ura=prosti_termini, koda = '', napaka=None)
-##spustni seznam kjer izbere zacetek, ki je še na voljo tisti datum in za tistega uslužbenca, in še napiše kodo za popust
+                    datum = datum,year=year, month=month, day=day, 
+      ura = cur, ime_priimek_stranke = '', koda = '', napaka=None)
 
 
-@post('/termin/<id_storitev:int>/<id_usluzbenec:int>/<datum:YYYY-MM-DD>')
-def vpis_termina_post(id_usluzbenec, id_storitev, datum):
+
+
+@post('/termin/<id_storitev:int>/<id_usluzbenec:int>/<year:int>-<month:int>-<day:int>')
+def vpis_termina_post(id_usluzbenec, id_storitev, year, month, day):
+    datum = f"{year}-{month}-{day}"
     cur.execute("""
       SELECT u.ime_priimek, s.ime_storitve, s.trajanje, u.id_usluzbenec, s.id_storitev
       FROM Storitev s
@@ -428,26 +335,25 @@ def vpis_termina_post(id_usluzbenec, id_storitev, datum):
     
     vrstica=cur.fetchone()
     ime_priimek_stranke = request.forms.ime_priimek_stranke
-    datum = datum
     ura = request.forms.ura
     datum_ura = datum + " " + ura
     ime_storitve = vrstica[1]
     ime_priimek_usluzbenca = vrstica[0]
     koda = request.forms.koda
-    #cur = baza.cursor
+
     cur.execute("""
       INSERT INTO Termin1 (ime_priimek_stranke, datum, ime_storitve, ime_priimek_usluzbenca, koda)
-      VALUES (%s, %s, %s, %s, %s) RETURNING id_termin;
+      VALUES (%s, %s, %s, %s, %s) RETURNING id_termin;  
       """, (ime_priimek_stranke, datum_ura, ime_storitve, ime_priimek_usluzbenca, koda)
       )
+    id_termin = cur.fetchone()[0]
     conn.commit()
-    #redirect(url('/prikazi_termin/<id_stranka:int>')) #kako bi pridobili ta id_stranka?? ZAMENJAJ NA ID_TERMIN!!!!
-    redirect(url('/'))
 
-#sem spremenila select, zdaj bi moglo pravilno use pokazat in izračunat končno ceno, samo za ta
-#id_stranka neki teži, najbrž ker v zgornjem post ne zna pridobiti id_stranka
-@get('/prikazi_termin/<id_stranka:int>')
-def prikazi_termin(id_stranka):
+    redirect(url('prikazi_termin', id_termin=id_termin))
+    #redirect(url('/'))
+
+@get('/prikazi_termin/<id_termin:int>')
+def prikazi_termin(id_termin):
     cur.execute("""
       SELECT t.id_termin, s.id_stranka, s.ime_priimek, t.datum, t.ime_storitve, t.ime_priimek_usluzbenca, st.trajanje, st.cena, i.popust,
       CASE 
@@ -458,9 +364,11 @@ def prikazi_termin(id_stranka):
       LEFT JOIN Stranka s ON s.ime_priimek = t.ime_priimek_stranke
       LEFT JOIN Storitev st ON st.ime_storitve = t.ime_storitve
       LEFT JOIN Influencer i ON i.koda = t.koda
-      WHERE s.id_stranka = %s;""", [id_stranka])
+      WHERE t.id_termin = %s;""", [id_termin])
 
-    return template('termin_prikazi.html', id_stranka=id_stranka, termin=cur)
+    return template('termin_prikazi.html', id_termin=id_termin, termin=cur)
+
+
 
 @get('/pregled_terminov')
 def pregled_terminov():
@@ -479,6 +387,7 @@ def pregled_termina(id_stranka):
                     LEFT JOIN stranka
                     ON termin1.ime_priimek_stranke = stranka.ime_priimek
                     WHERE id_stranka = %s
+                    AND datum >= CURRENT_TIMESTAMP
                     ;""",
                     [id_stranka])
     return template('pregled_termina.html',
@@ -527,7 +436,8 @@ def poslovanje():
           FROM Termin1 t
           LEFT JOIN Stranka s ON s.ime_priimek = t.ime_priimek_stranke
           LEFT JOIN Storitev st ON st.ime_storitve = t.ime_storitve
-          LEFT JOIN Influencer i ON i.koda = t.koda),
+          LEFT JOIN Influencer i ON i.koda = t.koda
+          WHERE t.datum <= CURRENT_TIMESTAMP),
         b as 
           (SELECT DISTINCT leto, mesec, sum(koncna_cena) OVER(PARTITION BY leto, mesec) prihodki, 
           sum(stroski) OVER(PARTITION BY leto, mesec) odhodki
@@ -536,7 +446,7 @@ def poslovanje():
         FROM b
         ORDER BY leto, mesec ASC;
     """)
-    return bottle.template('poslovanje.html', poslovanje=cur)
+    return bottle.template('poslovanje1.html', poslovanje=cur)
 
 
 

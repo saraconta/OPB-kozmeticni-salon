@@ -29,6 +29,12 @@
         </a>
       </li>
 
+      <li>
+        <a>
+          <span>Povzetek rezerviranega termina</span>
+        </a>
+      </li>
+
     </ul>
   </div>
 
@@ -36,7 +42,7 @@
 <table class="table is-hoverable is-fullwidth">
     <thead>
         <tr>
-            <form method="GET" action="/termin/{{id_storitev}}/{{id_usluzbenec}}/{{datum}}">
+            <form action="{{url('termin_date_conversion', id_usluzbenec=id_usluzbenec, id_storitev=id_storitev, datum=datum)}}" method="GET">
                 <td></td>
                 <tr>
                     <td>
@@ -77,7 +83,7 @@
                             <label for="datum">Datum</label>
                             <input  
                             class="input is-small" type="date" data-date-format="YYYY-MM-DD"
-                                id="datum" name="datum" placeholder="YYYY-MM-DD" required
+                                id="datum" name="datum" placeholder="YYYY-MM-DD" required min={{danes}}
                                 oninput="this.setCustomValidity('')"
                                 oninvalid="this.setCustomValidity('Obvezno polje')"
                                 

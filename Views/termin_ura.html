@@ -27,6 +27,12 @@
         </a>
       </li>
 
+      <li>
+        <a>
+          <span>Povzetek rezerviranega termina</span>
+        </a>
+      </li>
+
     </ul>
   </div>
 
@@ -35,7 +41,8 @@
   <table class="table is-hoverable is-fullwidth">
       <thead>
           <tr>
-              <form method="POST" action="/termin/{{id_storitev}}/{{id_usluzbenec}}/{{datum}}">
+            <form action="{{url('vpis_termina_post', id_usluzbenec=id_usluzbenec, id_storitev=id_storitev, year=year, month=month, day=day)}}" method="POST">
+              
                   <td></td>
                   
                   <tr>
@@ -44,8 +51,8 @@
                             <label for="ura">Ura</label>
                             <select class="input is-small" type="time" aria-label="Default select example"
                             id="ura" name="ura" placeholder="hh:mm:ss">
-                                % for z in ura:
-                                <option value={{z}}>{{z}}</option>
+                                % for zacetek, konec in ura:
+                                <option value={{zacetek}}>{{zacetek}}</option>
                                 %end 
                 
                                 
