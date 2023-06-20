@@ -6,6 +6,10 @@ import Data.auth as auth
 import random
 import os
 
+
+import chart_studio
+#import plotly.io as pio
+
 DB_PORT = os.environ.get('POSTGRES_PORT', 5432)
 connection = psycopg2.connect(
     host=auth.host,
@@ -58,7 +62,21 @@ file_path1 = "Views/graphs/poslovanje.html"
 ##
 ##fig.show()
 
+pio.write_html(fig, file='graf.html', auto_open=True)
 
-fig.write_html(file_path1,
-                full_html=True,
-                include_plotlyjs='cdn')
+
+
+###fig.write_html(file_path1,
+###                full_html=True,
+###                include_plotlyjs='cdn')
+
+
+#api key ktkMsEGoSeEagt7wnEEX
+
+
+#username = 'klaratravnik' # your username
+#api_key = 'ktkMsEGoSeEagt7wnEEX' 
+# your api key - go to profile > settings > regenerate keychart_studio.tools.set_credentials_file(username=username, api_key=api_key)
+
+#import chart_studio.plotly as py
+#py.plot(fig, filename = 'graf', auto_open=True)
