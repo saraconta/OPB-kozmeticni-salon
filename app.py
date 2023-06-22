@@ -18,6 +18,7 @@ import bottle
 
 from datetime import date
 
+import hashlib
 
 
 import Data.auth as auth
@@ -43,45 +44,109 @@ cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 
 repo = Repo()
 
+skrivnost = "ns86uffdDS3LE0u2"
 
-#auth = AuthService(repo)
 
-#def cookie_required(f):
-#    """
-#    Dekorator, ki zahteva veljaven piškotek. Če piškotka ni, uporabnika preusmeri na stran za prijavo.
-#    """
-#    @wraps(f)
-#    def decorated( *args, **kwargs):
-#
-#
-#        cookie = request.get_cookie("uporabnik")
-#        if cookie:
-#            return f(*args, **kwargs)
-#
-#        return template("prijava.html", napaka="Potrebna je prijava!")
-#
-#
-#
-#
-#    return decorated
+def nastaviSporocilo(sporocilo = None):
+    staro = request.get_cookie('sporocilo', secret=skrivnost)
+    if sporocilo is None:
+        response.delete_cookie('sporocilo')
+    else:
+        response.set_cookie('sporocilo', sporocilo, path="/", secret=skrivnost)
+    return staro 
 
+def preveriUporabnika(): 
+    up_ime = request.get_cookie('up_ime', secret=skrivnost)
+    if up_ime:
+        uporabnik = None
+        try: 
+            uporabnik = cur.execute("SELECT * FROM stranka WHERE up_ime = ?", (up_ime, )).fetchone()
+        except:
+            uporabnik = None
+        if uporabnik: 
+            return uporabnik
+    redirect('/prijava')
   
-@get('/prijava')
-#@cookie_required
-def prijava():
-    return template('prijava.html', uporabnisko_ime='', geslo='', napake=None)
-  
-  
+############################################
+### Registracija, prijava
+############################################
+
+def hashGesla(s):
+    m = hashlib.sha256()
+    m.update(s.encode("utf-8"))
+    return m.hexdigest()
+
 @get('/registracija')
-#@cookie_required
 def registracija():
-    return template('registracija.html', ime_priimek='', telefon='', mail='', uporabnisko_ime='', geslo='', geslo2='', napake=None)
+    napaka = nastaviSporocilo()
+    return template('registracija.html', napaka=napaka)
+
+@post('/registracija')
+def registracija_post():
+    ime_priimek = request.forms.ime_priimek
+    up_ime = request.forms.up_ime
+    geslo = request.forms.geslo
+    geslo2 = request.forms.geslo2
+    if ime_priimek is None or up_ime is None or geslo is None or geslo2 is None:
+        nastaviSporocilo('Registracija ni mogoča!') 
+        redirect('/registracija')
+        return    
+    uporabnik = None
+    try: 
+        uporabnik = cur.execute("SELECT * FROM stranka WHERE ime_priimek = ?", (ime_priimek, )).fetchone()
+    except:
+        uporabnik = None
+    if uporabnik is None:
+        nastaviSporocilo('Registracija ni mogoča!') 
+        redirect('/registracija')
+        return
+    if geslo != geslo2:
+        nastaviSporocilo('Gesli se ne ujemata!') 
+        redirect('/registracija')
+        return
+    zgostitev = hashGesla(geslo)
+    cur.execute("UPDATE stranka SET up_ime = ?, geslo = ? WHERE ime_priimek = ?", (up_ime, zgostitev, ime_priimek))
+    response.set_cookie('up_ime', up_ime, secret=skrivnost)
+    redirect('/stranke')
+
+
+@get('/prijava')
+def prijava():
+    napaka = nastaviSporocilo()
+    return template('prijava.html', napaka=napaka)
+
+@post('/prijava')
+def prijava_post():
+    up_ime = request.forms.up_ime
+    geslo = request.forms.geslo
+    if up_ime is None or geslo is None:
+        nastaviSporocilo('Uporabniško ime in geslo morata biti neprazna!') 
+        redirect('/prijava')
+        return   
+    hashBaza = None
+    try: 
+        hashBaza = cur.execute("SELECT geslo FROM stranka WHERE up_ime = ?", (up_ime, )).fetchone()
+        hashBaza = hashBaza[0]
+    except:
+        hashBaza = None
+    if hashBaza is None:
+        nastaviSporocilo('Uporabniško ime oziroma geslo nista ustrezna!') 
+        redirect('/prijava')
+        return
+    if hashGesla(geslo) != hashBaza:
+        nastaviSporocilo('Uporabniško ime oziroma geslo nista ustrezna!') 
+        redirect('/prijava')
+        return
+    response.set_cookie('up_ime', up_ime, secret=skrivnost)
+    redirect('/stranke')
+    
+@get('/odjava')
+def odjava_get():
+    response.delete_cookie('up_ime')
+    redirect('/prijava')
   
 
-
-#@get('/static/<filename:path>')
-#def static(filename):
-#    return static_file(filename, root='static')
+### ZAČETNA STRAN
 
 @get('/')
 def index():
