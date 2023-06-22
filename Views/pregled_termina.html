@@ -17,7 +17,7 @@
             <td>{{datum}}</td>
             <td>{{ime_storitve}}</td>
             <td>
-                <form method = "POST" action="/izbrisi_termin">
+                <form action="{{url('izbrisi_termin')}}" method="POST">
                     <button class="button is-primary" type="submit" name="id_termin" value={{id_termin}}>-</button>
                 </form>
             </td>
