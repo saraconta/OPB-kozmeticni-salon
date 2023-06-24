@@ -76,20 +76,20 @@ def hashGesla(s):
     m.update(s.encode("utf-8"))
     return m.hexdigest()
 
-@get('/registracija')
+@get('/registracija_stranka')
 def registracija():
     napaka = nastaviSporocilo()
-    return template('registracija.html', napaka=napaka)
+    return template('registracija_stranka.html', napaka=napaka)
 
-@post('/registracija')
-def registracija_post():
+@post('/registracija_stranka')
+def registracija_stranka_post():
     ime_priimek = request.forms.ime_priimek
     up_ime = request.forms.up_ime
     geslo = request.forms.geslo
     geslo2 = request.forms.geslo2
     if ime_priimek is None or up_ime is None or geslo is None or geslo2 is None:
         nastaviSporocilo('Registracija ni mogoča!') 
-        redirect('/registracija')
+        redirect('/registracija_stranka')
         return    
     uporabnik = None
     try: 
@@ -99,16 +99,51 @@ def registracija_post():
         uporabnik = None
     if uporabnik is None:
         nastaviSporocilo('Registracija ni mogoča!') 
-        redirect('/registracija')
+        redirect('/registracija_stranka')
         return
     if geslo != geslo2:
         nastaviSporocilo('Gesli se ne ujemata!') 
-        redirect('/registracija')
+        redirect('/registracija_stranka')
         return
     zgostitev = hashGesla(geslo)
     cur.execute("UPDATE stranka SET up_ime = %s, geslo = %s WHERE ime_priimek = %s", (up_ime, zgostitev, ime_priimek))
     response.set_cookie('up_ime', up_ime, secret=skrivnost)
     redirect('/stranke')
+
+
+@get('/registracija_usluzbenec')
+def registracija():
+    napaka = nastaviSporocilo()
+    return template('registracija_usluzbenec.html', napaka=napaka)
+
+@post('/registracija_usluzbenec')
+def registracija_usluzbenec_post():
+    ime_priimek = request.forms.ime_priimek
+    up_ime = request.forms.up_ime
+    geslo = request.forms.geslo
+    geslo2 = request.forms.geslo2
+    if ime_priimek is None or up_ime is None or geslo is None or geslo2 is None:
+        nastaviSporocilo('Registracija ni mogoča!') 
+        redirect('/registracija_usluzbenec')
+        return    
+    uporabnik = None
+    try: 
+        cur.execute("SELECT * FROM usluzbenec WHERE ime_priimek = %s", (ime_priimek, ))
+        uporabnik = cur.fetchone()
+    except:
+        uporabnik = None
+    if uporabnik is None:
+        nastaviSporocilo('Registracija ni mogoča!') 
+        redirect('/registracija_usluzbenec')
+        return
+    if geslo != geslo2:
+        nastaviSporocilo('Gesli se ne ujemata!') 
+        redirect('/registracija_usluzbenec')
+        return
+    zgostitev = hashGesla(geslo)
+    cur.execute("UPDATE usluzbenec SET up_ime = %s, geslo = %s WHERE ime_priimek = %s", (up_ime, zgostitev, ime_priimek))
+    response.set_cookie('up_ime', up_ime, secret=skrivnost)
+    redirect('/usluzbenci')
 
 
 @get('/prijava')
@@ -126,11 +161,16 @@ def prijava_post():
         return   
     hashBaza = None
     try: 
-        cur.execute("SELECT geslo FROM stranka WHERE up_ime = ?", (up_ime, ))
+        cur.execute("SELECT geslo FROM stranka WHERE up_ime = %s", (up_ime, ))
         hashBaza = cur.fetchone()
         hashBaza = hashBaza[0]
     except:
-        hashBaza = None
+        try:
+            cur.execute("SELECT geslo FROM stranka WHERE up_ime = %s", (up_ime, ))
+            hashBaza = cur.fetchone()
+            hashBaza = hashBaza[0]
+        except:
+            hashBaza = None
     if hashBaza is None:
         nastaviSporocilo('Uporabniško ime oziroma geslo nista ustrezna!') 
         redirect('/prijava')
@@ -140,6 +180,7 @@ def prijava_post():
         redirect('/prijava')
         return
     response.set_cookie('up_ime', up_ime, secret=skrivnost)
+    
     redirect('/stranke')
     
 @get('/odjava')
