@@ -198,8 +198,8 @@ def usluzbenci():
         WITH povpr AS (SELECT ime_priimek, round(avg(ocena),2) povprecna_ocena
           FROM Ocena
           GROUP BY ime_priimek) 
-        SELECT u.*, p.povprecna_ocena
-        FROM usluzbenec u
+        SELECT u.id_usluzbenec, u.ime_priimek, p.povprecna_ocena
+        FROM usluzbenec u 
         LEFT JOIN povpr p ON p.ime_priimek = u.ime_priimek
         order by u.ime_priimek asc;
       """)
@@ -474,7 +474,7 @@ def pobrisi_termin():
 @get('/urnik')
 def urnik():
     cur.execute("""
-      SELECT u.* FROM usluzbenec u
+      SELECT u.id_usluzbenec, u.ime_priimek FROM usluzbenec u
       ORDER BY ime_priimek;
       """)
     return bottle.template('urnik.html', usluzbenci=cur)
