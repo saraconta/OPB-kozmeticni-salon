@@ -93,7 +93,8 @@ def registracija_post():
         return    
     uporabnik = None
     try: 
-        uporabnik = cur.execute("SELECT * FROM stranka WHERE ime_priimek = ?", (ime_priimek, )).fetchone()
+        cur.execute("SELECT * FROM stranka WHERE ime_priimek = %s", (ime_priimek, ))
+        uporabnik = cur.fetchone()
     except:
         uporabnik = None
     if uporabnik is None:
@@ -105,7 +106,7 @@ def registracija_post():
         redirect('/registracija')
         return
     zgostitev = hashGesla(geslo)
-    cur.execute("UPDATE stranka SET up_ime = ?, geslo = ? WHERE ime_priimek = ?", (up_ime, zgostitev, ime_priimek))
+    cur.execute("UPDATE stranka SET up_ime = %s, geslo = %s WHERE ime_priimek = %s", (up_ime, zgostitev, ime_priimek))
     response.set_cookie('up_ime', up_ime, secret=skrivnost)
     redirect('/stranke')
 
@@ -125,7 +126,8 @@ def prijava_post():
         return   
     hashBaza = None
     try: 
-        hashBaza = cur.execute("SELECT geslo FROM stranka WHERE up_ime = ?", (up_ime, )).fetchone()
+        cur.execute("SELECT geslo FROM stranka WHERE up_ime = ?", (up_ime, ))
+        hashBaza = cur.fetchone()
         hashBaza = hashBaza[0]
     except:
         hashBaza = None
