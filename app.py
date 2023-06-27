@@ -77,7 +77,7 @@ def hashGesla(s):
     return m.hexdigest()
 
 @get('/registracija_stranka')
-def registracija():
+def registracija_stranka():
     napaka = nastaviSporocilo()
     return template('registracija_stranka.html', napaka=napaka)
 
@@ -114,7 +114,7 @@ def registracija_stranka_post():
 
 
 @get('/registracija_usluzbenec')
-def registracija():
+def registracija_usluzbenec():
     napaka = nastaviSporocilo()
     return template('registracija_usluzbenec.html', napaka=napaka)
 
@@ -131,8 +131,8 @@ def registracija_usluzbenec_post():
     uporabnik = None
     try: 
         cur.execute("SELECT * FROM usluzbenec WHERE ime_priimek = %s", (ime_priimek, ))
-        uporabnik = cur.fetchone()
         conn.commit()
+        uporabnik = cur.fetchone()
     except:
         uporabnik = None
     if uporabnik is None:
@@ -161,13 +161,13 @@ def prijava_stranka_post():
     geslo = request.forms.geslo
     if up_ime is None or geslo is None:
         nastaviSporocilo('Uporabniško ime in geslo morata biti neprazna!') 
-        redirect('/prijava_usluzbenec')
+        redirect('/prijava_stranka')
         return
     hashBaza = None
     try: 
         cur.execute("SELECT geslo FROM stranka WHERE up_ime = %s", (up_ime, ))
-        conn.commit()
         hashBaza = cur.fetchall()[0][0]
+        conn.commit()
     except:
         hashBaza = None
     if hashBaza is None:
@@ -199,8 +199,8 @@ def prijava_usluzbenec_post():
     hashBaza = None
     try: 
         cur.execute("SELECT geslo FROM usluzbenec WHERE up_ime = %s", (up_ime, ))
-        conn.commit()
         hashBaza = cur.fetchall()[0][0]
+        conn.commit()
     except:
         hashBaza = None
     if hashBaza is None:
@@ -239,7 +239,6 @@ def index():
 
 ### STRANKE
 @get('/stranke')
-# @cookie_required
 def stranke():
     cur.execute("""
       SELECT id_stranka, ime_priimek, telefon, mail from Stranka
@@ -248,7 +247,6 @@ def stranke():
 
 
 @get('/dodaj_stranko')
-#@cookie_required
 def dodaj_stranko():
     return template('dodaj_stranko.html', ime_priimek='', telefon='', mail='', napake=None)
 
@@ -287,7 +285,6 @@ def usluzbenci():
 
 
 @get('/dodaj_usluzbenca')
-#@cookie_required
 def dodaj_usluzbenca_get():
     return bottle.template('dodaj_usluzbenca.html', ime_priimek='', storitev='', napake=None)
 
@@ -316,7 +313,6 @@ def dodaj_usluzbenca_post():
 
 ### OCENE
 @get('/dodaj_oceno/<id_usluzbenec:int>')
-#@cookie_required
 def dodaj_oceno(id_usluzbenec):
     cur.execute("""SELECT  
                     u.ime_priimek
@@ -351,7 +347,6 @@ def storitve(id_usluzbenec):
 
 ### STORITVE
 @get('/dodaj_storitev/<id_usluzbenec:int>')
-#@cookie_required
 def dodaj_storitev(id_usluzbenec): 
     cur.execute("""SELECT  
                     u.ime_priimek
@@ -372,7 +367,6 @@ def dodaj_storitev(id_usluzbenec):
 @post('/dodaj_storitev/<id_usluzbenec:int>')
 def dodaj_storitev_post(id_usluzbenec):
   storitev = request.forms.storitev
-  #storitev = request.forms.get('storitev')
   cur.execute("""
 
         INSERT INTO Usluzb_storitve (id_usluzbenec, ime_storitve) VALUES (%s, %s);
@@ -398,7 +392,6 @@ def storitev_usluzbenci_get(id_storitev):
 
 ### TERMIN
 @get('/termin')
-#@cookie_required
 def termina_storitev():
     cur.execute("""
       SELECT id_storitev, ime_storitve FROM Storitev
@@ -407,7 +400,6 @@ def termina_storitev():
 
   
 @get('/termin/<id_storitev:int>')
-#@cookie_required
 def termina_usluzbenec(id_storitev):
     cur.execute("""
       SELECT u.id_usluzbenec, u.ime_priimek
@@ -418,7 +410,6 @@ def termina_usluzbenec(id_storitev):
     return template('termin_usluzbenec.html', id_storitev = id_storitev, usluzbenci_storitve=cur)
 
 @get('/termin/<id_storitev:int>/<id_usluzbenec:int>')
-#@cookie_required
 def termin_stranka(id_usluzbenec, id_storitev):
     cur.execute("""
       SELECT u.ime_priimek, s.ime_storitve, s.trajanje, u.id_usluzbenec, s.id_storitev
@@ -446,7 +437,6 @@ def termin_date_conversion(id_usluzbenec, id_storitev):
 
 
 @get('/termin/<id_storitev:int>/<id_usluzbenec:int>/<year:int>-<month:int>-<day:int>')
-#@cookie_required
 def termin_ura(id_usluzbenec, id_storitev, year, month, day):
     datum = f"{year}-{month}-{day}"  # nastavimo parameter datum
     cur.execute("""with a as (select 
@@ -527,7 +517,6 @@ def pregled_terminov():
 
 
 @get('/pregled_termina/<id_stranka:int>')
-#@cookie_required
 def pregled_termina(id_stranka): 
     cur.execute("""SELECT id_termin, datum, ime_storitve
                     FROM termin1
