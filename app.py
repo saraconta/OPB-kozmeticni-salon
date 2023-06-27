@@ -95,6 +95,7 @@ def registracija_stranka_post():
     try: 
         cur.execute("SELECT * FROM stranka WHERE ime_priimek = %s", (ime_priimek, ))
         uporabnik = cur.fetchone()
+        conn.commit()
     except:
         uporabnik = None
     if uporabnik is None:
@@ -107,6 +108,7 @@ def registracija_stranka_post():
         return
     zgostitev = hashGesla(geslo)
     cur.execute("UPDATE stranka SET up_ime = %s, geslo = %s WHERE ime_priimek = %s", (up_ime, zgostitev, ime_priimek))
+    conn.commit()
     response.set_cookie('up_ime', up_ime, secret=skrivnost)
     redirect('/stranke')
 
@@ -130,6 +132,7 @@ def registracija_usluzbenec_post():
     try: 
         cur.execute("SELECT * FROM usluzbenec WHERE ime_priimek = %s", (ime_priimek, ))
         uporabnik = cur.fetchone()
+        conn.commit()
     except:
         uporabnik = None
     if uporabnik is None:
@@ -142,50 +145,86 @@ def registracija_usluzbenec_post():
         return
     zgostitev = hashGesla(geslo)
     cur.execute("UPDATE usluzbenec SET up_ime = %s, geslo = %s WHERE ime_priimek = %s", (up_ime, zgostitev, ime_priimek))
+    conn.commit()
     response.set_cookie('up_ime', up_ime, secret=skrivnost)
     redirect('/usluzbenci')
 
 
+@get('/prijava_stranka')
+def prijava_stranka():
+    napaka = nastaviSporocilo()
+    return template('prijava_stranka.html', napaka=napaka)
+
+@post('/prijava_stranka')
+def prijava_stranka_post():
+    up_ime = request.forms.up_ime
+    geslo = request.forms.geslo
+    if up_ime is None or geslo is None:
+        nastaviSporocilo('Uporabniško ime in geslo morata biti neprazna!') 
+        redirect('/prijava_usluzbenec')
+        return
+    hashBaza = None
+    try: 
+        cur.execute("SELECT geslo FROM stranka WHERE up_ime = %s", (up_ime, ))
+        conn.commit()
+        hashBaza = cur.fetchall()[0][0]
+    except:
+        hashBaza = None
+    if hashBaza is None:
+        nastaviSporocilo('Uporabniško ime oziroma geslo nista ustrezna!') 
+        redirect('/prijava_stranka')
+        return 
+    if hashGesla(geslo) != hashBaza:
+        nastaviSporocilo('Uporabniško ime oziroma geslo nista ustrezna!') 
+        redirect('/prijava_stranka')
+        return
+    response.set_cookie('up_ime', up_ime, secret=skrivnost)
+    response.set_cookie('rola', 'stranka', secret=skrivnost)
+    
+    redirect('/stranke')
+
+@get('/prijava_usluzbenec')
+def prijava_usluzbenec():
+    napaka = nastaviSporocilo()
+    return template('prijava_usluzbenec.html', napaka=napaka)
+
+@post('/prijava_usluzbenec')
+def prijava_usluzbenec_post():
+    up_ime = request.forms.up_ime
+    geslo = request.forms.geslo
+    if up_ime is None or geslo is None:
+        nastaviSporocilo('Uporabniško ime in geslo morata biti neprazna!') 
+        redirect('/prijava_usluzbenec')
+        return
+    hashBaza = None
+    try: 
+        cur.execute("SELECT geslo FROM usluzbenec WHERE up_ime = %s", (up_ime, ))
+        conn.commit()
+        hashBaza = cur.fetchall()[0][0]
+    except:
+        hashBaza = None
+    if hashBaza is None:
+        nastaviSporocilo('Uporabniško ime oziroma geslo nista ustrezna!') 
+        redirect('/prijava_usluzbenec')
+        return 
+    if hashGesla(geslo) != hashBaza:
+        nastaviSporocilo('Uporabniško ime oziroma geslo nista ustrezna!') 
+        redirect('/prijava_usluzbenec')
+        return
+    response.set_cookie('up_ime', up_ime, secret=skrivnost)
+    response.set_cookie('rola', 'usluzbenec', secret=skrivnost)
+    
+    redirect('/usluzbenci')
+    
 @get('/prijava')
 def prijava():
     napaka = nastaviSporocilo()
     return template('prijava.html', napaka=napaka)
 
-@post('/prijava')
-def prijava_post():
-    up_ime = request.forms.up_ime
-    geslo = request.forms.geslo
-    if up_ime is None or geslo is None:
-        nastaviSporocilo('Uporabniško ime in geslo morata biti neprazna!') 
-        redirect('/prijava')
-        return   
-    hashBaza = None
-    try: 
-        cur.execute("SELECT geslo FROM stranka WHERE up_ime = %s", (up_ime, ))
-        hashBaza = cur.fetchone()
-        hashBaza = hashBaza[0]
-    except:
-        try:
-            cur.execute("SELECT geslo FROM stranka WHERE up_ime = %s", (up_ime, ))
-            hashBaza = cur.fetchone()
-            hashBaza = hashBaza[0]
-        except:
-            hashBaza = None
-    if hashBaza is None:
-        nastaviSporocilo('Uporabniško ime oziroma geslo nista ustrezna!') 
-        redirect('/prijava')
-        return
-    if hashGesla(geslo) != hashBaza:
-        nastaviSporocilo('Uporabniško ime oziroma geslo nista ustrezna!') 
-        redirect('/prijava')
-        return
-    response.set_cookie('up_ime', up_ime, secret=skrivnost)
-    
-    redirect('/stranke')
-    
 @get('/odjava')
-def odjava_get():
+def odjava():
     response.delete_cookie('up_ime')
+    response.delete_cookie('rola')
     redirect('/prijava')
   
 

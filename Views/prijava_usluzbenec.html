@@ -1,0 +1,64 @@
+%rebase('poskusna_osnova.html')
+
+<label class="label">USLUŽBENCI</label>
+<label class="label">Prijavite se:</label>
+<table class="table is-hoverable is-fullwidth">
+    <thead>
+        <tr>
+            <form method="POST" action="/prijava_usluzbenec">
+                <td></td>
+                <tr>
+                    <td>
+                        <div class="control has-icons-left">
+                            <label for="up_ime">Uporabniško ime</label>
+                            <input class="input is-small" type="text" 
+                                id="up_ime" name="up_ime" placeholder="Uporabniško ime" required
+                                oninput="this.setCustomValidity('')"
+                                oninvalid="this.setCustomValidity('Obvezno polje')"
+                            />
+                            <span class="icon is-small is-left">
+                                <i class="far fa-clipboard-check"></i>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="control has-icons-left">
+                            <label for="geslo">Geslo</label>
+                            <input class="input is-small" type="password" 
+                                id="geslo" name="geslo" placeholder="Geslo" required
+                                oninput="this.setCustomValidity('')"
+                                oninvalid="this.setCustomValidity('Obvezno polje')"
+                            />
+                            <span class="icon is-small is-left">
+                                <i class="far fa-clipboard-check"></i>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="field is-grouped">
+                            <div class="control">
+                                <button class="button is-link" type="submit">Prijava</button>
+                            </div>
+                            <div class="control">
+                                <a class="button is-link is-light" href="/">Prekliči</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="field is-grouped">
+                            <label>
+                                <input type="checkbox" checked="checked" name="remember"> Zapomni si me
+                            </label>
+                        </div>
+                    </td>
+                </tr>
+            </form>
+        </tr>
+    </thead>
+</table>
