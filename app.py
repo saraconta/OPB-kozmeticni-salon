@@ -65,7 +65,7 @@ def preveriUporabnika():
             uporabnik = None
         if uporabnik: 
             return uporabnik
-    redirect('/prijava')
+    #redirect('/prijava')
   
 ############################################
 ### Registracija, prijava
@@ -181,7 +181,7 @@ def prijava_stranka_post():
     response.set_cookie('up_ime', up_ime, secret=skrivnost)
     response.set_cookie('rola', 'stranka', secret=skrivnost)
     
-    redirect('/stranke')
+    redirect('/')
 
 @get('/prijava_usluzbenec')
 def prijava_usluzbenec():
@@ -240,10 +240,15 @@ def index():
 ### STRANKE
 @get('/stranke')
 def stranke():
-    cur.execute("""
-      SELECT id_stranka, ime_priimek, telefon, mail from Stranka
-    """)
-    return bottle.template('stranke.html', stranke=cur)
+    # to ne dela!
+    #uporabnik = preveriUporabnika()
+    #if uporabnik is None:
+    #    redirect('/prijava')
+    #else:
+        cur.execute("""
+        SELECT id_stranka, ime_priimek, telefon, mail from Stranka
+        """)
+        return bottle.template('stranke.html', stranke=cur)
 
 
 @get('/dodaj_stranko')
