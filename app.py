@@ -60,7 +60,8 @@ def preveriUporabnika():
     if up_ime:
         uporabnik = None
         try: 
-            uporabnik = cur.execute("SELECT * FROM stranka WHERE up_ime = ?", (up_ime, )).fetchone()
+            uporabnik = cur.execute("""SELECT id_stranka, ime_priimek, telefon, mail, up_ime, admin, geslo 
+                FROM Stranka WHERE up_ime = %s""", (up_ime, )).fetchone()
         except:
             uporabnik = None
         if uporabnik: 
@@ -93,7 +94,9 @@ def registracija_stranka_post():
         return    
     uporabnik = None
     try: 
-        cur.execute("SELECT * FROM stranka WHERE ime_priimek = %s", (ime_priimek, ))
+        cur.execute("""
+            SELECT id_stranka, ime_priimek, telefon, mail, up_ime, admin, geslo
+            FROM Stranka WHERE ime_priimek = %s""", (ime_priimek, ))
         uporabnik = cur.fetchone()
         conn.commit()
     except:
@@ -107,7 +110,9 @@ def registracija_stranka_post():
         redirect('/registracija_stranka')
         return
     zgostitev = hashGesla(geslo)
-    cur.execute("UPDATE stranka SET up_ime = %s, geslo = %s WHERE ime_priimek = %s", (up_ime, zgostitev, ime_priimek))
+    cur.execute("""
+        UPDATE Stranka SET up_ime = %s, geslo = %s 
+        WHERE ime_priimek = %s""", (up_ime, zgostitev, ime_priimek))
     conn.commit()
     response.set_cookie('up_ime', up_ime, secret=skrivnost)
     redirect('/stranke')
@@ -130,7 +135,8 @@ def registracija_usluzbenec_post():
         return    
     uporabnik = None
     try: 
-        cur.execute("SELECT * FROM usluzbenec WHERE ime_priimek = %s", (ime_priimek, ))
+        cur.execute("""SELECT id_usluzbenec, ime_priimek, up_ime, admin, geslo
+            FROM Usluzbenec WHERE ime_priimek = %s""", (ime_priimek, ))
         conn.commit()
         uporabnik = cur.fetchone()
     except:
@@ -144,7 +150,7 @@ def registracija_usluzbenec_post():
         redirect('/registracija_usluzbenec')
         return
     zgostitev = hashGesla(geslo)
-    cur.execute("UPDATE usluzbenec SET up_ime = %s, geslo = %s WHERE ime_priimek = %s", (up_ime, zgostitev, ime_priimek))
+    cur.execute("""UPDATE Usluzbenec SET up_ime = %s, geslo = %s WHERE ime_priimek = %s""", (up_ime, zgostitev, ime_priimek))
     conn.commit()
     response.set_cookie('up_ime', up_ime, secret=skrivnost)
     redirect('/usluzbenci')
@@ -165,7 +171,7 @@ def prijava_stranka_post():
         return
     hashBaza = None
     try: 
-        cur.execute("SELECT geslo FROM stranka WHERE up_ime = %s", (up_ime, ))
+        cur.execute("""SELECT geslo FROM Stranka WHERE up_ime = %s""", (up_ime, ))
         hashBaza = cur.fetchall()[0][0]
         conn.commit()
     except:
@@ -198,7 +204,7 @@ def prijava_usluzbenec_post():
         return
     hashBaza = None
     try: 
-        cur.execute("SELECT geslo FROM usluzbenec WHERE up_ime = %s", (up_ime, ))
+        cur.execute("""SELECT geslo FROM Usluzbenec WHERE up_ime = %s""", (up_ime, ))
         hashBaza = cur.fetchall()[0][0]
         conn.commit()
     except:
@@ -241,10 +247,10 @@ def index():
 @get('/stranke')
 def stranke():
     # to ne dela!
-    #uporabnik = preveriUporabnika()
-    #if uporabnik is None:
-    #    redirect('/prijava')
-    #else:
+    uporabnik = preveriUporabnika()
+    if uporabnik is None:
+        redirect('/prijava')
+    else:
         cur.execute("""
         SELECT id_stranka, ime_priimek, telefon, mail from Stranka
         """)
@@ -277,16 +283,20 @@ def dodaj_stranko_post():
 ### USLUŽBENCI
 @get('/usluzbenci')
 def usluzbenci():
-    cur.execute("""
-        WITH povpr AS (SELECT ime_priimek, round(avg(ocena),2) povprecna_ocena
-          FROM Ocena
-          GROUP BY ime_priimek) 
-        SELECT u.id_usluzbenec, u.ime_priimek, p.povprecna_ocena
-        FROM usluzbenec u 
-        LEFT JOIN povpr p ON p.ime_priimek = u.ime_priimek
-        order by u.ime_priimek asc;
-      """)
-    return bottle.template('usluzbenci.html', usluzbenci=cur)
+    uporabnik = preveriUporabnika()
+    if uporabnik is None:
+        redirect('/prijava')
+    else:
+        cur.execute("""
+            WITH povpr AS (SELECT ime_priimek, round(avg(ocena),2) povprecna_ocena
+            FROM Ocena
+            GROUP BY ime_priimek) 
+            SELECT u.id_usluzbenec, u.ime_priimek, p.povprecna_ocena
+            FROM usluzbenec u 
+            LEFT JOIN povpr p ON p.ime_priimek = u.ime_priimek
+            order by u.ime_priimek asc;
+        """)
+        return bottle.template('usluzbenci.html', usluzbenci=cur)
 
 
 @get('/dodaj_usluzbenca')
