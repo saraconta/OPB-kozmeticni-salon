@@ -42,6 +42,9 @@ cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 # odkomentiraj, če želiš sporočila o napakah
 # debug(True)
 
+#za cookieje
+from functools import wraps
+
 repo = Repo()
 
 skrivnost = "ns86uffdDS3LE0u2"
@@ -61,13 +64,49 @@ def preveriUporabnika():
         uporabnik = None
         try: 
             uporabnik = cur.execute("""SELECT id_stranka, ime_priimek, telefon, mail, up_ime, admin, geslo 
-                FROM Stranka WHERE up_ime = %s""", (up_ime, )).fetchone()
+                FROM Stranka WHERE up_ime = %s""", [up_ime]).fetchone()[0]
         except:
             uporabnik = None
         if uporabnik: 
             return uporabnik
+    print('ni preverlo uporabnika')
     #redirect('/prijava')
-  
+
+def cookie_required_stranka(f):
+    """
+    Dekorator, ki zahteva veljaven piškotek. Če piškotka ni, uporabnika preusmeri na stran za prijavo.
+    """
+    @wraps(f)
+    def decorated( *args, **kwargs):
+        cookie = request.get_cookie("up_ime", secret=skrivnost)
+        if cookie:
+            return f(*args, **kwargs)
+        return template("prijava_stranka.html")   
+    return decorated
+
+def cookie_required_usluzbenec(f):
+    """
+    Dekorator, ki zahteva veljaven piškotek. Če piškotka ni, uporabnika preusmeri na stran za .
+    """
+    @wraps(f)
+    def decorated( *args, **kwargs):
+        cookie = request.get_cookie("up_ime", secret=skrivnost)
+        if cookie:
+            return f(*args, **kwargs)
+        return template("prijava_usluzbenec.html")
+    return decorated
+
+def cookie_required_usluzbenec_vloga(f):
+    """
+    Dekorator, ki zahteva veljaven piškotek. Če piškotka ni, uporabnika preusmeri na stran za prijavo.
+    """
+    @wraps(f)
+    def decorated( *args, **kwargs):
+        cookie = request.get_cookie("admin", secret=skrivnost)
+        if cookie:
+            return f(*args, **kwargs)
+        return template("prijava_usluzbenec.html")
+    return decorated
 ############################################
 ### Registracija, prijava
 ############################################
@@ -168,26 +207,26 @@ def prijava_stranka_post():
     if up_ime is None or geslo is None:
         nastaviSporocilo('Uporabniško ime in geslo morata biti neprazna!') 
         redirect('/prijava_stranka')
-        return
+        return 
     hashBaza = None
     try: 
-        cur.execute("""SELECT geslo FROM Stranka WHERE up_ime = %s""", (up_ime, ))
-        hashBaza = cur.fetchall()[0][0]
+        cur.execute("""SELECT geslo FROM Stranka WHERE up_ime = %s""", [up_ime])
+        hashBaza = cur.fetchone()[0]
         conn.commit()
     except:
         hashBaza = None
     if hashBaza is None:
         nastaviSporocilo('Uporabniško ime oziroma geslo nista ustrezna!') 
         redirect('/prijava_stranka')
-        return 
+        return print('Uporabniško ime oziroma geslo nista ustrezna!')
     if hashGesla(geslo) != hashBaza:
         nastaviSporocilo('Uporabniško ime oziroma geslo nista ustrezna!') 
         redirect('/prijava_stranka')
-        return
-    response.set_cookie('up_ime', up_ime, secret=skrivnost)
-    response.set_cookie('rola', 'stranka', secret=skrivnost)
-    
-    redirect('/')
+        return print('Uporabniško ime oziroma geslo nista ustrezna!')
+    else:
+        response.set_cookie('up_ime', up_ime, secret=skrivnost)
+        response.set_cookie('rola', 'stranka', secret=skrivnost)
+        redirect('/')
 
 @get('/prijava_usluzbenec')
 def prijava_usluzbenec():
@@ -204,11 +243,12 @@ def prijava_usluzbenec_post():
         return
     hashBaza = None
     try: 
-        cur.execute("""SELECT geslo FROM Usluzbenec WHERE up_ime = %s""", (up_ime, ))
-        hashBaza = cur.fetchall()[0][0]
+        cur.execute("""SELECT geslo FROM Usluzbenec WHERE up_ime = %s""", [up_ime])
+        hashBaza = cur.fetchone()[0]
         conn.commit()
     except:
         hashBaza = None
+        print("baza je None")
     if hashBaza is None:
         nastaviSporocilo('Uporabniško ime oziroma geslo nista ustrezna!') 
         redirect('/prijava_usluzbenec')
@@ -245,17 +285,24 @@ def index():
 
 ### STRANKE
 @get('/stranke')
+@cookie_required_stranka
 def stranke():
-    # to ne dela!
-    uporabnik = preveriUporabnika()
+    up_ime = request.get_cookie("up_ime", secret=skrivnost)
+    try: 
+        uporabnik = cur.execute("""SELECT id_stranka, ime_priimek, telefon, mail, up_ime, admin, geslo 
+            FROM Stranka WHERE up_ime = %s""", [up_ime]).fetchone()[0]
+        print('uporabnik je')
+    except:
+        uporabnik = None
+
     if uporabnik is None:
+        print("Niste prijavljeni!")
         redirect('/prijava')
     else:
         cur.execute("""
         SELECT id_stranka, ime_priimek, telefon, mail from Stranka
         """)
-        return bottle.template('stranke.html', stranke=cur)
-
+        return bottle.template('stranke.html', stranke=cur, uporabnik=uporabnik)
 
 @get('/dodaj_stranko')
 def dodaj_stranko():
