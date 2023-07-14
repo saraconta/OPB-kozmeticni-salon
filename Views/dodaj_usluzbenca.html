@@ -2,11 +2,12 @@
 % setdefault('podnaslov', 'Uslužbenci')
 %rebase('osnova.html', napaka=napaka, podnaslov=podnaslov)
 
+%if ali_je_sef == 2:
 <label class="label">Vpišite podatke o novem uslužbencu:</label>
 <table class="table is-hoverable is-fullwidth">
     <thead>
         <tr>
-            <form action="{{url('dodaj_usluzbenca_post')}}" method="POST">
+            <form method="POST" action="/dodaj_usluzbenca">
                 <td></td>
                 <tr>
                     <td>
@@ -69,3 +70,7 @@
         </tr>
     </thead>
 </table>
+%else:
+<p>Nimaš pravic.</p>
+
+

@@ -2,6 +2,8 @@
 % setdefault('podnaslov', 'Urnik')
 %rebase('osnova.html', napaka=napaka, podnaslov=podnaslov)
 
+%if vloga == 'usluzbenec':
+
 <nav class="level is-mobile">
     <div class="level-item has-text-centered">
       <div>
@@ -72,3 +74,7 @@
     </div>
 
   </nav>
+
+
+% else:
+<p>Nimaš pravic.</p>

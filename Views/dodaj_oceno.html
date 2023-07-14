@@ -2,6 +2,8 @@
 % setdefault('podnaslov', 'Uslužbenci')
 %rebase('osnova.html', napaka=napaka, podnaslov=podnaslov)
 
+%if vloga == 'stranka':
+
 <label class="label">Ocenite uslužbenca:</label>
 <table class="table is-hoverable is-fullwidth">
     <thead>
@@ -55,3 +57,6 @@
         </tr>
     </thead>
 </table>
+
+%else:
+<p>Nimaš pravic.</p>

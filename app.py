@@ -96,16 +96,16 @@ def cookie_required_usluzbenec(f):
         return template("prijava_usluzbenec.html")
     return decorated
 
-def cookie_required_usluzbenec_vloga(f):
+def cookie_required_vloga(f):
     """
     Dekorator, ki zahteva veljaven piškotek. Če piškotka ni, uporabnika preusmeri na stran za prijavo.
     """
     @wraps(f)
     def decorated( *args, **kwargs):
-        cookie = request.get_cookie("admin", secret=skrivnost)
+        cookie = request.get_cookie("rola", secret=skrivnost)
         if cookie:
             return f(*args, **kwargs)
-        return template("prijava_usluzbenec.html")
+        return template("prijava.html")
     return decorated
 ############################################
 ### Registracija, prijava
@@ -154,7 +154,7 @@ def registracija_stranka_post():
         WHERE ime_priimek = %s""", (up_ime, zgostitev, ime_priimek))
     conn.commit()
     response.set_cookie('up_ime', up_ime, secret=skrivnost)
-    redirect('/stranke')
+    redirect('/prijava')
 
 
 @get('/registracija_usluzbenec')
@@ -192,7 +192,7 @@ def registracija_usluzbenec_post():
     cur.execute("""UPDATE Usluzbenec SET up_ime = %s, geslo = %s WHERE ime_priimek = %s""", (up_ime, zgostitev, ime_priimek))
     conn.commit()
     response.set_cookie('up_ime', up_ime, secret=skrivnost)
-    redirect('/usluzbenci')
+    redirect('/prijava')
 
 
 @get('/prijava_stranka')
@@ -222,11 +222,10 @@ def prijava_stranka_post():
     if hashGesla(geslo) != hashBaza:
         nastaviSporocilo('Uporabniško ime oziroma geslo nista ustrezna!') 
         redirect('/prijava_stranka')
-        return print('Uporabniško ime oziroma geslo nista ustrezna!')
-    else:
-        response.set_cookie('up_ime', up_ime, secret=skrivnost)
-        response.set_cookie('rola', 'stranka', secret=skrivnost)
-        redirect('/')
+        return
+    response.set_cookie('up_ime', up_ime, secret=skrivnost)
+    response.set_cookie('rola', 'stranka', secret=skrivnost)
+    redirect('/')
 
 @get('/prijava_usluzbenec')
 def prijava_usluzbenec():
@@ -259,8 +258,7 @@ def prijava_usluzbenec_post():
         return
     response.set_cookie('up_ime', up_ime, secret=skrivnost)
     response.set_cookie('rola', 'usluzbenec', secret=skrivnost)
-    
-    redirect('/usluzbenci')
+    redirect('/')
     
 @get('/prijava')
 def prijava():
@@ -286,27 +284,28 @@ def index():
 ### STRANKE
 @get('/stranke')
 @cookie_required_stranka
+@cookie_required_vloga
 def stranke():
-    up_ime = request.get_cookie("up_ime", secret=skrivnost)
-    try: 
-        uporabnik = cur.execute("""SELECT id_stranka, ime_priimek, telefon, mail, up_ime, admin, geslo 
-            FROM Stranka WHERE up_ime = %s""", [up_ime]).fetchone()[0]
-        print('uporabnik je')
-    except:
-        uporabnik = None
-
-    if uporabnik is None:
-        print("Niste prijavljeni!")
-        redirect('/prijava')
+    up_ime = request.get_cookie('up_ime', secret=skrivnost)
+    vloga = request.get_cookie('rola', secret=skrivnost)
+    if vloga == 'usluzbenec': #če je uslužbenec vidi use
+         cur.execute("""SELECT id_stranka, ime_priimek, telefon, mail
+           FROM Stranka""")
     else:
-        cur.execute("""
-        SELECT id_stranka, ime_priimek, telefon, mail from Stranka
-        """)
-        return bottle.template('stranke.html', stranke=cur, uporabnik=uporabnik)
+        cur.execute("""SELECT id_stranka, ime_priimek, telefon, mail
+           FROM Stranka WHERE up_ime = %s""", [up_ime])
+        
+    return bottle.template('stranke.html', stranke=cur, vloga=vloga)
+
+
+
 
 @get('/dodaj_stranko')
+@cookie_required_vloga
 def dodaj_stranko():
-    return template('dodaj_stranko.html', ime_priimek='', telefon='', mail='', napake=None)
+    vloga = request.get_cookie('rola',secret=skrivnost)
+    return template('dodaj_stranko.html', ime_priimek='', telefon='', mail='',vloga=vloga, napake=None)
+
 
 @post('/dodaj_stranko')
 def dodaj_stranko_post():
@@ -330,25 +329,32 @@ def dodaj_stranko_post():
 ### USLUŽBENCI
 @get('/usluzbenci')
 def usluzbenci():
-    uporabnik = preveriUporabnika()
-    if uporabnik is None:
-        redirect('/prijava')
-    else:
-        cur.execute("""
+    cur.execute("""
             WITH povpr AS (SELECT ime_priimek, round(avg(ocena),2) povprecna_ocena
             FROM Ocena
             GROUP BY ime_priimek) 
             SELECT u.id_usluzbenec, u.ime_priimek, p.povprecna_ocena
             FROM usluzbenec u 
             LEFT JOIN povpr p ON p.ime_priimek = u.ime_priimek
-            order by u.ime_priimek asc;
-        """)
-        return bottle.template('usluzbenci.html', usluzbenci=cur)
+            order by u.ime_priimek asc;""")
+    return bottle.template('usluzbenci.html', usluzbenci=cur)
+
+        
 
 
-@get('/dodaj_usluzbenca')
+@get('/dodaj_usluzbenca') #dodaja lahko samo šefica: up_ime = clarisa
+@cookie_required_usluzbenec
+@cookie_required_vloga
 def dodaj_usluzbenca_get():
-    return bottle.template('dodaj_usluzbenca.html', ime_priimek='', storitev='', napake=None)
+    up_ime = request.get_cookie('up_ime', secret=skrivnost)
+    vloga = request.get_cookie('rola', secret=skrivnost)
+    if vloga == 'usluzbenec':
+        cur.execute("""select admin from Usluzbenec 
+        where up_ime = %s""", [up_ime])
+        ali_je_sef = cur.fetchone()[0]
+    else:
+        ali_je_sef = None
+    return bottle.template('dodaj_usluzbenca.html', ime_priimek='', storitev='', ali_je_sef=ali_je_sef, napake=None)
 
 @post('/dodaj_usluzbenca')
 def dodaj_usluzbenca_post():
@@ -374,13 +380,17 @@ def dodaj_usluzbenca_post():
 
 
 ### OCENE
-@get('/dodaj_oceno/<id_usluzbenec:int>')
+@get('/dodaj_oceno/<id_usluzbenec:int>') #oceno lahko doda samo stranka
+@cookie_required_vloga
 def dodaj_oceno(id_usluzbenec):
+    #up_ime = request.get_cookie('up_ime', secret=skrivnost)
+    vloga = request.get_cookie('rola', secret=skrivnost)  
     cur.execute("""SELECT  
                     u.ime_priimek
                     FROM Usluzbenec u
                     WHERE u.id_usluzbenec = %s""", [id_usluzbenec])
-    return template('dodaj_oceno.html', id_usluzbenec = id_usluzbenec, ime_priimek=cur.fetchone()[0], ocena='', napaka=None)
+    return template('dodaj_oceno.html', id_usluzbenec = id_usluzbenec, ime_priimek=cur.fetchone()[0], ocena='',
+                    vloga=vloga, napaka=None)
 
 @post('/dodaj_oceno/<id_usluzbenec:int>')
 def dodaj_oceno_post(id_usluzbenec):
@@ -399,6 +409,9 @@ def dodaj_oceno_post(id_usluzbenec):
     conn.commit()
     redirect(url('/usluzbenci'))
 
+
+
+
 @get('/storitve/<id_usluzbenec:int>')
 def storitve(id_usluzbenec):
     cur.execute("""SELECT us.ime_storitve ime1, 1 ime2
@@ -408,21 +421,26 @@ def storitve(id_usluzbenec):
 
 
 ### STORITVE
-@get('/dodaj_storitev/<id_usluzbenec:int>')
+@get('/dodaj_storitev/<id_usluzbenec:int>')  #storitev uslužbencu lahko doda samo šef (clarisa)
+@cookie_required_usluzbenec
+@cookie_required_vloga
 def dodaj_storitev(id_usluzbenec): 
+    up_ime = request.get_cookie('up_ime', secret=skrivnost)
+    vloga = request.get_cookie('rola', secret=skrivnost)
+    if vloga == 'usluzbenec':
+        cur.execute("""select admin from Usluzbenec 
+        where up_ime = %s""", [up_ime])
+        ali_je_sef = cur.fetchone()[0]
+    else:
+        ali_je_sef = None
     cur.execute("""SELECT  
                     u.ime_priimek
                     FROM Usluzbenec u
                     WHERE u.id_usluzbenec = %s;""",
                     [id_usluzbenec])
 
-
-
-
-    
-
     return template('dodaj_storitev.html', id_usluzbenec = id_usluzbenec,
-                    ime_priimek=cur.fetchone()[0], storitev='',
+                    ime_priimek=cur.fetchone()[0], storitev='', ali_je_sef = ali_je_sef,
                     napaka=None)
 
 
@@ -453,12 +471,14 @@ def storitev_usluzbenci_get(id_storitev):
 
 
 ### TERMIN
-@get('/termin')
+@get('/termin') #termin si lahko rezervira samo stranka
+@cookie_required_vloga
 def termina_storitev():
+    vloga = request.get_cookie('rola', secret=skrivnost)    
     cur.execute("""
       SELECT id_storitev, ime_storitve FROM Storitev
     """)
-    return bottle.template('termin_storitev.html', storitve=cur)
+    return bottle.template('termin_storitev.html', storitve=cur, vloga=vloga)
 
   
 @get('/termin/<id_storitev:int>')
@@ -499,7 +519,17 @@ def termin_date_conversion(id_usluzbenec, id_storitev):
 
 
 @get('/termin/<id_storitev:int>/<id_usluzbenec:int>/<year:int>-<month:int>-<day:int>')
+@cookie_required_stranka
+@cookie_required_vloga
 def termin_ura(id_usluzbenec, id_storitev, year, month, day):
+    vloga = request.get_cookie('rola', secret=skrivnost)
+    up_ime = request.get_cookie('up_ime', secret=skrivnost)
+    if vloga == 'stranka':
+        cur.execute("""select ime_priimek from Stranka 
+        where up_ime = %s""", [up_ime])
+        ime = cur.fetchone()[0]
+    else: 
+        ime = None 
     datum = f"{year}-{month}-{day}"  # nastavimo parameter datum
     cur.execute("""with a as (select 
       t.datum::time zacetek,   t.datum::time + (s.trajanje * interval '1 Minute' ) konec
@@ -517,13 +547,23 @@ def termin_ura(id_usluzbenec, id_storitev, year, month, day):
 
     return template('termin_ura.html', id_storitev = id_storitev, id_usluzbenec = id_usluzbenec,
                     datum = datum,year=year, month=month, day=day, 
-      ura = cur, ime_priimek_stranke = '', koda = '', napaka=None)
+      ura = cur, ime_priimek_stranke = ime, koda = '', napaka=None)
 
 
 
 
 @post('/termin/<id_storitev:int>/<id_usluzbenec:int>/<year:int>-<month:int>-<day:int>')
+@cookie_required_stranka
+@cookie_required_vloga
 def vpis_termina_post(id_usluzbenec, id_storitev, year, month, day):
+    vloga = request.get_cookie('rola', secret=skrivnost)
+    up_ime = request.get_cookie('up_ime', secret=skrivnost)
+    if vloga == 'stranka':
+        cur.execute("""select ime_priimek from Stranka 
+        where up_ime = %s""", [up_ime])
+        ime = cur.fetchone()[0]
+    else: 
+        ime = None 
     datum = f"{year}-{month}-{day}"
     cur.execute("""
       SELECT u.ime_priimek, s.ime_storitve, s.trajanje, u.id_usluzbenec, s.id_storitev
@@ -533,7 +573,7 @@ def vpis_termina_post(id_usluzbenec, id_storitev, year, month, day):
       WHERE (u.id_usluzbenec, s.id_storitev) = (%s, %s)""", (id_usluzbenec, id_storitev))
     
     vrstica=cur.fetchone()
-    ime_priimek_stranke = request.forms.ime_priimek_stranke
+    ime_priimek_stranke = ime
     ura = request.forms.ura
     datum_ura = datum + " " + ura
     ime_storitve = vrstica[1]
@@ -569,8 +609,17 @@ def prikazi_termin(id_termin):
 
 
 
-@get('/pregled_terminov')
+@get('/pregled_terminov') #vsaka stranka vidi samo svoje termine, zaposleni vidijo od vseh 
+@cookie_required_stranka
+@cookie_required_vloga 
 def pregled_terminov():
+    vloga = request.get_cookie('rola', secret=skrivnost)
+    up_ime = request.get_cookie('up_ime', secret=skrivnost)
+    if vloga == 'stranka': #če je stranka naj vrne kar samo njen pregled terminov
+        cur.execute("""select id_stranka from Stranka 
+        where up_ime = %s""", [up_ime])
+        id_stranka = cur.fetchone()[0]
+        return redirect(url('pregled_termina', id_stranka=id_stranka))
     cur.execute("""
       SELECT id_stranka, ime_priimek from Stranka 
       order by ime_priimek
@@ -603,12 +652,26 @@ def pobrisi_termin():
 
 ### URNIK
 @get('/urnik')
+@cookie_required_usluzbenec
+@cookie_required_vloga 
 def urnik():
+    vloga = request.get_cookie('rola', secret=skrivnost)
+    up_ime = request.get_cookie('up_ime', secret=skrivnost)
+
+    if vloga == 'usluzbenec': 
+        cur.execute("""select admin from Usluzbenec 
+        where up_ime = %s""", [up_ime])
+        ali_je_sef = cur.fetchone()[0]
+        if ali_je_sef != 2:
+            cur.execute("""select id_usluzbenec from Usluzbenec
+            where up_ime = %s""", [up_ime])
+            id_usluzbenec = cur.fetchone()[0]
+            return redirect(url('prikazi_urnik', id_usluzbenec=id_usluzbenec))
     cur.execute("""
       SELECT u.id_usluzbenec, u.ime_priimek FROM usluzbenec u
       ORDER BY ime_priimek;
       """)
-    return bottle.template('urnik.html', usluzbenci=cur)
+    return bottle.template('urnik.html', usluzbenci=cur, vloga=vloga)
 
 @get('/urnik/<id_usluzbenec:int>')
 def prikazi_urnik(id_usluzbenec):
@@ -624,7 +687,13 @@ def prikazi_urnik(id_usluzbenec):
 
 #POSLOVANJE
 @get('/poslovanje')
+@cookie_required_usluzbenec
+@cookie_required_vloga
 def poslovanje():
+    up_ime = request.get_cookie('up_ime', secret=skrivnost)
+    cur.execute("""select admin from Usluzbenec 
+        where up_ime = %s""", [up_ime])
+    ali_je_sef = cur.fetchone()[0]
     cur.execute("""
         with a as 
           (SELECT t.id_termin, s.id_stranka, s.ime_priimek, t.datum, t.ime_storitve, t.ime_priimek_usluzbenca, st.trajanje, st.cena, i.popust,
@@ -644,7 +713,7 @@ def poslovanje():
         FROM b
         ORDER BY leto, mesec ASC;
     """)
-    return bottle.template('poslovanje1.html', poslovanje=cur)
+    return bottle.template('poslovanje1.html', poslovanje=cur, ali_je_sef=ali_je_sef)
 
 
 

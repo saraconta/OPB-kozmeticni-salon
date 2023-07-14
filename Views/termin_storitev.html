@@ -2,6 +2,9 @@
 % setdefault('podnaslov', 'Termin')
 %rebase('osnova.html', napaka=napaka, podnaslov=podnaslov)
 
+
+%if vloga == 'stranka':
+
 <label class="label">Termin:</label>
 
 <div class="tabs is-toggle is-fullwidth is-large">
@@ -51,3 +54,5 @@
 
 <progress class="progress is-info" value="0" max="100">0%</progress>
 
+%else:
+<p>Nimaš pravic.</p>

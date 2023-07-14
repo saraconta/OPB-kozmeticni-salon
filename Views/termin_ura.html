@@ -65,17 +65,21 @@
 
                 <tr>
                     <td>
+
+
                         <div class="control has-icons-left">
-                            <label for="ime_priimek_stranke">Ime in priimek</label>
-                            <input class="input is-small" type="text" 
-                                id="ime_priimek_stranke" name="ime_priimek_stranke" placeholder="Ime in priimek stranke" required
-                                oninput="this.setCustomValidity('')"
-                                oninvalid="this.setCustomValidity('Obvezno polje')"
-                            />
-                            <span class="icon is-small is-left">
-                                <i class="far fa-clipboard-check"></i>
-                            </span>
-                        </div>
+                          <label for="ime_priimek_usluzbenca">Ime in priimek</label>
+                          <input class="input is-small" type="text" 
+                              name="ime_priimek_stranke" value="{{ime_priimek_stranke}}" disabled name="ime_priimek_stranke" 
+                              placeholder="Ime stranke" required
+                              oninput="this.setCustomValidity('')"
+                              oninvalid="this.setCustomValidity('Obvezno polje')"
+                          />
+                          <span class="icon is-small is-left">
+                              <i class="far fa-clipboard-check"></i>
+                          </span>
+                      </div>
+
                     </td>
                 </tr>
                 
