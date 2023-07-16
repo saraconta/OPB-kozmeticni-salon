@@ -2,6 +2,8 @@
 % setdefault('podnaslov', 'Termin')
 %rebase('osnova.html', napaka=napaka, podnaslov=podnaslov)
 
+
+% if vloga == 'stranka':
 <table class="table table-striped"> 
     <thead>
         <tr>
@@ -10,7 +12,7 @@
         <tr>
             <th>Datum in ura</th>
             <th>Storitev</th>
-            <th>Odstrani</th>
+            <th>Odpoved termina</th>
         </tr>
     </thead>
 
@@ -23,6 +25,26 @@
                     <button class="button is-primary" type="submit" name="id_termin" value={{id_termin}}>-</button>
                 </form>
             </td>
+        </tr>
+    %end
+</table>
+
+% else:
+<table class="table table-striped"> 
+    <thead>
+        <tr>
+            <th>Prihodnji rezervirani termini</th>
+        </tr>
+        <tr>
+            <th>Datum in ura</th>
+            <th>Storitev</th>
+        </tr>
+    </thead>
+
+    %for id_termin, datum, ime_storitve in tabela:
+        <tr>
+            <td>{{datum}}</td>
+            <td>{{ime_storitve}}</td>
         </tr>
     %end
 </table>

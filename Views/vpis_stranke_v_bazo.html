@@ -1,57 +1,21 @@
 % setdefault('napaka', '')
-% setdefault('podnaslov', 'Termin')
+% setdefault('podnaslov', 'Stranke')
 %rebase('osnova.html', napaka=napaka, podnaslov=podnaslov)
 
-<div class="tabs is-toggle is-fullwidth is-large">
-    <ul>
-
-      <li>
-        <a>
-          <span>Storitev</span>
-        </a>
-      </li>
-
-      <li>
-        <a>
-          <span>Uslužbenec</span>
-        </a>
-      </li>
 
 
-
-      <li class="is-active">
-        <a>
-          <span>Datum</span>
-        </a>
-      </li>
-
-      <li>
-        <a>
-          <span>Ura, ime stranke in koda za popust</span>
-        </a>
-      </li>
-
-      <li>
-        <a>
-          <span>Povzetek rezerviranega termina</span>
-        </a>
-      </li>
-
-    </ul>
-  </div>
-
-<label class="label">Izpolnite polja za rezervacijo termina:</label>
+<label class="label">Vpišite vaše podatke:</label>
 <table class="table is-hoverable is-fullwidth">
     <thead>
         <tr>
-            <form action="{{url('termin_date_conversion', id_usluzbenec=id_usluzbenec, id_storitev=id_storitev, datum=datum)}}" method="GET">
+            <form action="{{url('dodaj_stranko_post')}}" method="POST">
                 <td></td>
                 <tr>
                     <td>
                         <div class="control has-icons-left">
-                            <label for="ime_storitve">Ime storitve</label>
+                            <label for="ime_priimek">Ime in priimek</label>
                             <input class="input is-small" type="text" 
-                                name="ime_storitve" value="{{ime_storitve}}" disabled name="ime_storitve" placeholder="Storitev" required
+                                id="ime_priimek" name="ime_priimek" placeholder="Ime in priimek" required
                                 oninput="this.setCustomValidity('')"
                                 oninvalid="this.setCustomValidity('Obvezno polje')"
                             />
@@ -61,13 +25,12 @@
                         </div>
                     </td>
                 </tr>
-
                 <tr>
                     <td>
                         <div class="control has-icons-left">
-                            <label for="ime_priimek_usluzbenca">Ime usluzbenca</label>
+                            <label for="telefon">Telefonska številka</label>
                             <input class="input is-small" type="text" 
-                                name="ime_priimek_usluzbenca" value="{{ime_priimek_usluzbenca}}" disabled name="ime_priimek_usluzbenca" placeholder="Ime uslužbenca" required
+                                id="telefon" name="telefon" placeholder="Telefonska številka" required
                                 oninput="this.setCustomValidity('')"
                                 oninvalid="this.setCustomValidity('Obvezno polje')"
                             />
@@ -77,18 +40,14 @@
                         </div>
                     </td>
                 </tr>
-
-  
                 <tr>
                     <td>
                         <div class="control has-icons-left">
-                            <label for="datum">Datum</label>
-                            <input  
-                            class="input is-small" type="date" data-date-format="YYYY-MM-DD"
-                                id="datum" name="datum" placeholder="YYYY-MM-DD" required min={{danes}}
+                            <label for="mail">Elektronski naslov</label>
+                            <input class="input is-small" type="text" 
+                                id="mail" name="mail" placeholder="Elektronski naslov" required
                                 oninput="this.setCustomValidity('')"
                                 oninvalid="this.setCustomValidity('Obvezno polje')"
-                                
                             />
                             <span class="icon is-small is-left">
                                 <i class="far fa-clipboard-check"></i>
@@ -96,28 +55,19 @@
                         </div>
                     </td>
                 </tr>
-
-
                 <tr>
                     <td>
                         <div class="field is-grouped">
                             <div class="control">
-                                <button class="button is-link">Naprej</button>
+                                <button class="button is-link">Dodaj</button>
                             </div>
                             <div class="control">
-                                <a class="button is-link is-light" href="/zacetek">Prekliči</a>
+                                <a class="button is-link is-light" href="/prijava">Prekliči</a>
                             </div>
                         </div>
                     </td>
                 </tr>
-                </form>
-                </tr>
-
-                
-                
+            </form>
+        </tr>
     </thead>
 </table>
-
- <progress class="progress is-info" value="60" max="100">60%</progress>
-
-

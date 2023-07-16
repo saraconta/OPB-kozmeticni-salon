@@ -4,17 +4,30 @@
 
 %if vloga == 'usluzbenec':
 
-<nav class="level is-mobile">
-    <div class="level-item has-text-centered">
-      <div>
-        <p class="heading">URNIK</p>
-            <div class="dropdown is-active">
 
-                <div class="dropdown-trigger">
-                <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-                    <span>Usluzbenci</span>
+<div class="tabs is-toggle is-fullwidth is-large">
+
+        <li class="is-active">
+            <a>
+              <span>Zaposleni</span>
+            </a>
+          </li>
+        </ul>
+</div>
+
+                <label class="label">Izberite zaposlenega.</label>
+                %for id_usluzbenec, ime_priimek in usluzbenci:    
+                  <a href="/urnik/{{id_usluzbenec}}" class="dropdown-item">
+                    {{ime_priimek}}
+                  </a> 
+                %end
+
+
+                <!--<div class="dropdown-trigger">
+                <button class="button">
+                    <span>Uslužbenci</span>
                     <span class="icon is-small">
-                        <i class="fas fa-angle-down" aria-hidden="true"></i>
+                        <i  aria-hidden="false"></i>
                     </span>
                 </button>
                 </div>
@@ -28,52 +41,10 @@
                     %end
                 </div>
             </div>
+        -->
 
-        </div>
-      </div>
-    </div>
 
-    <div class="level-item has-text-centered">
-      <div>
-        <table class="table is-striped">
-            <thead>
-                <tr>
-                    <th></th>
-                    <th>Od</th>
-                    <th>Do</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <th>PON</th>
-                    <th>8:00</th>
-                    <th>16:00</th>
-                </tr>
-                <tr>
-                    <th>TOR</th>
-                    <th>8:00</th>
-                    <th>16:00</th>
-                </tr>
-                <tr>
-                    <th>SRE</th>
-                    <th>8:00</th>
-                    <th>16:00</th>
-                </tr>
-                <tr>
-                    <th>ČET</th>
-                    <th>8:00</th>
-                    <th>16:00</th>
-                </tr>
-                <tr>
-                    <th>PET</th>
-                    <th>8:00</th>
-                    <th>16:00</th>
-                </tr>
-            </tbody>
-      </div>
-    </div>
 
-  </nav>
 
 
 % else:

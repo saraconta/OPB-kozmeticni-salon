@@ -1,10 +1,10 @@
 % setdefault('napaka', '')
-% setdefault('podnaslov', 'Usluzbenci')
+% setdefault('podnaslov', 'Uslužbenci')
 %rebase('osnova.html', napaka=napaka, podnaslov=podnaslov)
 
+  % if ali_je_sef == 2:
 
-
-    <a class="button" href="/dodaj_usluzbenca">
+  <a class="button" href="/dodaj_usluzbenca">
         Dodaj novega uslužbenca
     </a>
 
@@ -14,8 +14,63 @@
                 <th>Ime in priimek</th>
                 <th>Storitve, ki jih ponujajo</th>
                 <th>Povprečna ocena</th>
-                <th>Dodaj oceno</th>
                 <th>Dodaj storitev</th>
+             </tr>
+        </thead>
+     
+      %for id_usluzbenec, ime_priimek, povprecna_ocena in usluzbenci:
+        <tr>
+           <td>{{ime_priimek}}</td> 
+           <td>
+            <a href="/storitve/{{id_usluzbenec}}" class="button is-primary is-light">
+              Poglej
+            </a>
+           </td>
+           <td>{{povprecna_ocena}}</td> 
+           <td>
+            <a href="/dodaj_storitev/{{id_usluzbenec}}" class="button is-primary is-light">
+              +
+            </a>
+           </td>
+        </tr>
+      %end
+
+    </table>
+
+  % elif ali_je_sef == 1:
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Ime in priimek</th>
+                <th>Storitve, ki jih ponujajo</th>
+                <th>Povprečna ocena</th>
+             </tr>
+        </thead>
+      
+      %for id_usluzbenec, ime_priimek, povprecna_ocena in usluzbenci:
+        <tr>
+           <td>{{ime_priimek}}</td> 
+           <td>
+            <a href="/storitve/{{id_usluzbenec}}" class="button is-primary is-light">
+              Poglej
+            </a>
+           </td>
+           <td>{{povprecna_ocena}}</td> 
+        </tr>
+      %end
+
+    </table>
+
+  % else: 
+
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Ime in priimek</th>
+                <th>Storitve, ki jih ponujajo</th>
+                <th>Povprečna ocena</th>
+                <th>Dodaj oceno</th>
              </tr>
         </thead>
      
@@ -33,14 +88,20 @@
               +
             </a>
            </td>
-           <td>
-            <a href="/dodaj_storitev/{{id_usluzbenec}}" class="button is-primary is-light">
-              +
-            </a>
-           </td>
         </tr>
       %end
 
     </table>
 
   
+
+
+
+
+
+
+
+
+
+
+    

@@ -4,7 +4,7 @@
 <!-- Main container -->
 
 
-
+%if ali_je_sef == 2:
 <nav class="level">
   <!-- Left side -->
   <div class="level-left">
@@ -13,24 +13,21 @@
         Splošno
       </p>
       <ul class="menu-list">
-        <li><a href="/" class="is-active">Cenik</a></li>
-        <li><a href="/usluzbenci">Uslužbenci</a></li>
-      </ul>
-      <p class="menu-label">
-        Za stranke
-      </p>
-      <ul class="menu-list">
-        <li><a href="/termin">Nov termin</a></li>
-        <li><a href="/pregled_terminov">Rezervirani termini</a></li>
-        <li><a href="/usluzbenci">Oceni uslužbenca</a></li>
-      </ul>
-      <p class="menu-label">
-        Za usluzbence
-      </p>
-      <ul class="menu-list">
-        <li><a href="/urnik">Urnik</a></li>
-        <li><a href="/stranke">Stranke in njihovi podatki</a></li>
+        <li><a href="/pregled_terminov">Pregled rezerviranih terminov</a></li>
         <li><a href="/poslovanje">Poslovanje in dobiček</a></li>
+      </ul>
+      <p class="menu-label">
+        O strankah
+      </p>
+      <ul class="menu-list">
+        <li><a href="/stranke">Podatki strank in dodajanje novih</a></li>
+      </ul>
+      <p class="menu-label">
+        O zaposlenih
+      </p>
+      <ul class="menu-list">
+        <li><a href="/usluzbenci">Pregled in urejanje zaposlenih</a></li>
+        <li><a href="/urnik">Urnik zaposlenih</a></li>
       </ul>
     </aside>
   </div>
@@ -44,14 +41,129 @@
           <p class="card-text">
             <table class="table table-striped">
               <tr>
-                <th>Id</th>
                 <th>Storitev</th>
                 <th>Cena</th>
                 <th>Uslužbenci, ki opravljajo to storitev</th>
               </tr>
               %for id_storitev, ime_storitve, cena in storitve:
               <tr>
-                <td>{{id_storitev}}</td>
+                <td>{{ime_storitve}}</td>
+                <td>{{cena}}€</td>
+                <td>
+                  <a class="button" href="/storitev_usluzbenci_get/{{id_storitev}}">Poglej</a>
+                </td>
+              </tr>
+              %end
+            </table>
+          </p>
+        </div>
+    </div>
+  </nav>
+
+
+  %elif ali_je_sef == 1:
+  <nav class="level">
+    <!-- Left side -->
+    <div class="level-left">
+      <aside class="menu">
+        <p class="menu-label">
+          Splošno
+        </p>
+        <ul class="menu-list">
+          <li><a href="/urnik">Urnik</a></li>
+        </ul>
+        <p class="menu-label">
+          Za stranke
+        </p>
+        <ul class="menu-list">
+          <li><a href="/stranke">Podatkih strank in dodajanje novih</a></li>
+          <li><a href="/pregled_terminov">Pregled rezerviranih terminov</a></li>
+        </ul>
+        <p class="menu-label">
+          O zaposlenih
+        </p>
+        <ul class="menu-list">
+          <li><a href="/usluzbenci">Pregled sodelavcev</a></li>
+        </ul>
+      </aside>
+    </div>
+  
+    <!-- Right side -->
+    <div class="level-right">
+          <div class="card-body">
+            <div>
+              <p class="card-title"><strong>CENIK STORITEV</strong></p>
+            </div>
+            <p class="card-text">
+              <table class="table table-striped">
+                <tr>
+                  <th>Storitev</th>
+                  <th>Cena</th>
+                  <th>Uslužbenci, ki opravljajo to storitev</th>
+                </tr>
+                %for id_storitev, ime_storitve, cena in storitve:
+                <tr>
+                  <td>{{ime_storitve}}</td>
+                  <td>{{cena}}€</td>
+                  <td>
+                    <a class="button" href="/storitev_usluzbenci_get/{{id_storitev}}">Poglej</a>
+                  </td>
+                </tr>
+                %end
+              </table>
+            </p>
+          </div>
+      </div>
+    </nav>
+
+
+
+
+
+% else:
+
+
+<nav class="level">
+  <!-- Left side -->
+  <div class="level-left">
+    <aside class="menu">
+      <p class="menu-label">
+        Splošno
+      </p>
+      <ul class="menu-list">
+        <li><a href="/stranke">Vaši podatki</a></li>
+      </ul>
+      <p class="menu-label">
+        Termin
+      </p>
+      <ul class="menu-list">
+        <li><a href="/termin">Nov termin</a></li>
+        <li><a href="/pregled_terminov">Pregled in odpoved termina</a></li>
+      </ul>
+      <p class="menu-label">
+        O zaposlenih
+      </p>
+      <ul class="menu-list">
+        <li><a href="/usluzbenci">Pregled in ocenjevanje zaposlenih</a></li>
+      </ul>
+    </aside>
+  </div>
+
+  <!-- Right side -->
+  <div class="level-right">
+        <div class="card-body">
+          <div>
+            <p class="card-title"><strong>CENIK STORITEV</strong></p>
+          </div>
+          <p class="card-text">
+            <table class="table table-striped">
+              <tr>
+                <th>Storitev</th>
+                <th>Cena</th>
+                <th>Uslužbenci, ki opravljajo to storitev</th>
+              </tr>
+              %for id_storitev, ime_storitve, cena in storitve:
+              <tr>
                 <td>{{ime_storitve}}</td>
                 <td>{{cena}}€</td>
                 <td>

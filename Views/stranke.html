@@ -4,12 +4,11 @@
 
 %if vloga == 'usluzbenec':
 <a class="button" href="/dodaj_stranko">
-  Dodaj novo stranko:
+  Dodaj novo stranko
 </a>
 
 <table class="table table-striped">
   <tr>
-    <th>Id</th>
     <th>Ime in priimek</th>
     <th>Telefon</th>
     <th>Mail</th>
@@ -17,7 +16,6 @@
 
   %for id_stranka, ime_priimek, telefon, mail in stranke:
   <tr>
-    <td>{{id_stranka}}</td>
     <td>{{ime_priimek}}</td>
     <td>{{telefon}}</td>
     <td>{{mail}}</td>
@@ -31,7 +29,6 @@
 
   <table class="table table-striped">
     <tr>
-      <th>Id</th>
       <th>Ime in priimek</th>
       <th>Telefon</th>
       <th>Mail</th>
@@ -39,7 +36,6 @@
 
     %for id_stranka, ime_priimek, telefon, mail in stranke:
     <tr>
-      <td>{{id_stranka}}</td>
       <td>{{ime_priimek}}</td>
       <td>{{telefon}}</td>
       <td>{{mail}}</td>

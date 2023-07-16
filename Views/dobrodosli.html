@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html>
 
@@ -13,25 +14,21 @@
   <section class="hero is-small">
     <div class="hero-body">
       <p class="title">
-        Kozmetični salon
+        Dobrodošli v našem kozmetičnem salonu!
       </p>
       <p class="subtitle">
-        <nav class="left">
-          <strong>{{podnaslov}}</strong>
-        </nav>
-
-          <nav class="right">
-            <div class="level-right">
+          <nav class="center">
+            <div class="center">
               <div class="columns">
-                <div class="column is-narrow">
-                  <a class="button is-primary" href="/zacetek">
-                    <strong>Domov</strong>
+               <!-- <div class="column is-narrow">
+                  <a class="button is-primary" href="/prijava">
+                    <strong>Na portal</strong>
                   </a>
                 </div> 
-                
+                --->
                 <div class="column">
-                  <form method="GET" action="/odjava">
-                    <button class="button is-light">Odjavi se</button>
+                  <form method="GET" action="/prijava">
+                    <button class="button is-light">Vstopi</button>
                   </form>
                 </div>
               </div>
@@ -46,16 +43,8 @@
       {{napaka}}
     </div>
   % end
+
   
-  <section class="section">
-    {{!base}}
-  </section>
- <!-- <div class="level-right">
-    <a class="button is-light" href="/zacetek">
-      <strong>Domov</strong>
-    </a>
-  </div>
-  -->
 </body>
 
 <footer class="footer">
