@@ -60,7 +60,7 @@ def nastaviSporocilo(sporocilo = None):
 
 
 
-def cookie_required_stranka(f):
+def cookie_required_up_ime(f):
     """
     Dekorator, ki zahteva veljaven piškotek. Če piškotka ni, uporabnika preusmeri na stran za prijavo.
     """
@@ -69,19 +69,7 @@ def cookie_required_stranka(f):
         cookie = request.get_cookie("up_ime", secret=skrivnost)
         if cookie:
             return f(*args, **kwargs)
-        return template("prijava_stranka.html")   
-    return decorated
-
-def cookie_required_usluzbenec(f):
-    """
-    Dekorator, ki zahteva veljaven piškotek. Če piškotka ni, uporabnika preusmeri na stran za .
-    """
-    @wraps(f)
-    def decorated( *args, **kwargs):
-        cookie = request.get_cookie("up_ime", secret=skrivnost)
-        if cookie:
-            return f(*args, **kwargs)
-        return template("prijava_usluzbenec.html")
+        return template("prijava.html")
     return decorated
 
 def cookie_required_vloga(f):
@@ -254,6 +242,8 @@ def prijava():
     return template('prijava.html', napaka=napaka)
 
 @get('/odjava')
+@cookie_required_up_ime
+@cookie_required_vloga
 def odjava():
     response.delete_cookie('up_ime')
     response.delete_cookie('rola')
@@ -268,9 +258,8 @@ def index():
 
 
 @get('/zacetek')
-@cookie_required_stranka
+@cookie_required_up_ime
 @cookie_required_vloga
-@cookie_required_usluzbenec
 def zacetek():
   up_ime = request.get_cookie('up_ime', secret=skrivnost)
   vloga = request.get_cookie('rola',secret=skrivnost)
@@ -291,7 +280,7 @@ def zacetek():
 
 ### STRANKE
 @get('/stranke')
-@cookie_required_stranka
+@cookie_required_up_ime
 @cookie_required_vloga
 def stranke():
     up_ime = request.get_cookie('up_ime', secret=skrivnost)
@@ -331,6 +320,8 @@ def dodaj_stranko_post():
 
 
 @get('/dodaj_stranko')
+@cookie_required_up_ime
+@cookie_required_vloga
 def dodaj_stranko():
     #vloga = request.get_cookie('rola',secret=skrivnost)
     return template('dodaj_stranko.html', ime_priimek='', telefon='', mail='', napake=None)
@@ -357,7 +348,7 @@ def dodaj_stranko_post():
 
 ### USLUŽBENCI
 @get('/usluzbenci')
-@cookie_required_usluzbenec
+@cookie_required_up_ime
 @cookie_required_vloga
 def usluzbenci():
     up_ime = request.get_cookie('up_ime', secret=skrivnost)
@@ -382,7 +373,7 @@ def usluzbenci():
 
 
 @get('/dodaj_usluzbenca') #dodaja lahko samo šefica: up_ime = clarisa
-@cookie_required_usluzbenec
+@cookie_required_up_ime
 @cookie_required_vloga
 def dodaj_usluzbenca_get():
     up_ime = request.get_cookie('up_ime', secret=skrivnost)
@@ -420,6 +411,7 @@ def dodaj_usluzbenca_post():
 
 ### OCENE
 @get('/dodaj_oceno/<id_usluzbenec:int>') #oceno lahko doda samo stranka
+@cookie_required_up_ime
 @cookie_required_vloga
 def dodaj_oceno(id_usluzbenec):
     #up_ime = request.get_cookie('up_ime', secret=skrivnost)
@@ -452,6 +444,8 @@ def dodaj_oceno_post(id_usluzbenec):
 
 
 @get('/storitve/<id_usluzbenec:int>')
+@cookie_required_up_ime
+@cookie_required_vloga
 def storitve(id_usluzbenec):
     cur.execute("""SELECT us.ime_storitve ime1, 1 ime2
                   FROM Usluzb_storitve us
@@ -461,7 +455,7 @@ def storitve(id_usluzbenec):
 
 ### STORITVE
 @get('/dodaj_storitev/<id_usluzbenec:int>')  #storitev uslužbencu lahko doda samo šef (clarisa)
-@cookie_required_usluzbenec
+@cookie_required_up_ime
 @cookie_required_vloga
 def dodaj_storitev(id_usluzbenec): 
     up_ime = request.get_cookie('up_ime', secret=skrivnost)
@@ -499,6 +493,8 @@ def dodaj_storitev_post(id_usluzbenec):
 
 
 @get('/storitev_usluzbenci_get/<id_storitev:int>')
+@cookie_required_up_ime
+@cookie_required_vloga
 def storitev_usluzbenci_get(id_storitev):
     cur.execute("""
       SELECT u.id_usluzbenec, u.ime_priimek
@@ -511,6 +507,7 @@ def storitev_usluzbenci_get(id_storitev):
 
 ### TERMIN
 @get('/termin') #termin si lahko rezervira samo stranka
+@cookie_required_up_ime
 @cookie_required_vloga
 def termina_storitev():
     vloga = request.get_cookie('rola', secret=skrivnost)    
@@ -521,6 +518,8 @@ def termina_storitev():
 
   
 @get('/termin/<id_storitev:int>')
+@cookie_required_up_ime
+@cookie_required_vloga
 def termina_usluzbenec(id_storitev):
     cur.execute("""
       SELECT u.id_usluzbenec, u.ime_priimek
@@ -531,6 +530,8 @@ def termina_usluzbenec(id_storitev):
     return template('termin_usluzbenec.html', id_storitev = id_storitev, usluzbenci_storitve=cur)
 
 @get('/termin/<id_storitev:int>/<id_usluzbenec:int>')
+@cookie_required_up_ime
+@cookie_required_vloga
 def termin_stranka(id_usluzbenec, id_storitev):
     cur.execute("""
       SELECT u.ime_priimek, s.ime_storitve, s.trajanje, u.id_usluzbenec, s.id_storitev
@@ -547,6 +548,7 @@ def termin_stranka(id_usluzbenec, id_storitev):
 
 
 @get('/termin/<id_storitev:int>/<id_usluzbenec:int>/')
+
 def termin_date_conversion(id_usluzbenec, id_storitev):
     datum = request.query.datum # dobimo datum iz urlja
     year = datum[0:4]
@@ -558,7 +560,7 @@ def termin_date_conversion(id_usluzbenec, id_storitev):
 
 
 @get('/termin/<id_storitev:int>/<id_usluzbenec:int>/<year:int>-<month:int>-<day:int>')
-@cookie_required_stranka
+@cookie_required_up_ime
 @cookie_required_vloga
 def termin_ura(id_usluzbenec, id_storitev, year, month, day):
     vloga = request.get_cookie('rola', secret=skrivnost)
@@ -592,7 +594,7 @@ def termin_ura(id_usluzbenec, id_storitev, year, month, day):
 
 
 @post('/termin/<id_storitev:int>/<id_usluzbenec:int>/<year:int>-<month:int>-<day:int>')
-@cookie_required_stranka
+@cookie_required_up_ime
 @cookie_required_vloga
 def vpis_termina_post(id_usluzbenec, id_storitev, year, month, day):
     vloga = request.get_cookie('rola', secret=skrivnost)
@@ -631,6 +633,8 @@ def vpis_termina_post(id_usluzbenec, id_storitev, year, month, day):
 
 
 @get('/prikazi_termin/<id_termin:int>')
+@cookie_required_up_ime
+@cookie_required_vloga
 def prikazi_termin(id_termin):
     cur.execute("""
       SELECT t.id_termin, s.id_stranka, s.ime_priimek, t.datum, t.ime_storitve, t.ime_priimek_usluzbenca, st.trajanje, st.cena, i.popust,
@@ -649,8 +653,8 @@ def prikazi_termin(id_termin):
 
 
 @get('/pregled_terminov') #vsaka stranka vidi samo svoje termine, zaposleni vidijo od vseh 
-@cookie_required_stranka
-@cookie_required_vloga 
+@cookie_required_up_ime
+@cookie_required_vloga
 def pregled_terminov():
     vloga = request.get_cookie('rola', secret=skrivnost)
     up_ime = request.get_cookie('up_ime', secret=skrivnost)
@@ -667,7 +671,8 @@ def pregled_terminov():
 
 
 @get('/pregled_termina/<id_stranka:int>')  #uslužbenec termina ne sme odstraniti
-@cookie_required_vloga 
+@cookie_required_up_ime
+@cookie_required_vloga
 def pregled_termina(id_stranka): 
     vloga = request.get_cookie('rola', secret=skrivnost)
     cur.execute("""SELECT id_termin, datum, ime_storitve
@@ -693,8 +698,8 @@ def pobrisi_termin():
 
 ### URNIK
 @get('/urnik')
-@cookie_required_usluzbenec
-@cookie_required_vloga 
+@cookie_required_up_ime
+@cookie_required_vloga
 def urnik():
     vloga = request.get_cookie('rola', secret=skrivnost)
     up_ime = request.get_cookie('up_ime', secret=skrivnost)
@@ -715,6 +720,8 @@ def urnik():
     return bottle.template('urnik.html', usluzbenci=cur, vloga=vloga)
 
 @get('/urnik/<id_usluzbenec:int>')
+@cookie_required_up_ime
+@cookie_required_vloga
 def prikazi_urnik(id_usluzbenec):
     cur.execute("""select ime_priimek from Usluzbenec
     where id_usluzbenec = %s""", [id_usluzbenec])
@@ -733,7 +740,7 @@ def prikazi_urnik(id_usluzbenec):
 
 #POSLOVANJE
 @get('/poslovanje')
-@cookie_required_usluzbenec
+@cookie_required_up_ime
 @cookie_required_vloga
 def poslovanje():
     up_ime = request.get_cookie('up_ime', secret=skrivnost)
