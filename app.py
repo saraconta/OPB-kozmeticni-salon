@@ -45,6 +45,7 @@ cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 #za cookieje
 from functools import wraps
 
+
 repo = Repo()
 
 skrivnost = "ns86uffdDS3LE0u2"
@@ -775,8 +776,8 @@ def poslovanje():
 
 
 # poženemo strežnik na podanih vratih, npr. http://localhost:8080/
-if __name__ == "__main__":
-    run(host='localhost', port=SERVER_PORT, reloader=RELOADER)
+#if __name__ == "__main__":
+#    run(host='localhost', port=SERVER_PORT, reloader=RELOADER)
 
 @bottle.error(404)
 def error_404(error):
