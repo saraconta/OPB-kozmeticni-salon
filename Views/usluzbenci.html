@@ -2,65 +2,117 @@
 % setdefault('podnaslov', 'Uslužbenci')
 %rebase('osnova.html', napaka=napaka, podnaslov=podnaslov)
 
-  % if ali_je_sef == 2:
+% if ali_je_sef == 2:
+  <div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd">
+    <div class="column is-narrow">
+      <aside class="menu">
+  
+        <p class="menu-label">Splošno</p>
+          <ul class="menu-list">
+            <li><a href="/cenik">Cenik storitev</a></li>
+            <li><a href="/pregled_terminov">Pregled rezerviranih terminov</a></li>
+            <li><a href="/poslovanje">Poslovanje in dobiček</a></li>
+          </ul>
+  
+        <p class="menu-label">O strankah</p>
+          <ul class="menu-list">
+            <li><a href="/stranke">Podatki strank in dodajanje novih</a></li>
+          </ul>
+  
+        <p class="menu-label">O zaposlenih</p>
+          <ul class="menu-list">
+            <li><a href="/usluzbenci class" class="is-active">Pregled in urejanje zaposlenih</a></li>
+            <li><a href="/urnik">Urnik zaposlenih</a></li>
+          </ul>
+  
+      </aside>
+    </div>
+  
+    <div class="column is-narrow">
+      <a class="button" href="/dodaj_usluzbenca">
+            Dodaj novega uslužbenca
+        </a>
 
-  <a class="button" href="/dodaj_usluzbenca">
-        Dodaj novega uslužbenca
-    </a>
+      <table class="table table-striped">
+          <thead>
+              <tr>
+                  <th>Ime in priimek</th>
+                  <th>Storitve, ki jih ponujajo</th>
+                  <th>Povprečna ocena</th>
+                  <th>Dodaj storitev</th>
+              </tr>
+          </thead>
+      
+        %for id_usluzbenec, ime_priimek, povprecna_ocena in usluzbenci:
+          <tr>
+            <td>{{ime_priimek}}</td> 
+            <td>
+              <a href="/storitve/{{id_usluzbenec}}" class="button is-primary is-light">
+                Poglej
+              </a>
+            </td>
+            <td>{{povprecna_ocena}}</td> 
+            <td>
+              <a href="/dodaj_storitev/{{id_usluzbenec}}" class="button is-primary is-light">
+                +
+              </a>
+            </td>
+          </tr>
+        %end
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Ime in priimek</th>
-                <th>Storitve, ki jih ponujajo</th>
-                <th>Povprečna ocena</th>
-                <th>Dodaj storitev</th>
-             </tr>
-        </thead>
-     
-      %for id_usluzbenec, ime_priimek, povprecna_ocena in usluzbenci:
-        <tr>
-           <td>{{ime_priimek}}</td> 
-           <td>
-            <a href="/storitve/{{id_usluzbenec}}" class="button is-primary is-light">
-              Poglej
-            </a>
-           </td>
-           <td>{{povprecna_ocena}}</td> 
-           <td>
-            <a href="/dodaj_storitev/{{id_usluzbenec}}" class="button is-primary is-light">
-              +
-            </a>
-           </td>
-        </tr>
-      %end
-
-    </table>
+      </table>
+    </div>
+  </div>
 
   % elif ali_je_sef == 1:
+  <div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd">
+    <div class="column is-narrow">
+      <aside class="menu">
+        <p class="menu-label">Splošno</p>
+          <ul class="menu-list">
+            <li><a href="/cenik">Cenik storitev</a></li>
+            <li><a href="/urnik">Urnik</a></li>
+          </ul>
 
-    <table class="table table-striped">
-        <thead>
-            <tr>
-                <th>Ime in priimek</th>
-                <th>Storitve, ki jih ponujajo</th>
-                <th>Povprečna ocena</th>
-             </tr>
-        </thead>
-      
-      %for id_usluzbenec, ime_priimek, povprecna_ocena in usluzbenci:
-        <tr>
-           <td>{{ime_priimek}}</td> 
-           <td>
-            <a href="/storitve/{{id_usluzbenec}}" class="button is-primary is-light">
-              Poglej
-            </a>
-           </td>
-           <td>{{povprecna_ocena}}</td> 
-        </tr>
-      %end
+        <p class="menu-label">O strankah</p>
+          <ul class="menu-list">
+            <li><a href="/stranke">Podatki strank in dodajanje novih</a></li>
+            <li><a href="/pregled_terminov">Pregled rezerviranih terminov</a></li>
+          </ul>
 
-    </table>
+        <p class="menu-label">O zaposlenih</p>
+          <ul class="menu-list">
+            <li><a href="/usluzbenci" class="is-active">Pregled sodelavcev</a></li>
+          </ul>
+
+      </aside>
+    </div>
+  
+    <div class="column is-narrow">
+      <table class="table table-striped">
+          <thead>
+              <tr>
+                  <th>Ime in priimek</th>
+                  <th>Storitve, ki jih ponujajo</th>
+                  <th>Povprečna ocena</th>
+              </tr>
+          </thead>
+        
+        %for id_usluzbenec, ime_priimek, povprecna_ocena in usluzbenci:
+          <tr>
+            <td>{{ime_priimek}}</td> 
+            <td>
+              <a href="/storitve/{{id_usluzbenec}}" class="button is-primary is-light">
+                Poglej
+              </a>
+            </td>
+            <td>{{povprecna_ocena}}</td> 
+          </tr>
+        %end
+
+      </table>
+    </div>
+  </div>
 
   % else: 
 
