@@ -4,47 +4,101 @@
 
 
 % if vloga == 'stranka':
-<table class="table table-striped"> 
-    <thead>
-        <tr>
-            <th>Prihodnji rezervirani termini</th>
-        </tr>
-        <tr>
-            <th>Datum in ura</th>
-            <th>Storitev</th>
-            <th>Odpoved termina</th>
-        </tr>
-    </thead>
+<div class="columns">
+    <div class="column is is-narrow">
+      <aside class="menu">
+        <p class="menu-label">Splošno</p>
+            <ul class="menu-list">
+            <li><a href="/stranke">Vaši podatki</a></li>
+            <li><a href="/zacetek">Cenik storitev</a></li>
+            </ul>
 
-    %for id_termin, datum, ime_storitve in tabela:
-        <tr>
-            <td>{{datum}}</td>
-            <td>{{ime_storitve}}</td>
-            <td>
-                <form action="{{url('pobrisi_termin')}}" method="POST">
-                    <button class="button is-primary" type="submit" name="id_termin" value={{id_termin}}>-</button>
-                </form>
-            </td>
-        </tr>
-    %end
-</table>
+        <p class="menu-label">Termin</p>
+            <ul class="menu-list">
+            <li><a href="/termin">Nov termin</a></li>
+            <li><a href="/pregled_terminov" class="is-active">Pregled in odpoved termina</a></li>
+            </ul>
+
+        <p class="menu-label">O zaposlenih</p>
+            <ul class="menu-list">
+            <li><a href="/usluzbenci">Pregled in ocenjevanje zaposlenih</a></li>
+            </ul>
+
+      </aside>
+    </div>
+
+    <div class="column">
+    <table class="table table-striped"> 
+        <thead>
+            <tr>
+                <th>PRIHODNJI REZERVIRANI TERMINI</th>
+            </tr>
+            <tr>
+                <th>Datum in ura</th>
+                <th>Storitev</th>
+                <th>Odpoved termina</th>
+            </tr>
+        </thead>
+
+        %for id_termin, datum, ime_storitve in tabela:
+            <tr>
+                <td>{{datum}}</td>
+                <td>{{ime_storitve}}</td>
+                <td>
+                    <form action="{{url('pobrisi_termin')}}" method="POST">
+                        <button class="button is-danger" type="submit" name="id_termin" value={{id_termin}}>x</button>
+                    </form>
+                </td>
+            </tr>
+        %end
+
+    </table>
+    </div>
+</div>
+
 
 % else:
-<table class="table table-striped"> 
-    <thead>
-        <tr>
-            <th>Prihodnji rezervirani termini</th>
-        </tr>
-        <tr>
-            <th>Datum in ura</th>
-            <th>Storitev</th>
-        </tr>
-    </thead>
+<div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd">
+    <div class="column is-narrow">
+      <aside class="menu">
+        <p class="menu-label">Splošno</p>
+          <ul class="menu-list">
+            <li><a href="/cenik">Cenik storitev</a></li>
+            <li><a href="/urnik">Urnik</a></li>
+          </ul>
 
-    %for id_termin, datum, ime_storitve in tabela:
-        <tr>
-            <td>{{datum}}</td>
-            <td>{{ime_storitve}}</td>
-        </tr>
-    %end
-</table>
+        <p class="menu-label">O strankah</p>
+          <ul class="menu-list">
+            <li><a href="/stranke">Podatki strank in dodajanje novih</a></li>
+            <li><a href="/pregled_terminov" class="is-active">Pregled rezerviranih terminov</a></li>
+          </ul>
+
+        <p class="menu-label">O zaposlenih</p>
+          <ul class="menu-list">
+            <li><a href="/usluzbenci">Pregled sodelavcev</a></li>
+          </ul>
+
+      </aside>
+    </div>
+  
+    <div class="column is-narrow">
+        <table class="table table-striped"> 
+            <thead>
+                <tr>
+                    <th>Prihodnji rezervirani termini</th>
+                </tr>
+                <tr>
+                    <th>Datum in ura</th>
+                    <th>Storitev</th>
+                </tr>
+            </thead>
+
+            %for id_termin, datum, ime_storitve in tabela:
+                <tr>
+                    <td>{{datum}}</td>
+                    <td>{{ime_storitve}}</td>
+                </tr>
+            %end
+        </table>
+    </div>
+</div>

@@ -2,24 +2,48 @@
 % setdefault('podnaslov', 'Termin')
 %rebase('osnova.html', napaka=napaka, podnaslov=podnaslov)
 
+<div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd">
+    <div class="column is-narrow">
+      <aside class="menu">
+        <p class="menu-label">Splošno</p>
+          <ul class="menu-list">
+            <li><a href="/cenik">Cenik storitev</a></li>
+            <li><a href="/urnik">Urnik</a></li>
+          </ul>
 
+        <p class="menu-label">O strankah</p>
+          <ul class="menu-list">
+            <li><a href="/stranke">Podatki strank in dodajanje novih</a></li>
+            <li><a href="/pregled_terminov" class="is-active">Pregled rezerviranih terminov</a></li>
+          </ul>
 
-    <table class="table table-striped">
-        <tr>
-        <th>Ime in priimek stranke</th>
-        <th>Termini</th>
-        </tr>
+        <p class="menu-label">O zaposlenih</p>
+          <ul class="menu-list">
+            <li><a href="/usluzbenci">Pregled sodelavcev</a></li>
+          </ul>
 
-        %for id_stranka, ime_priimek in stranke:
+      </aside>
+    </div>
+  
+    <div class="column is-narrow">
+        <table class="table table-striped">
             <tr>
-                <td>{{ime_priimek}}</td>
-                <td>
-                    <a href="/pregled_termina/{{id_stranka}}" class="button is-primary is-light">
-                        Preglej
-                    </a>
-                </td>
+            <th>Ime in priimek stranke</th>
+            <th>Termini</th>
             </tr>
-        %end
 
-    </table>
+            %for id_stranka, ime_priimek in stranke:
+                <tr>
+                    <td>{{ime_priimek}}</td>
+                    <td>
+                        <a href="/pregled_termina/{{id_stranka}}" class="button is-primary is-light">
+                            Preglej
+                        </a>
+                    </td>
+                </tr>
+            %end
+
+        </table>
+    </div>
+</div>
 
