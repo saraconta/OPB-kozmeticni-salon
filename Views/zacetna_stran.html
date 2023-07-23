@@ -5,39 +5,37 @@
 
 
 %if ali_je_sef == 2:
-<nav class="level">
-  <!-- Left side -->
-  <div class="level-left">
+<div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd">
+  <div class="column is-narrow">
     <aside class="menu">
-      <p class="menu-label">
-        Splošno
-      </p>
-      <ul class="menu-list">
-        <li><a href="/pregled_terminov">Pregled rezerviranih terminov</a></li>
-        <li><a href="/poslovanje">Poslovanje in dobiček</a></li>
-      </ul>
-      <p class="menu-label">
-        O strankah
-      </p>
-      <ul class="menu-list">
-        <li><a href="/stranke">Podatki strank in dodajanje novih</a></li>
-      </ul>
-      <p class="menu-label">
-        O zaposlenih
-      </p>
-      <ul class="menu-list">
-        <li><a href="/usluzbenci">Pregled in urejanje zaposlenih</a></li>
-        <li><a href="/urnik">Urnik zaposlenih</a></li>
-      </ul>
+
+      <p class="menu-label">Splošno</p>
+        <ul class="menu-list">
+          <li><a href="/cenik" class="is-active">Cenik storitev</a></li>
+          <li><a href="/pregled_terminov">Pregled rezerviranih terminov</a></li>
+          <li><a href="/poslovanje">Poslovanje in dobiček</a></li>
+        </ul>
+
+      <p class="menu-label">O strankah</p>
+        <ul class="menu-list">
+          <li><a href="/stranke">Podatki strank in dodajanje novih</a></li>
+        </ul>
+
+      <p class="menu-label">O zaposlenih</p>
+        <ul class="menu-list">
+          <li><a href="/usluzbenci">Pregled in urejanje zaposlenih</a></li>
+          <li><a href="/urnik">Urnik zaposlenih</a></li>
+        </ul>
+
     </aside>
   </div>
 
-  <!-- Right side -->
-  <div class="level-right">
+  <div class="column is-narrow">
         <div class="card-body">
           <div>
             <p class="card-title"><strong>CENIK STORITEV</strong></p>
           </div>
+
           <p class="card-text">
             <table class="table table-striped">
               <tr>
@@ -45,6 +43,7 @@
                 <th>Cena</th>
                 <th>Uslužbenci, ki opravljajo to storitev</th>
               </tr>
+
               %for id_storitev, ime_storitve, cena in storitve:
               <tr>
                 <td>{{ime_storitve}}</td>
@@ -54,46 +53,44 @@
                 </td>
               </tr>
               %end
+
             </table>
           </p>
         </div>
     </div>
-  </nav>
+  </div>
 
 
   %elif ali_je_sef == 1:
-  <nav class="level">
-    <!-- Left side -->
-    <div class="level-left">
+  <div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd">
+    <div class="column is-narrow">
       <aside class="menu">
-        <p class="menu-label">
-          Splošno
-        </p>
-        <ul class="menu-list">
-          <li><a href="/urnik">Urnik</a></li>
-        </ul>
-        <p class="menu-label">
-          O strankah
-        </p>
-        <ul class="menu-list">
-          <li><a href="/stranke">Podatki strank in dodajanje novih</a></li>
-          <li><a href="/pregled_terminov">Pregled rezerviranih terminov</a></li>
-        </ul>
-        <p class="menu-label">
-          O zaposlenih
-        </p>
-        <ul class="menu-list">
-          <li><a href="/usluzbenci">Pregled sodelavcev</a></li>
-        </ul>
+        <p class="menu-label">Splošno</p>
+          <ul class="menu-list">
+            <li><a href="/cenik" class="is-active">Cenik storitev</a></li>
+            <li><a href="/urnik">Urnik</a></li>
+          </ul>
+
+        <p class="menu-label">O strankah</p>
+          <ul class="menu-list">
+            <li><a href="/stranke">Podatki strank in dodajanje novih</a></li>
+            <li><a href="/pregled_terminov">Pregled rezerviranih terminov</a></li>
+          </ul>
+
+        <p class="menu-label">O zaposlenih</p>
+          <ul class="menu-list">
+            <li><a href="/usluzbenci">Pregled sodelavcev</a></li>
+          </ul>
+
       </aside>
     </div>
   
-    <!-- Right side -->
-    <div class="level-right">
+    <div class="column is-narrow">
           <div class="card-body">
             <div>
               <p class="card-title"><strong>CENIK STORITEV</strong></p>
             </div>
+
             <p class="card-text">
               <table class="table table-striped">
                 <tr>
@@ -101,6 +98,7 @@
                   <th>Cena</th>
                   <th>Uslužbenci, ki opravljajo to storitev</th>
                 </tr>
+
                 %for id_storitev, ime_storitve, cena in storitve:
                 <tr>
                   <td>{{ime_storitve}}</td>
@@ -110,51 +108,44 @@
                   </td>
                 </tr>
                 %end
+
               </table>
             </p>
           </div>
       </div>
-    </nav>
-
-
-
+    </div>
 
 
 % else:
-
-
-<nav class="level">
-  <!-- Left side -->
-  <div class="level-left">
+<div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd">
+  <div class="column is-narrow">
     <aside class="menu">
-      <p class="menu-label">
-        Splošno
-      </p>
-      <ul class="menu-list">
-        <li><a href="/stranke">Vaši podatki</a></li>
-      </ul>
-      <p class="menu-label">
-        Termin
-      </p>
-      <ul class="menu-list">
-        <li><a href="/termin">Nov termin</a></li>
-        <li><a href="/pregled_terminov">Pregled in odpoved termina</a></li>
-      </ul>
-      <p class="menu-label">
-        O zaposlenih
-      </p>
-      <ul class="menu-list">
-        <li><a href="/usluzbenci">Pregled in ocenjevanje zaposlenih</a></li>
-      </ul>
+      <p class="menu-label">Splošno</p>
+        <ul class="menu-list">
+          <li><a href="/stranke">Vaši podatki</a></li>
+          <li><a href="/zacetek" class="is-active">Cenik storitev</a></li>
+        </ul>
+
+      <p class="menu-label">Termin</p>
+        <ul class="menu-list">
+          <li><a href="/termin">Nov termin</a></li>
+          <li><a href="/pregled_terminov">Pregled in odpoved termina</a></li>
+        </ul>
+
+      <p class="menu-label">O zaposlenih</p>
+        <ul class="menu-list">
+          <li><a href="/usluzbenci">Pregled in ocenjevanje zaposlenih</a></li>
+        </ul>
+
     </aside>
   </div>
 
-  <!-- Right side -->
-  <div class="level-right">
+  <div class="column">
         <div class="card-body">
           <div>
             <p class="card-title"><strong>CENIK STORITEV</strong></p>
           </div>
+
           <p class="card-text">
             <table class="table table-striped">
               <tr>
@@ -162,6 +153,7 @@
                 <th>Cena</th>
                 <th>Uslužbenci, ki opravljajo to storitev</th>
               </tr>
+
               %for id_storitev, ime_storitve, cena in storitve:
               <tr>
                 <td>{{ime_storitve}}</td>
@@ -171,8 +163,9 @@
                 </td>
               </tr>
               %end
+              
             </table>
           </p>
         </div>
     </div>
-  </nav>
+  </div>
