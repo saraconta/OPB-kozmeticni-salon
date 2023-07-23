@@ -2,9 +2,8 @@
 % setdefault('podnaslov', 'Urnik')
 %rebase('osnova.html', napaka=napaka, podnaslov=podnaslov)
 
+
 %if vloga == 'usluzbenec':
-
-
 <div class="tabs is-toggle is-fullwidth is-large">
 
         <li class="is-active">
@@ -15,37 +14,12 @@
         </ul>
 </div>
 
-                <label class="label">Izberite zaposlenega.</label>
-                %for id_usluzbenec, ime_priimek in usluzbenci:    
-                  <a href="/urnik/{{id_usluzbenec}}" class="dropdown-item">
-                    {{ime_priimek}}
-                  </a> 
-                %end
-
-
-                <!--<div class="dropdown-trigger">
-                <button class="button">
-                    <span>Uslužbenci</span>
-                    <span class="icon is-small">
-                        <i  aria-hidden="false"></i>
-                    </span>
-                </button>
-                </div>
-
-                <div class="dropdown-menu" id="dropdown-menu" role="menu">
-                <div class="dropdown-content">
-                    %for id_usluzbenec, ime_priimek in usluzbenci:
-                        <a href="/urnik/{{id_usluzbenec}}" class="dropdown-item">
-                            {{ime_priimek}}
-                        </a>
-                    %end
-                </div>
-            </div>
-        -->
-
-
-
-
+<label class="label">Izberite zaposlenega.</label>
+  %for id_usluzbenec, ime_priimek in usluzbenci:    
+    <a href="/urnik/{{id_usluzbenec}}" class="dropdown-item">
+      {{ime_priimek}}
+    </a> 
+  %end
 
 % else:
 <p>Nimaš pravic.</p>

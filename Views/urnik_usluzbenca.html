@@ -3,69 +3,74 @@
 % setdefault('podnaslov', 'Urnik')
 %rebase('osnova.html', napaka=napaka, podnaslov=besedilo)
 
+<div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd">
+    <div class="column is-narrow">
+        <table class="table table-striped level-left">
+            <tr>
+                <th>Datum in ura</th>
+                <th>Storitev</th>
+                <th>Stranka</th>
+            </tr>
 
+            %for ime_priimek_stranke, datum, ime_storitve in urnik:
+                <tr>
+                    <td>{{datum}}</td>
+                    <td>{{ime_storitve}}</td>
+                    <td>{{ime_priimek_stranke}}</td>
+                </tr>
+            %end
 
+        </table>
+    </div>
 
-
-
-
-
-<table class="table table-striped level-left">
-    <tr>
-        <th>Datum in ura</th>
-        <th>Storitev</th>
-        <th>Stranka</th>
-    </tr>
-
-    %for ime_priimek_stranke, datum, ime_storitve in urnik:
-        <tr>
-            <td>{{datum}}</td>
-            <td>{{ime_storitve}}</td>
-            <td>{{ime_priimek_stranke}}</td>
-        </tr>
-    %end
-
-</table>
-
-
-<div class="level-right">
-    <div>
+    <div class="column">
       <table class="table is-striped">
           <thead>
-              <tr>
-                  <th></th>
-                  <th>Od</th>
-                  <th>Do</th>
-              </tr>
+            <tr>
+                <th></th>
+                <th>Od</th>
+                <th>Do</th>
+            </tr>
           </thead>
           <tbody>
-              <tr>
-                  <th>PON</th>
-                  <th>8:00</th>
-                  <th>16:00</th>
-              </tr>
-              <tr>
-                  <th>TOR</th>
-                  <th>8:00</th>
-                  <th>16:00</th>
-              </tr>
-              <tr>
-                  <th>SRE</th>
-                  <th>8:00</th>
-                  <th>16:00</th>
-              </tr>
-              <tr>
-                  <th>ČET</th>
-                  <th>8:00</th>
-                  <th>16:00</th>
-              </tr>
-              <tr>
-                  <th>PET</th>
-                  <th>8:00</th>
-                  <th>16:00</th>
-              </tr>
+            <tr>
+                <th>PON</th>
+                <th>8:00</th>
+                <th>16:00</th>
+            </tr>
+            <tr>
+                <th>TOR</th>
+                <th>8:00</th>
+                <th>16:00</th>
+            </tr>
+            <tr>
+                <th>SRE</th>
+                <th>8:00</th>
+                <th>16:00</th>
+            </tr>
+            <tr>
+                <th>ČET</th>
+                <th>8:00</th>
+                <th>16:00</th>
+            </tr>
+            <tr>
+                <th>PET</th>
+                <th>8:00</th>
+                <th>16:00</th>
+            </tr>
+            <tr>
+                <th>SOB</th>
+                <th>8:00</th>
+                <th>16:00</th>
+            </tr>
+            <tr>
+                <th>NED</th>
+                <th>8:00</th>
+                <th>16:00</th>
+            </tr>
+
           </tbody>
     </div>
-  </div>
+</div>
 
   
