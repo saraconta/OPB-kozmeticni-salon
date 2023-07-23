@@ -3,43 +3,109 @@
 %rebase('osnova.html', napaka=napaka, podnaslov=podnaslov)
 
 %if vloga == 'usluzbenec':
-<a class="button" href="/dodaj_stranko">
-  Dodaj novo stranko
-</a>
+<div class="tabs is-centered is-boxed is-medium">
+  <ul>
+    <li class="is-active">
+      <a><span>Seznam srank</span></a>
+    </li>
+    <li>
+      <a href="/dodaj_stranko">
+        <span href="/dodaj_stranko">Dodaj stranko</span>
+      </a>
+    </li>
+  </ul>
+</div>
 
-<table class="table table-striped">
-  <tr>
-    <th>Ime in priimek</th>
-    <th>Telefon</th>
-    <th>Mail</th>
-  </tr>
+<div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd">
+  <div class="column is-narrow">
+    <aside class="menu">
 
-  %for id_stranka, ime_priimek, telefon, mail in stranke:
-  <tr>
-    <td>{{ime_priimek}}</td>
-    <td>{{telefon}}</td>
-    <td>{{mail}}</td>
-  </tr>
-  %end
+      <p class="menu-label">Splošno</p>
+        <ul class="menu-list">
+          <li><a href="/cenik">Cenik storitev</a></li>
+          <li><a href="/urnik">Urnik</a></li>
+        </ul>
 
-</table>
+      <p class="menu-label">O strankah</p>
+        <ul class="menu-list">
+          <li><a href="/stranke" class="is-active">Podatki strank in dodajanje novih</a></li>
+          <li><a href="/pregled_terminov">Pregled rezerviranih terminov</a></li>
+        </ul>
+
+      <p class="menu-label">O zaposlenih</p>
+        <ul class="menu-list">
+          <li><a href="/usluzbenci">Pregled sodelavcev</a></li>
+        </ul>
+
+    </aside>
+  </div>
+
+  <div class="column">
+    <table class="table table-striped">
+      <tr>
+        <th>Ime in priimek</th>
+        <th>Telefon</th>
+        <th>Mail</th>
+      </tr>
+
+      %for id_stranka, ime_priimek, telefon, mail in stranke:
+      <tr>
+        <td>{{ime_priimek}}</td>
+        <td>{{telefon}}</td>
+        <td>{{mail}}</td>
+      </tr>
+      %end
+
+    </table>
+  </div>
+</div>
+
 %else:
+<div class="columns">
+  <div class="column is is-narrow">
+    <aside class="menu">
 
+      <p class="menu-label">Splošno</p>
+        <ul class="menu-list">
+          <li><a href="/stranke" class="is-active">Vaši podatki</a></li>
+          <li><a href="/zacetek">Cenik storitev</a></li>
+        </ul>
 
+      <p class="menu-label">Termin</p>
+        <ul class="menu-list">
+          <li><a href="/termin">Nov termin</a></li>
+          <li><a href="/pregled_terminov">Pregled in odpoved termina</a></li>
+        </ul>
 
-  <table class="table table-striped">
-    <tr>
-      <th>Ime in priimek</th>
-      <th>Telefon</th>
-      <th>Mail</th>
-    </tr>
+      <p class="menu-label">O zaposlenih</p>
+        <ul class="menu-list">
+          <li><a href="/usluzbenci">Pregled in ocenjevanje zaposlenih</a></li>
+        </ul>
 
+    </aside>
+  </div>
+
+  <div class="column">
     %for id_stranka, ime_priimek, telefon, mail in stranke:
-    <tr>
-      <td>{{ime_priimek}}</td>
-      <td>{{telefon}}</td>
-      <td>{{mail}}</td>
-    </tr>
-    %end
+      <div class="card">
 
-  </table>
+        <div class="card-content">
+          <p class="title">{{ime_priimek}}</p>
+          <p><strong>Mail:</strong> {{mail}}</p>
+          <p><strong>Telefon:</strong> {{telefon}}</p>
+        </div>
+
+        <footer class="card-footer">
+          <p class="card-footer-item">
+            <span><a href="/pregled_terminov">Pregled terminov</a></span>
+          </p>
+
+          <p class="card-footer-item">
+            <span><a href="/termin">Nov termin</a></span>
+          </p>
+        </footer>
+
+      </div>
+    %end
+  </div>
+</div>
