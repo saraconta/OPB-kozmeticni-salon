@@ -2,12 +2,48 @@
 % setdefault('podnaslov', 'Termin')
 %rebase('osnova.html', napaka=napaka, podnaslov=podnaslov)
 
-<div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd">
+<div class="tabs is-centered is-boxed is-medium">
+  <ul>
+    <li class="is-active">
+      <a><span>Pregled terminov</span></a>
+    </li>
+  </ul>
+</div>
+
+%if ali_je_sef == 2:
+  <div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd">
     <div class="column is-narrow">
       <aside class="menu">
+  
         <p class="menu-label">Splošno</p>
           <ul class="menu-list">
-            <li><a href="/cenik">Cenik storitev</a></li>
+            <li><a href="/zacetek">Cenik storitev</a></li>
+            <li><a href="/pregled_terminov" class="is-active">Pregled rezerviranih terminov</a></li>
+            <li><a href="/poslovanje">Poslovanje in dobiček</a></li>
+          </ul>
+  
+        <p class="menu-label">O strankah</p>
+          <ul class="menu-list">
+            <li><a href="/stranke">Podatki strank in dodajanje novih</a></li>
+          </ul>
+  
+        <p class="menu-label">O zaposlenih</p>
+          <ul class="menu-list">
+            <li><a href="/usluzbenci">Pregled in urejanje zaposlenih</a></li>
+            <li><a href="/urnik">Urnik zaposlenih</a></li>
+          </ul>
+  
+      </aside>
+    </div>
+
+  %elif ali_je_sef == 1:
+  <div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd">
+    <div class="column is-narrow">
+      <aside class="menu">
+
+        <p class="menu-label">Splošno</p>
+          <ul class="menu-list">
+            <li><a href="/zacetek">Cenik storitev</a></li>
             <li><a href="/urnik">Urnik</a></li>
           </ul>
 
@@ -24,6 +60,7 @@
 
       </aside>
     </div>
+  %end
   
     <div class="column is-narrow">
         <table class="table table-striped">
