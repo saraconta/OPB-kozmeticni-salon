@@ -1,11 +1,43 @@
 % setdefault('napaka', '')
 % setdefault('podnaslov', 'Storitve')
-%rebase('osnova.html', napaka=napaka, podnaslov=podnaslov)
+%rebase('osnova.html', napaka=napaka, podnaslov='')
 
+<div class="tabs is-centered is-boxed is-medium">
+    <ul>
+      <li class="is-active">
+        <a><span>Storitve</span></a>
+      </li>
+    </ul>
+  </div>
+
+  <div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd">
+    <div class="column is-narrow">
+      <aside class="menu">
+        <p class="menu-label">Splošno</p>
+          <ul class="menu-list">
+            <li><a href="/zacetek">Cenik storitev</a></li>
+            <li><a href="/urnik">Urnik</a></li>
+          </ul>
+
+        <p class="menu-label">O strankah</p>
+          <ul class="menu-list">
+            <li><a href="/stranke">Podatki strank in dodajanje novih</a></li>
+            <li><a href="/pregled_terminov">Pregled rezerviranih terminov</a></li>
+          </ul>
+
+        <p class="menu-label">O zaposlenih</p>
+          <ul class="menu-list">
+            <li><a href="/usluzbenci" class="is-active">Pregled sodelavcev</a></li>
+          </ul>
+
+      </aside>
+    </div>
+
+<div class="column is-narrow">
 <table class="table table-striped"> 
     <thead>
         <tr>
-            <th>Storitev</th>
+            <th>{{besedilo}}</th>
         </tr>
     </thead>
 
@@ -15,3 +47,4 @@
             </tr>
         %end
 </table>
+</div>

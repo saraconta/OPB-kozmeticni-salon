@@ -1,5 +1,5 @@
 % setdefault('napaka', '')
-% setdefault('podnaslov', 'Termin')
+% setdefault('podnaslov', '')
 %rebase('osnova.html', napaka=napaka, podnaslov=podnaslov)
 
 
@@ -120,7 +120,11 @@
             </aside>
         </div>
     %end
-  
+    
+    % if st_vrstic is None:
+        <p>Stranka v prihodnjih dneh nima rezerviranih terminov.</p>
+
+    %else:
     <div class="column is-narrow">
         <table class="table table-striped"> 
             <thead>

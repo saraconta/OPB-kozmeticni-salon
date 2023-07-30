@@ -8,7 +8,7 @@ import sqlite3
 # uvozimo ustrezne podatke za povezavo
 
 from Data.model import *
-from Database import Repo
+#from Database import Repo
 
 # from Data.services import AuthService
 from functools import wraps
@@ -44,7 +44,7 @@ cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 from functools import wraps
 
 
-repo = Repo()
+#repo = Repo()
 
 skrivnost = "ns86uffdDS3LE0u2"
 
@@ -366,7 +366,21 @@ def dodaj_stranko_post():
 @cookie_required_up_ime
 @cookie_required_vloga
 def dodaj_stranko():
-    return template('dodaj_stranko.html', ime_priimek='', telefon='', mail='', napake=None)
+    up_ime = request.get_cookie('up_ime', secret=skrivnost)
+    vloga = request.get_cookie('rola', secret=skrivnost)
+
+    if vloga == 'usluzbenec':
+        cur.execute("""
+            SELECT admin FROM Usluzbenec 
+                WHERE up_ime = %s
+        """, [up_ime])
+        ali_je_sef = cur.fetchone()[0]
+
+    else:
+        ali_je_sef = None
+
+    return template('dodaj_stranko.html', ime_priimek='', telefon='', mail='', napake=None,
+                    ali_je_sef = ali_je_sef)
 
 
 @post('/dodaj_stranko')
@@ -510,12 +524,21 @@ def dodaj_oceno_post(id_usluzbenec):
 @cookie_required_vloga
 def storitve(id_usluzbenec):
     cur.execute("""
+        SELECT u.ime_priimek
+            FROM Usluzbenec u
+            WHERE u.id_usluzbenec = %s;
+        """, [id_usluzbenec])
+    
+    ime_priimek = cur.fetchone()[0]
+    besedilo = 'Storitve, ki jih nudi' + ' ' + ime_priimek + ':'
+    cur.execute("""
         SELECT us.ime_storitve ime1, 1 ime2
             FROM Usluzb_storitve us
             WHERE us.id_usluzbenec = %s;
     """, [id_usluzbenec])
     
-    return template('storitve.html', id_usluzbenec=id_usluzbenec, storitve=cur, napaka=None)
+    return template('storitve.html', id_usluzbenec=id_usluzbenec, storitve=cur, napaka=None,
+                    besedilo=besedilo)
 
 
 ##################################################################################################
@@ -563,6 +586,19 @@ def dodaj_storitev_post(id_usluzbenec):
 @cookie_required_up_ime
 @cookie_required_vloga
 def storitev_usluzbenci_get(id_storitev):
+    up_ime = request.get_cookie('up_ime', secret=skrivnost)
+    vloga = request.get_cookie('rola', secret=skrivnost)
+    if vloga == 'usluzbenec':
+        cur.execute("""
+            SELECT admin FROM Usluzbenec 
+                WHERE up_ime = %s;
+        """, [up_ime])
+        ali_je_sef = cur.fetchone()[0]
+    else:
+        ali_je_sef = None
+    cur.execute("""select ime_storitve from Storitev where id_storitev = %s;""", [id_storitev])
+    ime_storitve = cur.fetchone()[0]
+    besedilo = 'Uslužbenci, ki nudijo' + ' ' + ime_storitve 
     cur.execute("""
       SELECT u.id_usluzbenec, u.ime_priimek
         FROM Storitev s
@@ -571,7 +607,8 @@ def storitev_usluzbenci_get(id_storitev):
         WHERE s.id_storitev = %s;
     """, [id_storitev])
 
-    return template('storitev_usluzbenci.html', id_storitev=id_storitev, usluzbenci=cur)
+    return template('storitev_usluzbenci.html', id_storitev=id_storitev, usluzbenci=cur, ali_je_sef = ali_je_sef,
+                    besedilo = besedilo)
 
 
 ##############################################################################################
@@ -797,8 +834,9 @@ def pregled_termina(id_stranka):
         WHERE id_stranka = %s
         AND datum >= CURRENT_TIMESTAMP;
     """, [id_stranka])
-
-    return template('pregled_termina.html', tabela=cur, vloga=vloga, ali_je_sef=ali_je_sef, ime_priimek=ime_priimek, besedilo=besedilo, napaka=None)
+    st_vrstic = cur.fetchone()
+    return template('pregled_termina.html', tabela=cur, vloga=vloga, ali_je_sef=ali_je_sef, ime_priimek=ime_priimek, besedilo=besedilo, napaka=None,
+                    st_vrstic = st_vrstic)
 
 @post('/izbrisi_termin')
 def pobrisi_termin():
@@ -852,13 +890,22 @@ def urnik():
 @cookie_required_up_ime
 @cookie_required_vloga
 def prikazi_urnik(id_usluzbenec):
+    vloga = request.get_cookie('rola', secret=skrivnost)
+    up_ime = request.get_cookie('up_ime', secret=skrivnost)
+    if vloga == 'usluzbenec':
+      cur.execute("""select admin from Usluzbenec 
+          where up_ime = %s""", [up_ime])
+      ali_je_sef = cur.fetchone()[0]
+    else:
+        ali_je_sef = None
     cur.execute("""
         SELECT ime_priimek FROM Usluzbenec
         WHERE id_usluzbenec = %s;
     """, [id_usluzbenec])
 
     ime_priimek = cur.fetchone()[0]
-    besedilo = 'Urnik' + ' ' + ime_priimek + ' ' + 'za prihodnje dni:'
+    besedilo = 'Urnik' + ' ' + ime_priimek + ' ' + 'za prihodnje dni.'
+    
 
     cur.execute("""
         SELECT ime_priimek_stranke, datum, ime_storitve
@@ -868,8 +915,9 @@ def prikazi_urnik(id_usluzbenec):
             AND datum >= CURRENT_TIMESTAMP
             ORDER BY datum ASC; 
     """, [id_usluzbenec])
-    
-    return template('urnik_usluzbenca.html', id_usluzbenec=id_usluzbenec, urnik=cur, ime_priimek=ime_priimek, besedilo=besedilo)
+    st_vrstic = cur.fetchone()
+    return template('urnik_usluzbenca.html', id_usluzbenec=id_usluzbenec, urnik=cur, ime_priimek=ime_priimek, besedilo=besedilo,
+                    st_vrstic=st_vrstic, ali_je_sef=ali_je_sef)
 
 
 ######################################################################################################

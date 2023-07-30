@@ -1,76 +1,166 @@
 
 % setdefault('napaka', '')
 % setdefault('podnaslov', 'Urnik')
-%rebase('osnova.html', napaka=napaka, podnaslov=besedilo)
+%rebase('osnova.html', napaka=napaka, podnaslov='')
 
-<div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd">
-    <div class="column is-narrow">
-        <table class="table table-striped level-left">
-            <tr>
-                <th>Datum in ura</th>
-                <th>Storitev</th>
-                <th>Stranka</th>
-            </tr>
 
-            %for ime_priimek_stranke, datum, ime_storitve in urnik:
-                <tr>
-                    <td>{{datum}}</td>
-                    <td>{{ime_storitve}}</td>
-                    <td>{{ime_priimek_stranke}}</td>
-                </tr>
+
+% if ali_je_sef == 1:
+    %if st_vrstic is None:
+    <div class="tabs is-centered is-boxed is-medium">
+        <ul>
+          <li class="is-active">
+            <a><span>Urnik</span></a>
+          </li>
+        </ul>
+      </div>
+      <div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd">
+        <div class="column is-narrow">
+          <aside class="menu">
+            <p class="menu-label">Splošno</p>
+              <ul class="menu-list">
+                <li><a href="/zacetek" >Cenik storitev</a></li>
+                <li><a href="/urnik" class="is-active">Urnik</a></li>
+              </ul>
+     
+            <p class="menu-label">O strankah</p>
+              <ul class="menu-list">
+                <li><a href="/stranke">Podatki strank in dodajanje novih</a></li>
+                <li><a href="/pregled_terminov">Pregled rezerviranih terminov</a></li>
+              </ul>
+     
+            <p class="menu-label">O zaposlenih</p>
+              <ul class="menu-list">
+                <li><a href="/usluzbenci">Pregled sodelavcev</a></li>
+              </ul>
+     
+          </aside>
+        </div>
+        <div class="column is-narrow">
+            <p>V prihodnjih dneh nimate naročenih strank.</p>
+        </div>
+
+
+       
+       %else:
+       <div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd"></div>
+       <div class="column is-narrow">
+         <aside class="menu">
+           <p class="menu-label">Splošno</p>
+             <ul class="menu-list">
+               <li><a href="/zacetek" >Cenik storitev</a></li>
+               <li><a href="/urnik" class="is-active">Urnik</a></li>
+             </ul>
+    
+           <p class="menu-label">O strankah</p>
+             <ul class="menu-list">
+               <li><a href="/stranke">Podatki strank in dodajanje novih</a></li>
+               <li><a href="/pregled_terminov">Pregled rezerviranih terminov</a></li>
+             </ul>
+    
+           <p class="menu-label">O zaposlenih</p>
+             <ul class="menu-list">
+               <li><a href="/usluzbenci">Pregled sodelavcev</a></li>
+             </ul>
+    
+         </aside>
+       </div>
+   
+       <div class="column is-narrow">
+           <table class="table table-striped level-left">
+               <tr>
+                   <th>Datum in ura</th>
+                   <th>Storitev</th>
+                   <th>Stranka</th>
+               </tr>
+
+               %for ime_priimek_stranke, datum, ime_storitve in urnik:
+                   <tr>
+                       <td>{{datum}}</td>
+                       <td>{{ime_storitve}}</td>
+                       <td>{{ime_priimek_stranke}}</td>
+                   </tr>
+               %end
+
+           </table>
+       </div>
+       %end
+
+
+
+% else:
+       %if st_vrstic is None:
+        <div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd">
+            <div class="column is-narrow">
+              <aside class="menu">
+          
+                <p class="menu-label">Splošno</p>
+                  <ul class="menu-list">
+                    <li><a href="/zacetek">Cenik storitev</a></li>
+                    <li><a href="/pregled_terminov">Pregled rezerviranih terminov</a></li>
+                    <li><a href="/poslovanje">Poslovanje in dobiček</a></li>
+                  </ul>
+          
+                <p class="menu-label">O strankah</p>
+                  <ul class="menu-list">
+                    <li><a href="/stranke">Podatki strank in dodajanje novih</a></li>
+                  </ul>
+          
+                <p class="menu-label">O zaposlenih</p>
+                  <ul class="menu-list">
+                    <li><a href="/usluzbenci class">Pregled in urejanje zaposlenih</a></li>
+                    <li><a href="/urnik" class="is-active">Urnik zaposlenih</a></li>
+                  </ul>
+          
+              </aside>
+            </div>
+            <p>V prihodnjih dneh nima naročenih strank.</p>
+     
+
+        %else:
+        <div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd">
+            <div class="column is-narrow">
+              <aside class="menu">
+          
+                <p class="menu-label">Splošno</p>
+                  <ul class="menu-list">
+                    <li><a href="/zacetek">Cenik storitev</a></li>
+                    <li><a href="/pregled_terminov">Pregled rezerviranih terminov</a></li>
+                    <li><a href="/poslovanje">Poslovanje in dobiček</a></li>
+                  </ul>
+          
+                <p class="menu-label">O strankah</p>
+                  <ul class="menu-list">
+                    <li><a href="/stranke">Podatki strank in dodajanje novih</a></li>
+                  </ul>
+          
+                <p class="menu-label">O zaposlenih</p>
+                  <ul class="menu-list">
+                    <li><a href="/usluzbenci class">Pregled in urejanje zaposlenih</a></li>
+                    <li><a href="/urnik" class="is-active">Urnik zaposlenih</a></li>
+                  </ul>
+          
+              </aside>
+            </div>
+            <div class="column is-narrow">
+                <table class="table table-striped level-left">
+                    <tr>
+                        <th>Datum in ura</th>
+                        <th>Storitev</th>
+                        <th>Stranka</th>
+                    </tr>
+    
+                    %for ime_priimek_stranke, datum, ime_storitve in urnik:
+                        <tr>
+                            <td>{{datum}}</td>
+                            <td>{{ime_storitve}}</td>
+                            <td>{{ime_priimek_stranke}}</td>
+                        </tr>
+                    %end
+    
+                </table>
+            </div>
             %end
 
-        </table>
-    </div>
-
-    <div class="column">
-      <table class="table is-striped">
-          <thead>
-            <tr>
-                <th></th>
-                <th>Od</th>
-                <th>Do</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-                <th>PON</th>
-                <th>8:00</th>
-                <th>16:00</th>
-            </tr>
-            <tr>
-                <th>TOR</th>
-                <th>8:00</th>
-                <th>16:00</th>
-            </tr>
-            <tr>
-                <th>SRE</th>
-                <th>8:00</th>
-                <th>16:00</th>
-            </tr>
-            <tr>
-                <th>ČET</th>
-                <th>8:00</th>
-                <th>16:00</th>
-            </tr>
-            <tr>
-                <th>PET</th>
-                <th>8:00</th>
-                <th>16:00</th>
-            </tr>
-            <tr>
-                <th>SOB</th>
-                <th>8:00</th>
-                <th>16:00</th>
-            </tr>
-            <tr>
-                <th>NED</th>
-                <th>8:00</th>
-                <th>16:00</th>
-            </tr>
-
-          </tbody>
-    </div>
-</div>
 
   
