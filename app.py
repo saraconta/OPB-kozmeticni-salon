@@ -274,7 +274,7 @@ def odjava():
 #################################################################################
 ### ZAČETNA STRAN
 
-@get('/') #slika, dobrodošli link za prijavo
+@get('/') 
 def index():
   return bottle.template('dobrodosli.html',napaka=None)
 
@@ -284,12 +284,12 @@ def index():
 @cookie_required_vloga
 def zacetek():
   up_ime = request.get_cookie('up_ime', secret=skrivnost)
-  vloga = request.get_cookie('rola',secret=skrivnost)
+  vloga = request.get_cookie('rola', secret=skrivnost)
 
   if vloga == 'usluzbenec':
     cur.execute("""
         SELECT admin FROM Usluzbenec 
-        WHERE up_ime = %s;
+            WHERE up_ime = %s;
     """, [up_ime])
     ali_je_sef = cur.fetchone()[0]
 
@@ -302,8 +302,8 @@ def zacetek():
 
   podnaslov = 'Pozdravljeni' + ' ' + up_ime + '.'
 
-  return bottle.template('zacetna_stran.html', storitve=cur, up_ime=up_ime,podnaslov=podnaslov,
-    vloga=vloga, ali_je_sef=ali_je_sef)
+  return bottle.template('zacetna_stran.html', storitve=cur, up_ime=up_ime, podnaslov=podnaslov,
+    vloga=vloga, ali_je_sef=ali_je_sef) 
 
 
 ################################################################################################
@@ -316,17 +316,24 @@ def stranke():
     up_ime = request.get_cookie('up_ime', secret=skrivnost)
     vloga = request.get_cookie('rola', secret=skrivnost)
 
-    if vloga == 'usluzbenec': #če je uslužbenec vidi use
+    if vloga == 'usluzbenec':
+        cur.execute("""
+            SELECT admin FROM Usluzbenec 
+                WHERE up_ime = %s;
+        """, [up_ime])
+        ali_je_sef = cur.fetchone()[0]
+
         cur.execute("""
             SELECT id_stranka, ime_priimek, telefon, mail FROM Stranka;
         """)
 
     else:
+        ali_je_sef = None
         cur.execute("""
             SELECT id_stranka, ime_priimek, telefon, mail FROM Stranka WHERE up_ime = %s;
         """, [up_ime])
         
-    return bottle.template('stranke.html', stranke=cur, vloga=vloga)
+    return bottle.template('stranke.html', stranke=cur, vloga=vloga, ali_je_sef=ali_je_sef)
 
 
 @get('/vpis_stranke_v_bazo')
@@ -349,7 +356,7 @@ def dodaj_stranko_post():
 
   except Exception as ex:
     conn.rollback()
-    return template('dodaj_stranko.html', ime_priimek=ime_priimek, telefon=telefon,mail = mail,
+    return template('dodaj_stranko.html', ime_priimek=ime_priimek, telefon=telefon, mail=mail,
         napaka='Zgodila se je napaka: (%s, %s, %s)' % ex)
   
   redirect(url('/prijava'))
@@ -377,7 +384,7 @@ def dodaj_stranko_post():
 
   except Exception as ex:
     conn.rollback()
-    return template('dodaj_stranko.html', ime_priimek=ime_priimek, telefon=telefon, mail = mail,
+    return template('dodaj_stranko.html', ime_priimek=ime_priimek, telefon=telefon, mail=mail,
         napaka='Zgodila se je napaka: (%s, %s, %s)' % ex)
   
   redirect(url('/zacetek'))
@@ -394,8 +401,10 @@ def usluzbenci():
     vloga = request.get_cookie('rola', secret=skrivnost)
 
     if vloga == 'usluzbenec':
-        cur.execute("""SELECT admin FROM Usluzbenec 
-        WHERE up_ime = %s""", [up_ime])
+        cur.execute("""
+            SELECT admin FROM Usluzbenec 
+                WHERE up_ime = %s
+        """, [up_ime])
         ali_je_sef = cur.fetchone()[0]
 
     else:
@@ -403,8 +412,8 @@ def usluzbenci():
 
     cur.execute("""
         WITH povpr AS (SELECT ime_priimek, round(avg(ocena),2) povprecna_ocena
-        FROM Ocena
-        GROUP BY ime_priimek) 
+            FROM Ocena
+            GROUP BY ime_priimek) 
         SELECT u.id_usluzbenec, u.ime_priimek, p.povprecna_ocena
         FROM usluzbenec u 
         LEFT JOIN povpr p ON p.ime_priimek = u.ime_priimek
@@ -414,7 +423,7 @@ def usluzbenci():
     return bottle.template('usluzbenci.html', usluzbenci=cur, ali_je_sef=ali_je_sef, vloga=vloga)
 
 
-@get('/dodaj_usluzbenca') #dodaja lahko samo šefica: up_ime = clarisa
+@get('/dodaj_usluzbenca')   #dodaja lahko samo šefica: up_ime = clarisa
 @cookie_required_up_ime
 @cookie_required_vloga
 def dodaj_usluzbenca_get():
@@ -472,7 +481,7 @@ def dodaj_oceno(id_usluzbenec):
         WHERE u.id_usluzbenec = %s;
     """, [id_usluzbenec])
 
-    return template('dodaj_oceno.html', id_usluzbenec = id_usluzbenec, ime_priimek=cur.fetchone()[0], ocena='',
+    return template('dodaj_oceno.html', id_usluzbenec=id_usluzbenec, ime_priimek=cur.fetchone()[0], ocena='',
         vloga=vloga, napaka=None)
 
 
@@ -480,8 +489,8 @@ def dodaj_oceno(id_usluzbenec):
 def dodaj_oceno_post(id_usluzbenec):
     cur.execute("""
         SELECT u.ime_priimek
-        FROM Usluzbenec u
-        WHERE u.id_usluzbenec = %s;
+            FROM Usluzbenec u
+            WHERE u.id_usluzbenec = %s;
         """, [id_usluzbenec])
     
     ime_priimek = cur.fetchone()[0]
@@ -489,7 +498,7 @@ def dodaj_oceno_post(id_usluzbenec):
 
     cur.execute("""
         INSERT INTO Ocena (ime_priimek, ocena)
-        VALUES (%s, %s) RETURNING id_ocena; 
+            VALUES (%s, %s) RETURNING id_ocena; 
         """, (ime_priimek, ocena))
     
     conn.commit()
@@ -502,11 +511,11 @@ def dodaj_oceno_post(id_usluzbenec):
 def storitve(id_usluzbenec):
     cur.execute("""
         SELECT us.ime_storitve ime1, 1 ime2
-        FROM Usluzb_storitve us
-        WHERE us.id_usluzbenec = %s;
-        """, [id_usluzbenec])
+            FROM Usluzb_storitve us
+            WHERE us.id_usluzbenec = %s;
+    """, [id_usluzbenec])
     
-    return template('storitve.html', id_usluzbenec = id_usluzbenec, storitve=cur, napaka=None)
+    return template('storitve.html', id_usluzbenec=id_usluzbenec, storitve=cur, napaka=None)
 
 
 ##################################################################################################
@@ -520,8 +529,9 @@ def dodaj_storitev(id_usluzbenec):
     vloga = request.get_cookie('rola', secret=skrivnost)
 
     if vloga == 'usluzbenec':
-        cur.execute("""SELECT admin FROM Usluzbenec 
-            WHERE up_ime = %s;
+        cur.execute("""
+            SELECT admin FROM Usluzbenec 
+                WHERE up_ime = %s;
         """, [up_ime])
         ali_je_sef = cur.fetchone()[0]
     else:
@@ -529,12 +539,12 @@ def dodaj_storitev(id_usluzbenec):
 
     cur.execute("""
         SELECT u.ime_priimek
-        FROM Usluzbenec u
-        WHERE u.id_usluzbenec = %s;
+            FROM Usluzbenec u
+            WHERE u.id_usluzbenec = %s;
     """,[id_usluzbenec])
     
-    return template('dodaj_storitev.html', id_usluzbenec = id_usluzbenec,
-        ime_priimek=cur.fetchone()[0], storitev='', ali_je_sef = ali_je_sef, napaka=None)
+    return template('dodaj_storitev.html', id_usluzbenec=id_usluzbenec,
+        ime_priimek=cur.fetchone()[0], storitev='', ali_je_sef=ali_je_sef, napaka=None)
 
 
 @post('/dodaj_storitev/<id_usluzbenec:int>')
@@ -555,10 +565,10 @@ def dodaj_storitev_post(id_usluzbenec):
 def storitev_usluzbenci_get(id_storitev):
     cur.execute("""
       SELECT u.id_usluzbenec, u.ime_priimek
-      FROM Storitev s
+        FROM Storitev s
       LEFT JOIN Usluzb_storitve us ON us.ime_storitve = s.ime_storitve
       LEFT JOIN Usluzbenec u ON u.id_usluzbenec = us.id_usluzbenec
-      WHERE s.id_storitev = %s;
+        WHERE s.id_storitev = %s;
     """, [id_storitev])
 
     return template('storitev_usluzbenci.html', id_storitev=id_storitev, usluzbenci=cur)
@@ -586,13 +596,13 @@ def termina_storitev():
 def termina_usluzbenec(id_storitev):
     cur.execute("""
       SELECT u.id_usluzbenec, u.ime_priimek
-      FROM Storitev s
+        FROM Storitev s
       LEFT JOIN Usluzb_storitve us ON us.ime_storitve = s.ime_storitve
       LEFT JOIN Usluzbenec u ON u.id_usluzbenec = us.id_usluzbenec
-      WHERE s.id_storitev = %s;
+        WHERE s.id_storitev = %s;
     """, [id_storitev])
 
-    return template('termin_usluzbenec.html', id_storitev = id_storitev, usluzbenci_storitve=cur)
+    return template('termin_usluzbenec.html', id_storitev=id_storitev, usluzbenci_storitve=cur)
 
 
 @get('/termin/<id_storitev:int>/<id_usluzbenec:int>')
@@ -601,18 +611,17 @@ def termina_usluzbenec(id_storitev):
 def termin_stranka(id_usluzbenec, id_storitev):
     cur.execute("""
       SELECT u.ime_priimek, s.ime_storitve, s.trajanje, u.id_usluzbenec, s.id_storitev
-      FROM Storitev s
+        FROM Storitev s
       LEFT JOIN Usluzb_storitve us ON us.ime_storitve = s.ime_storitve
       LEFT JOIN Usluzbenec u ON u.id_usluzbenec = us.id_usluzbenec
-      WHERE (u.id_usluzbenec, s.id_storitev) = (%s, %s);
+        WHERE (u.id_usluzbenec, s.id_storitev) = (%s, %s);
     """, (id_usluzbenec, id_storitev))
 
     vrstica=cur.fetchone()
     today = str(date.today())
 
-    return template('termin.html', id_storitev = id_storitev, id_usluzbenec = id_usluzbenec, 
-      ime_priimek_usluzbenca=vrstica[0], ime_storitve=vrstica[1], danes = today,
-      datum='', napaka=None)
+    return template('termin.html', id_storitev=id_storitev, id_usluzbenec=id_usluzbenec, 
+      ime_priimek_usluzbenca=vrstica[0], ime_storitve=vrstica[1], danes=today, datum='', napaka=None)
 
 
 @get('/termin/<id_storitev:int>/<id_usluzbenec:int>/')
@@ -658,8 +667,8 @@ def termin_ura(id_usluzbenec, id_storitev, year, month, day):
         WHERE a.zacetek is null;
     """, [id_usluzbenec, datum])
 
-    return template('termin_ura.html', id_storitev = id_storitev, id_usluzbenec = id_usluzbenec,
-        datum = datum,year=year, month=month, day=day, ura = cur, ime_priimek_stranke = ime, koda = '', napaka=None)
+    return template('termin_ura.html', id_storitev=id_storitev, id_usluzbenec=id_usluzbenec,
+        datum=datum, year=year, month=month, day=day, ura=cur, ime_priimek_stranke=ime, koda='', napaka=None)
 
 
 @post('/termin/<id_storitev:int>/<id_usluzbenec:int>/<year:int>-<month:int>-<day:int>')
@@ -706,7 +715,7 @@ def vpis_termina_post(id_usluzbenec, id_storitev, year, month, day):
     redirect(url('prikazi_termin', id_termin=id_termin))
 
 
-@get('/prikazi_termin/<id_termin:int>')
+@get('/prikazi_termin/<id_termin:int>')   #stranka vidi ravnokar rezervirani termin s ceno storitve
 @cookie_required_up_ime
 @cookie_required_vloga
 def prikazi_termin(id_termin):
@@ -733,18 +742,28 @@ def pregled_terminov():
     vloga = request.get_cookie('rola', secret=skrivnost)
     up_ime = request.get_cookie('up_ime', secret=skrivnost)
 
-    if vloga == 'stranka': #če je stranka naj vrne kar samo njen pregled terminov
-        cur.execute("""SELECT id_stranka FROM Stranka 
-        WHERE up_ime = %s""", [up_ime])
+    if vloga == 'usluzbenec':
+        cur.execute("""
+            SELECT admin FROM Usluzbenec 
+                WHERE up_ime = %s;
+        """, [up_ime])
+        ali_je_sef = cur.fetchone()[0]
+
+    else:   #če je stranka, vrne samo njen pregled terminov
+        ali_je_sef = None
+        cur.execute("""
+            SELECT id_stranka FROM Stranka 
+                WHERE up_ime = %s
+        """, [up_ime])
         id_stranka = cur.fetchone()[0]
         return redirect(url('pregled_termina', id_stranka=id_stranka))
     
     cur.execute("""
-      SELECT id_stranka, ime_priimek FROM Stranka 
-      ORDER BY ime_priimek
+        SELECT id_stranka, ime_priimek FROM Stranka 
+            ORDER BY ime_priimek
     """)
 
-    return bottle.template('pregled_terminov.html', stranke=cur)
+    return bottle.template('pregled_terminov.html', stranke=cur, ali_je_sef=ali_je_sef)
 
 
 @get('/pregled_termina/<id_stranka:int>')  #uslužbenec termina ne sme odstraniti
@@ -752,6 +771,25 @@ def pregled_terminov():
 @cookie_required_vloga
 def pregled_termina(id_stranka): 
     vloga = request.get_cookie('rola', secret=skrivnost)
+    up_ime = request.get_cookie('up_ime', secret=skrivnost)
+
+    if vloga == 'usluzbenec':
+        cur.execute("""
+            SELECT admin FROM Usluzbenec 
+                WHERE up_ime = %s;
+        """, [up_ime])
+        ali_je_sef = cur.fetchone()[0]
+
+    else: 
+        ali_je_sef = None
+
+    cur.execute("""
+        SELECT ime_priimek FROM Stranka
+        WHERE id_stranka = %s;
+    """, [id_stranka])
+
+    ime_priimek = cur.fetchone()[0]
+    besedilo = 'PRIHODNJI REZERVIRANI TERMINI STRANKE:' + ' ' + ime_priimek 
 
     cur.execute("""
         SELECT id_termin, datum, ime_storitve FROM termin1
@@ -760,7 +798,7 @@ def pregled_termina(id_stranka):
         AND datum >= CURRENT_TIMESTAMP;
     """, [id_stranka])
 
-    return template('pregled_termina.html', tabela=cur, vloga=vloga, napaka=None)
+    return template('pregled_termina.html', tabela=cur, vloga=vloga, ali_je_sef=ali_je_sef, ime_priimek=ime_priimek, besedilo=besedilo, napaka=None)
 
 @post('/izbrisi_termin')
 def pobrisi_termin():
@@ -787,7 +825,7 @@ def urnik():
     if vloga == 'usluzbenec': 
         cur.execute("""
             SELECT admin FROM Usluzbenec 
-            WHERE up_ime = %s;
+                WHERE up_ime = %s;
         """, [up_ime])
 
         ali_je_sef = cur.fetchone()[0]
@@ -804,10 +842,10 @@ def urnik():
         
     cur.execute("""
       SELECT u.id_usluzbenec, u.ime_priimek FROM usluzbenec u
-      ORDER BY ime_priimek;
+        ORDER BY ime_priimek;
     """)
 
-    return bottle.template('urnik.html', usluzbenci=cur, vloga=vloga)
+    return bottle.template('urnik.html', usluzbenci=cur, vloga=vloga, ali_je_sef=ali_je_sef)
 
 
 @get('/urnik/<id_usluzbenec:int>')
@@ -824,14 +862,14 @@ def prikazi_urnik(id_usluzbenec):
 
     cur.execute("""
         SELECT ime_priimek_stranke, datum, ime_storitve
-        FROM Termin1 t
+            FROM Termin1 t
         JOIN Usluzbenec u ON u.ime_priimek = t.ime_priimek_usluzbenca 
-        WHERE id_usluzbenec = %s
-        AND datum >= CURRENT_TIMESTAMP
-        ORDER BY datum ASC; 
+            WHERE id_usluzbenec = %s
+            AND datum >= CURRENT_TIMESTAMP
+            ORDER BY datum ASC; 
     """, [id_usluzbenec])
     
-    return template('urnik_usluzbenca.html', id_usluzbenec=id_usluzbenec, urnik=cur, besedilo=besedilo)
+    return template('urnik_usluzbenca.html', id_usluzbenec=id_usluzbenec, urnik=cur, ime_priimek=ime_priimek, besedilo=besedilo)
 
 
 ######################################################################################################
@@ -842,7 +880,7 @@ def prikazi_urnik(id_usluzbenec):
 @cookie_required_vloga
 def poslovanje():
     up_ime = request.get_cookie('up_ime', secret=skrivnost)
-    vloga = request.get_cookie('rola',secret=skrivnost)
+    vloga = request.get_cookie('rola', secret=skrivnost)
 
     if vloga == 'usluzbenec':
       cur.execute("""select admin from Usluzbenec 
