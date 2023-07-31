@@ -839,7 +839,7 @@ def pregled_termina(id_stranka):
     """, [id_stranka])
 
     ime_priimek = cur.fetchone()[0]
-    besedilo = 'Prihodnji rezervirani termini stranke:' + ' ' + ime_priimek 
+    besedilo = 'Prihodnji rezervirani termini stranke' + ' ' + ime_priimek 
 
     cur.execute("""
         SELECT id_termin, datum, ime_storitve FROM termin1
