@@ -14,7 +14,7 @@ from Data.model import *
 from functools import wraps
 
 import os
-import bottle
+#import bottle    #izbrisemo zaradi Beamerja
 
 from datetime import date
 
@@ -107,7 +107,7 @@ def registracija_stranka_post():
 
     if ime_priimek is None or up_ime is None or geslo is None or geslo2 is None:
         nastaviSporocilo('Registracija ni mogoča!') 
-        redirect('/registracija_stranka')
+        redirect(url('registracija_stranka'))
         return    
     uporabnik = None
     try: 
@@ -120,11 +120,11 @@ def registracija_stranka_post():
         uporabnik = None
     if uporabnik is None:
         nastaviSporocilo('Registracija ni mogoča!') 
-        redirect('/registracija_stranka')
+        redirect(url('registracija_stranka'))
         return
     if geslo != geslo2:
         nastaviSporocilo('Gesli se ne ujemata!') 
-        redirect('/registracija_stranka')
+        redirect(url('registracija_stranka'))
         return
     
     zgostitev = hashGesla(geslo)
@@ -135,7 +135,7 @@ def registracija_stranka_post():
     
     conn.commit()
     response.set_cookie('up_ime', up_ime, secret=skrivnost)
-    redirect('/prijava')
+    redirect(url('prijava'))
 
 
 @get('/registracija_usluzbenec')
@@ -153,7 +153,7 @@ def registracija_usluzbenec_post():
 
     if ime_priimek is None or up_ime is None or geslo is None or geslo2 is None:
         nastaviSporocilo('Registracija ni mogoča!') 
-        redirect('/registracija_usluzbenec')
+        redirect(url('registracija_usluzbenec'))
         return    
     uporabnik = None
     try: 
@@ -167,18 +167,18 @@ def registracija_usluzbenec_post():
         uporabnik = None
     if uporabnik is None:
         nastaviSporocilo('Registracija ni mogoča!') 
-        redirect('/registracija_usluzbenec')
+        redirect(url('registracija_usluzbenec'))
         return
     if geslo != geslo2:
         nastaviSporocilo('Gesli se ne ujemata!') 
-        redirect('/registracija_usluzbenec')
+        redirect(url('registracija_usluzbenec'))
         return
     
     zgostitev = hashGesla(geslo)
     cur.execute("""UPDATE Usluzbenec SET up_ime = %s, geslo = %s WHERE ime_priimek = %s;""", (up_ime, zgostitev, ime_priimek))
     conn.commit()
     response.set_cookie('up_ime', up_ime, secret=skrivnost)
-    redirect('/prijava')
+    redirect(url('prijava'))
 
 
 @get('/prijava_stranka')
@@ -194,7 +194,7 @@ def prijava_stranka_post():
 
     if up_ime is None or geslo is None:
         nastaviSporocilo('Uporabniško ime in geslo morata biti neprazna!') 
-        redirect('/prijava_stranka')
+        redirect(url('prijava_stranka'))
         return 
     hashBaza = None
     try: 
@@ -205,16 +205,16 @@ def prijava_stranka_post():
         hashBaza = None
     if hashBaza is None:
         nastaviSporocilo('Uporabniško ime oziroma geslo nista ustrezna!') 
-        redirect('/prijava_stranka')
+        redirect(url('prijava_stranka'))
         return print('Uporabniško ime oziroma geslo nista ustrezna!')
     if hashGesla(geslo) != hashBaza:
         nastaviSporocilo('Uporabniško ime oziroma geslo nista ustrezna!') 
-        redirect('/prijava_stranka')
+        redirect(url('prijava_stranka'))
         return
     
     response.set_cookie('up_ime', up_ime, secret=skrivnost)
     response.set_cookie('rola', 'stranka', secret=skrivnost)
-    redirect('/zacetek')
+    redirect(url('zacetek'))
 
 
 @get('/prijava_usluzbenec')
@@ -230,7 +230,7 @@ def prijava_usluzbenec_post():
 
     if up_ime is None or geslo is None:
         nastaviSporocilo('Uporabniško ime in geslo morata biti neprazna!') 
-        redirect('/prijava_usluzbenec')
+        redirect(url('prijava_usluzbenec'))
         return
     hashBaza = None
     try: 
@@ -242,16 +242,16 @@ def prijava_usluzbenec_post():
         print("baza je None")
     if hashBaza is None:
         nastaviSporocilo('Uporabniško ime oziroma geslo nista ustrezna!') 
-        redirect('/prijava_usluzbenec')
+        redirect(url('prijava_usluzbenec'))
         return 
     if hashGesla(geslo) != hashBaza:
         nastaviSporocilo('Uporabniško ime oziroma geslo nista ustrezna!') 
-        redirect('/prijava_usluzbenec')
+        redirect(url('prijava_usluzbenec'))
         return
     
     response.set_cookie('up_ime', up_ime, secret=skrivnost)
     response.set_cookie('rola', 'usluzbenec', secret=skrivnost)
-    redirect('/zacetek')
+    redirect(url('zacetek'))
     
 
 @get('/prijava')
@@ -276,7 +276,7 @@ def odjava():
 
 @get('/') 
 def index():
-  return bottle.template('dobrodosli.html',napaka=None)
+  return template('dobrodosli.html',napaka=None)
 
 
 @get('/zacetek')
@@ -302,7 +302,7 @@ def zacetek():
 
   podnaslov = 'Pozdravljeni' + ' ' + up_ime + '.'
 
-  return bottle.template('zacetna_stran.html', storitve=cur, up_ime=up_ime, podnaslov=podnaslov,
+  return template('zacetna_stran.html', storitve=cur, up_ime=up_ime, podnaslov=podnaslov,
     vloga=vloga, ali_je_sef=ali_je_sef) 
 
 
@@ -333,16 +333,16 @@ def stranke():
             SELECT id_stranka, ime_priimek, telefon, mail FROM Stranka WHERE up_ime = %s;
         """, [up_ime])
         
-    return bottle.template('stranke.html', stranke=cur, vloga=vloga, ali_je_sef=ali_je_sef)
+    return template('stranke.html', stranke=cur, vloga=vloga, ali_je_sef=ali_je_sef)
 
 
 @get('/vpis_stranke_v_bazo')
-def dodaj_stranko():
+def vpis_stranke_v_bazo():
     return template('vpis_stranke_v_bazo.html', ime_priimek='', telefon='', mail='', napake=None)
 
 
 @post('/vpis_stranke_v_bazo')
-def dodaj_stranko_post():
+def vpis_stranke_v_bazo_post():
   ime_priimek = request.forms.ime_priimek
   telefon = request.forms.telefon
   mail = request.forms.mail
@@ -434,7 +434,7 @@ def usluzbenci():
         order by u.ime_priimek asc;
     """)
 
-    return bottle.template('usluzbenci.html', usluzbenci=cur, ali_je_sef=ali_je_sef, vloga=vloga)
+    return template('usluzbenci.html', usluzbenci=cur, ali_je_sef=ali_je_sef, vloga=vloga)
 
 
 @get('/dodaj_usluzbenca')   #dodaja lahko samo šefica: up_ime = clarisa
@@ -454,7 +454,7 @@ def dodaj_usluzbenca_get():
     else:
         ali_je_sef = None
 
-    return bottle.template('dodaj_usluzbenca.html', ime_priimek='', storitev='', ali_je_sef=ali_je_sef, napake=None)
+    return template('dodaj_usluzbenca.html', ime_priimek='', storitev='', ali_je_sef=ali_je_sef, napake=None)
 
 
 @post('/dodaj_usluzbenca')
@@ -637,7 +637,7 @@ def termina_storitev():
       SELECT id_storitev, ime_storitve FROM Storitev;
     """)
 
-    return bottle.template('termin_storitev.html', storitve=cur, vloga=vloga)
+    return template('termin_storitev.html', storitve=cur, vloga=vloga)
 
   
 @get('/termin/<id_storitev:int>')
@@ -813,7 +813,7 @@ def pregled_terminov():
             ORDER BY ime_priimek
     """)
 
-    return bottle.template('pregled_terminov.html', stranke=cur, ali_je_sef=ali_je_sef)
+    return template('pregled_terminov.html', stranke=cur, ali_je_sef=ali_je_sef)
 
 
 @get('/pregled_termina/<id_stranka:int>')  #uslužbenec termina ne sme odstraniti
@@ -896,7 +896,7 @@ def urnik():
         ORDER BY ime_priimek;
     """)
 
-    return bottle.template('urnik.html', usluzbenci=cur, vloga=vloga, ali_je_sef=ali_je_sef)
+    return template('urnik.html', usluzbenci=cur, vloga=vloga, ali_je_sef=ali_je_sef)
 
 
 @get('/urnik/<id_usluzbenec:int>')
@@ -972,7 +972,7 @@ def poslovanje():
         ORDER BY leto, mesec ASC;
     """)
 
-    return bottle.template('poslovanje1.html', poslovanje=cur, ali_je_sef=ali_je_sef)
+    return template('poslovanje1.html', poslovanje=cur, ali_je_sef=ali_je_sef)
 
 
 # poženemo strežnik na podanih vratih, npr. http://localhost:8080/

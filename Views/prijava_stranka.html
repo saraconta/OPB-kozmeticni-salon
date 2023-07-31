@@ -9,16 +9,16 @@
           Prijava
         </p>
         <ul class="menu-list">
-          <li><a href="/prijava_stranka" class="is-active">Prijava za stranke</a></li>
-          <li><a href="/prijava_usluzbenec">Prijava za uslužbence</a></li>
+          <li><a href="{{url('prijava_stranka')}}" class="is-active">Prijava za stranke</a></li>
+          <li><a href="{{url('prijava_usluzbenec')}}">Prijava za uslužbence</a></li>
         </ul>
   
         <p class="menu-label">
           Registracija
         </p>
         <ul class="menu-list">
-          <li><a href="/registracija_stranka">Registracija za stranke</a></li>
-          <li><a href="/registracija_usluzbenec">Registracija za uslužbence</a></li>
+          <li><a href="{{url('registracija_stranka')}}">Registracija za stranke</a></li>
+          <li><a href="{{url('registracija_usluzbenec')}}">Registracija za uslužbence</a></li>
   
       </aside>
     </div>
@@ -27,7 +27,7 @@
       <table class="table is-hoverable is-fullwidth">
             <thead>
                 <tr>
-                    <form method="POST" action="/prijava_stranka">
+                    <form method="POST" action="{{url('prijava_stranka_post')}}">
                         <td><strong>PRIJAVA ZA STRANKE</strong></td>
                         <tr>
                             <td>
@@ -66,7 +66,7 @@
                                         <button class="button is-link" type="submit">Prijava</button>
                                     </div>
                                     <div class="control">
-                                        <a class="button is-link is-light" href="/prijava">Prekliči</a>
+                                        <a class="button is-link is-light" href="{{url('prijava')}}">Prekliči</a>
                                     </div>
                                 </div>
                             </td>
@@ -88,7 +88,7 @@
   </div>
   
   <div>
-    <p>Še niste vpisani v našo bazo strank? Vpišete se lahko <a href="/vpis_stranke_v_bazo">tukaj</a>. Nato se morate še 
-        <a href="/registracija_stranka">registrirati</a>.</p>
+    <p>Še niste vpisani v našo bazo strank? Vpišete se lahko <a href="{{url('vpis_stranke_v_bazo')}}">tukaj</a>. Nato se morate še 
+        <a href="{{url('registracija_stranka')}}">registrirati</a>.</p>
   </div>
                    

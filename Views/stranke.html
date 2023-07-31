@@ -9,8 +9,8 @@
       <a><span>Seznam strank</span></a>
     </li>
     <li>
-      <a href="/dodaj_stranko">
-        <span href="/dodaj_stranko">Dodaj stranko</span>
+      <a href="{{url('dodaj_stranko')}}">
+        <span href="{{url('dodaj_stranko')}}">Dodaj stranko</span>
       </a>
     </li>
   </ul>
@@ -23,20 +23,20 @@
   
         <p class="menu-label">Splošno</p>
           <ul class="menu-list">
-            <li><a href="/zacetek">Cenik storitev</a></li>
-            <li><a href="/pregled_terminov">Pregled rezerviranih terminov</a></li>
-            <li><a href="/poslovanje">Poslovanje in dobiček</a></li>
+            <li><a href="{{url('zacetek')}}">Cenik storitev</a></li>
+            <li><a href="{{url('pregled_terminov')}}" >Pregled rezerviranih terminov</a></li>
+            <li><a href="{{url('poslovanje')}}">Poslovanje in dobiček</a></li>
           </ul>
   
         <p class="menu-label">O strankah</p>
           <ul class="menu-list">
-            <li><a href="/stranke" class="is-active">Podatki strank in dodajanje novih</a></li>
+            <li><a href="{{url('stranke')}}" class="is-active">Podatki strank in dodajanje novih</a></li>
           </ul>
   
         <p class="menu-label">O zaposlenih</p>
           <ul class="menu-list">
-            <li><a href="/usluzbenci">Pregled in urejanje zaposlenih</a></li>
-            <li><a href="/urnik">Urnik zaposlenih</a></li>
+            <li><a href="{{url('usluzbenci')}}">Pregled in urejanje zaposlenih</a></li>
+            <li><a href="{{url('urnik')}}">Urnik zaposlenih</a></li>
           </ul>
   
       </aside>
@@ -49,19 +49,19 @@
 
         <p class="menu-label">Splošno</p>
           <ul class="menu-list">
-            <li><a href="/zacetek">Cenik storitev</a></li>
-            <li><a href="/urnik">Urnik</a></li>
+            <li><a href="{{url('zacetek')}}">Cenik storitev</a></li>
+            <li><a href="{{url('urnik')}}">Urnik</a></li>
           </ul>
 
         <p class="menu-label">O strankah</p>
           <ul class="menu-list">
-            <li><a href="/stranke" class="is-active">Podatki strank in dodajanje novih</a></li>
-            <li><a href="/pregled_terminov">Pregled rezerviranih terminov</a></li>
+            <li><a href="{{url('stranke')}}" class="is-active">Podatki strank in dodajanje novih</a></li>
+            <li><a href="{{url('pregled_terminov')}}">Pregled rezerviranih terminov</a></li>
           </ul>
 
         <p class="menu-label">O zaposlenih</p>
           <ul class="menu-list">
-            <li><a href="/usluzbenci">Pregled sodelavcev</a></li>
+            <li><a href="{{url('usluzbenci')}}">Pregled sodelavcev</a></li>
           </ul>
 
       </aside>
@@ -96,19 +96,19 @@
 
       <p class="menu-label">Splošno</p>
         <ul class="menu-list">
-          <li><a href="/stranke" class="is-active">Vaši podatki</a></li>
-          <li><a href="/zacetek">Cenik storitev</a></li>
+          <li><a href="{{url('stranke')}}" class="is-active">Vaši podatki</a></li>
+          <li><a href="{{url('zacetek')}}">Cenik storitev</a></li>
         </ul>
 
       <p class="menu-label">Termin</p>
         <ul class="menu-list">
-          <li><a href="/termin">Nov termin</a></li>
-          <li><a href="/pregled_terminov">Pregled in odpoved termina</a></li>
+          <li><a href="{{url('termin')}}">Nov termin</a></li>
+          <li><a href="{{url('pregled_terminov')}}">Pregled in odpoved termina</a></li>
         </ul>
 
       <p class="menu-label">O zaposlenih</p>
         <ul class="menu-list">
-          <li><a href="/usluzbenci">Pregled in ocenjevanje zaposlenih</a></li>
+          <li><a href="{{url('usluzbenci')}}">Pregled in ocenjevanje zaposlenih</a></li>
         </ul>
 
     </aside>
@@ -126,11 +126,11 @@
 
         <footer class="card-footer">
           <p class="card-footer-item">
-            <span><a href="/pregled_terminov">Pregled terminov</a></span>
+            <span><a href="{{url('pregled_terminov')}}">Pregled terminov</a></span>
           </p>
 
           <p class="card-footer-item">
-            <span><a href="/termin">Nov termin</a></span>
+            <span><a href="{{url('termin')}}">Nov termin</a></span>
           </p>
         </footer>
 

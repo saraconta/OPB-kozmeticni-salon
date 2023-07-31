@@ -9,16 +9,16 @@
           Prijava
         </p>
         <ul class="menu-list">
-          <li><a href="/prijava_stranka">Prijava za stranke</a></li>
-          <li><a href="/prijava_usluzbenec">Prijava za uslužbence</a></li>
+          <li><a href="{{url('prijava_stranka')}}">Prijava za stranke</a></li>
+          <li><a href="{{url('prijava_usluzbenec')}}">Prijava za uslužbence</a></li>
         </ul>
   
         <p class="menu-label">
           Registracija
         </p>
         <ul class="menu-list">
-          <li><a href="/registracija_stranka" class="is-active">Registracija za stranke</a></li>
-          <li><a href="/registracija_usluzbenec">Registracija za uslužbence</a></li>
+          <li><a href="{{url('registracija_stranka')}}" class="is-active">Registracija za stranke</a></li>
+          <li><a href="{{url('registracija_usluzbenec')}}">Registracija za uslužbence</a></li>
   
       </aside>
     </div>
@@ -27,7 +27,7 @@
         <table class="table is-hoverable is-fullwidth">
             <thead>
                 <tr>
-                    <form method="POST" action="/registracija_stranka">
+                    <form method="POST" action="{{url('registracija_stranka_post')}}">
                         <td><strong>REGISTRACIJA ZA STRANKE</strong></td>
                         <tr>
                             <td>
@@ -96,7 +96,7 @@
                                         <button class="button is-link" type="submit">Registracija</button>
                                     </div>
                                     <div class="control">
-                                        <a class="button is-link is-light" href="/prijava">Prekliči</a>
+                                        <a class="button is-link is-light" href="{{url('prijava')}}">Prekliči</a>
                                     </div>
                                 </div>
                             </td>

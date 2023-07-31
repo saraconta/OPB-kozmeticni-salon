@@ -17,20 +17,20 @@
   
         <p class="menu-label">Splošno</p>
           <ul class="menu-list">
-            <li><a href="/zacetek">Cenik storitev</a></li>
-            <li><a href="/pregled_terminov" class="is-active">Pregled rezerviranih terminov</a></li>
-            <li><a href="/poslovanje">Poslovanje in dobiček</a></li>
+            <li><a href="{{url('zacetek')}}">Cenik storitev</a></li>
+            <li><a href="{{url('pregled_terminov')}}" class="is-active">Pregled rezerviranih terminov</a></li>
+            <li><a href="{{url('poslovanje')}}">Poslovanje in dobiček</a></li>
           </ul>
   
         <p class="menu-label">O strankah</p>
           <ul class="menu-list">
-            <li><a href="/stranke">Podatki strank in dodajanje novih</a></li>
+            <li><a href="{{url('stranke')}}">Podatki strank in dodajanje novih</a></li>
           </ul>
   
         <p class="menu-label">O zaposlenih</p>
           <ul class="menu-list">
-            <li><a href="/usluzbenci">Pregled in urejanje zaposlenih</a></li>
-            <li><a href="/urnik">Urnik zaposlenih</a></li>
+            <li><a href="{{url('usluzbenci')}}">Pregled in urejanje zaposlenih</a></li>
+            <li><a href="{{url('urnik')}}">Urnik zaposlenih</a></li>
           </ul>
   
       </aside>
@@ -43,19 +43,19 @@
 
         <p class="menu-label">Splošno</p>
           <ul class="menu-list">
-            <li><a href="/zacetek">Cenik storitev</a></li>
-            <li><a href="/urnik">Urnik</a></li>
+            <li><a href="{{url('zacetek')}}">Cenik storitev</a></li>
+            <li><a href="{{url('urnik')}}">Urnik</a></li>
           </ul>
 
         <p class="menu-label">O strankah</p>
           <ul class="menu-list">
-            <li><a href="/stranke">Podatki strank in dodajanje novih</a></li>
-            <li><a href="/pregled_terminov" class="is-active">Pregled rezerviranih terminov</a></li>
+            <li><a href="{{url('stranke')}}">Podatki strank in dodajanje novih</a></li>
+            <li><a href="{{url('pregled_terminov')}}" class="is-active">Pregled rezerviranih terminov</a></li>
           </ul>
 
         <p class="menu-label">O zaposlenih</p>
           <ul class="menu-list">
-            <li><a href="/usluzbenci">Pregled sodelavcev</a></li>
+            <li><a href="{{url('usluzbenci')}}">Pregled sodelavcev</a></li>
           </ul>
 
       </aside>
@@ -73,7 +73,7 @@
                 <tr>
                     <td>{{ime_priimek}}</td>
                     <td>
-                        <a href="/pregled_termina/{{id_stranka}}" class="button is-primary is-light">
+                        <a href="{{url('pregled_termina', id_stranka=id_stranka)}}" class="button is-primary is-light">
                             Preglej
                         </a>
                     </td>

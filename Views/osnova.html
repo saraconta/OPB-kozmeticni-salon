@@ -24,7 +24,7 @@
             <div class="level-right">
               <div class="columns">
                 <div class="column is-narrow">
-                  <a class="button is-primary" href="/zacetek">
+                  <a class="button is-primary" href="{{url('zacetek')}}">
                     <span class="icon-text">
                       <span class="icon">
                         <i class="fas fa-home"></i>
@@ -35,7 +35,7 @@
                 </div> 
                 
                 <div class="column">
-                  <form method="GET" action="/odjava">
+                  <form method="GET" action="{{url('odjava')}}">
                     <button class="button is-light">Odjavi se</button>
                   </form>
                 </div>
@@ -55,12 +55,6 @@
   <section class="section">
     {{!base}}
   </section>
- <!-- <div class="level-right">
-    <a class="button is-light" href="/zacetek">
-      <strong>Domov</strong>
-    </a>
-  </div>
-  -->
 </body>
 
 <footer class="footer">
