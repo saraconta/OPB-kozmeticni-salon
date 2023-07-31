@@ -1,12 +1,16 @@
 % setdefault('napaka', '')
-% setdefault('podnaslov', 'Storitve')
+% setdefault('podnaslov', '')
 %rebase('osnova.html', napaka=napaka, podnaslov='')
+
+%if ali_je_sef == 1:
 
 <div class="tabs is-centered is-boxed is-medium">
     <ul>
-      <li class="is-active">
-        <a><span>Storitve</span></a>
+      <li>
+        <a href="/usluzbenci"><span href="/usluzbenci">Seznam zaposlenih</span></a>
       </li>
+      <li class="is-active">
+        <a><span>{{besedilo}}</span></a></li>
     </ul>
   </div>
 
@@ -37,7 +41,7 @@
 <table class="table table-striped"> 
     <thead>
         <tr>
-            <th>{{besedilo}}</th>
+            <th>Storitve</th>
         </tr>
     </thead>
 
@@ -48,3 +52,111 @@
         %end
 </table>
 </div>
+
+%elif ali_je_sef==2:
+<div class="tabs is-centered is-boxed is-medium">
+    <ul>
+      <li>
+        <a href="/usluzbenci"><span href="/usluzbenci">Seznam zaposlenih</span></a>
+      </li>
+      <li class="is-active">
+        <a><span>{{besedilo}}</span></a></li>
+      <li>
+        <a href="/dodaj_usluzbenca">
+          <span href="/dodaj_usluzbenca">Dodaj uslužbenca</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+<div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd">
+    <div class="column is-narrow">
+      <aside class="menu">
+  
+        <p class="menu-label">Splošno</p>
+          <ul class="menu-list">
+            <li><a href="/zacetek">Cenik storitev</a></li>
+            <li><a href="/pregled_terminov">Pregled rezerviranih terminov</a></li>
+            <li><a href="/poslovanje">Poslovanje in dobiček</a></li>
+          </ul>
+  
+        <p class="menu-label">O strankah</p>
+          <ul class="menu-list">
+            <li><a href="/stranke">Podatki strank in dodajanje novih</a></li>
+          </ul>
+  
+        <p class="menu-label">O zaposlenih</p>
+          <ul class="menu-list">
+            <li><a href="/usluzbenci" class="is-active">Pregled in urejanje zaposlenih</a></li>
+            <li><a href="/urnik">Urnik zaposlenih</a></li>
+          </ul>
+  
+      </aside>
+    </div>
+    <div class="column is-narrow">
+        <table class="table table-striped"> 
+            <thead>
+                <tr>
+                    <th>Storitve</th>
+                </tr>
+            </thead>
+        
+                %for ime1, ime2 in storitve:
+                    <tr>
+                        <td>{{ime1}}</td>
+                    </tr>
+                %end
+        </table>
+        </div>
+
+
+%else:
+<div class="tabs is-centered is-boxed is-medium">
+    <ul>
+      <li>
+        <a href="/usluzbenci"><span href="/usluzbenci">Seznam zaposlenih</span></a>
+      </li>
+      <li class="is-active">
+        <a><span>{{besedilo}}</span></a></li>
+    </ul>
+  </div>
+
+
+  <div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd">
+    <div class="column is-narrow">
+      <aside class="menu">
+        <p class="menu-label">Splošno</p>
+          <ul class="menu-list">
+            <li><a href="/stranke">Vaši podatki</a></li>
+            <li><a href="/zacetek">Cenik storitev</a></li>
+          </ul>
+  
+        <p class="menu-label">Termin</p>
+          <ul class="menu-list">
+            <li><a href="/termin">Nov termin</a></li>
+            <li><a href="/pregled_terminov">Pregled in odpoved termina</a></li>
+          </ul>
+  
+        <p class="menu-label">O zaposlenih</p>
+          <ul class="menu-list">
+            <li><a href="/usluzbenci" class="is-active">Pregled in ocenjevanje zaposlenih</a></li>
+          </ul>
+  
+      </aside>
+    </div>
+
+    <div class="column is-narrow">
+        <table class="table table-striped"> 
+            <thead>
+                <tr>
+                    <th>Storitve</th>
+                </tr>
+            </thead>
+        
+                %for ime1, ime2 in storitve:
+                    <tr>
+                        <td>{{ime1}}</td>
+                    </tr>
+                %end
+        </table>
+        </div>

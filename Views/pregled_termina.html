@@ -4,6 +4,15 @@
 
 
 % if vloga == 'stranka':
+
+<div class="tabs is-centered is-boxed is-medium">
+    <ul>
+        <li class="is-active">
+            <a><span >Vaši prihodnji rezervirani termini</span></a>
+        </li>
+    </ul>
+</div> 
+
 <div class="columns">
     <div class="column is is-narrow">
       <aside class="menu">
@@ -30,9 +39,6 @@
     <div class="column">
     <table class="table table-striped"> 
         <thead>
-            <tr>
-                <th>PRIHODNJI REZERVIRANI TERMINI</th>
-            </tr>
             <tr>
                 <th>Datum in ura</th>
                 <th>Storitev</th>
@@ -64,7 +70,7 @@
                 <a href="/pregled_terminov"><span href="/pregled_terminov">Pregled terminov</span></a>
             </li>
             <li class="is-active">
-                <a><span >{{ime_priimek}}</span></a>
+                <a><span >{{besedilo}}</span></a>
             </li>
         </ul>
     </div>
@@ -128,9 +134,7 @@
     <div class="column is-narrow">
         <table class="table table-striped"> 
             <thead>
-                <tr>
-                    <th>{{besedilo}}</th>
-                </tr>
+
                 <tr>
                     <th>Datum in ura</th>
                     <th>Storitev</th>

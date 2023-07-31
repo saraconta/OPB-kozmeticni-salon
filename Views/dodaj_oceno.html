@@ -1,8 +1,41 @@
 % setdefault('napaka', '')
-% setdefault('podnaslov', 'Uslužbenci')
+% setdefault('podnaslov', '')
 %rebase('osnova.html', napaka=napaka, podnaslov=podnaslov)
 
 %if vloga == 'stranka':
+
+<div class="tabs is-centered is-boxed is-medium">
+    <ul>
+      <li>
+        <a href="/usluzbenci"><span href="/usluzbenci">Seznam zaposlenih</span></a>
+      </li>
+      <li class="is-active">
+        <a><span>Dodaj oceno</span></a></li>
+    </ul>
+  </div>
+
+  <div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd">
+    <div class="column is-narrow">
+      <aside class="menu">
+        <p class="menu-label">Splošno</p>
+          <ul class="menu-list">
+            <li><a href="/stranke">Vaši podatki</a></li>
+            <li><a href="/zacetek">Cenik storitev</a></li>
+          </ul>
+  
+        <p class="menu-label">Termin</p>
+          <ul class="menu-list">
+            <li><a href="/termin">Nov termin</a></li>
+            <li><a href="/pregled_terminov">Pregled in odpoved termina</a></li>
+          </ul>
+  
+        <p class="menu-label">O zaposlenih</p>
+          <ul class="menu-list">
+            <li><a href="/usluzbenci" class="is-active">Pregled in ocenjevanje zaposlenih</a></li>
+          </ul>
+  
+      </aside>
+    </div>
 
 <label class="label">Ocenite uslužbenca:</label>
 <table class="table is-hoverable is-fullwidth">

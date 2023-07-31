@@ -523,6 +523,17 @@ def dodaj_oceno_post(id_usluzbenec):
 @cookie_required_up_ime
 @cookie_required_vloga
 def storitve(id_usluzbenec):
+    up_ime = request.get_cookie('up_ime', secret=skrivnost)
+    vloga = request.get_cookie('rola', secret=skrivnost)
+    if vloga == 'usluzbenec':
+        cur.execute("""
+            SELECT admin FROM Usluzbenec 
+                WHERE up_ime = %s;
+        """, [up_ime])
+        ali_je_sef = cur.fetchone()[0]
+    else:
+        ali_je_sef = None
+
     cur.execute("""
         SELECT u.ime_priimek
             FROM Usluzbenec u
@@ -530,7 +541,7 @@ def storitve(id_usluzbenec):
         """, [id_usluzbenec])
     
     ime_priimek = cur.fetchone()[0]
-    besedilo = 'Storitve, ki jih nudi' + ' ' + ime_priimek + ':'
+    besedilo = 'Storitve, ki jih nudi' + ' ' + ime_priimek 
     cur.execute("""
         SELECT us.ime_storitve ime1, 1 ime2
             FROM Usluzb_storitve us
@@ -538,7 +549,7 @@ def storitve(id_usluzbenec):
     """, [id_usluzbenec])
     
     return template('storitve.html', id_usluzbenec=id_usluzbenec, storitve=cur, napaka=None,
-                    besedilo=besedilo)
+                    besedilo=besedilo, ali_je_sef=ali_je_sef)
 
 
 ##################################################################################################
@@ -559,7 +570,9 @@ def dodaj_storitev(id_usluzbenec):
         ali_je_sef = cur.fetchone()[0]
     else:
         ali_je_sef = None
-
+    cur.execute("""select ime_priimek from Usluzbenec where up_ime = %s;""",[up_ime])
+    ime_priimek = cur.fetchone()[0]
+    besedilo = 'Dodajanje nove storitve za' + ' ' + ime_priimek
     cur.execute("""
         SELECT u.ime_priimek
             FROM Usluzbenec u
@@ -567,7 +580,7 @@ def dodaj_storitev(id_usluzbenec):
     """,[id_usluzbenec])
     
     return template('dodaj_storitev.html', id_usluzbenec=id_usluzbenec,
-        ime_priimek=cur.fetchone()[0], storitev='', ali_je_sef=ali_je_sef, napaka=None)
+        ime_priimek=cur.fetchone()[0], storitev='', ali_je_sef=ali_je_sef, napaka=None, besedilo=besedilo)
 
 
 @post('/dodaj_storitev/<id_usluzbenec:int>')
@@ -826,7 +839,7 @@ def pregled_termina(id_stranka):
     """, [id_stranka])
 
     ime_priimek = cur.fetchone()[0]
-    besedilo = 'PRIHODNJI REZERVIRANI TERMINI STRANKE:' + ' ' + ime_priimek 
+    besedilo = 'Prihodnji rezervirani termini stranke:' + ' ' + ime_priimek 
 
     cur.execute("""
         SELECT id_termin, datum, ime_storitve FROM termin1
@@ -904,7 +917,7 @@ def prikazi_urnik(id_usluzbenec):
     """, [id_usluzbenec])
 
     ime_priimek = cur.fetchone()[0]
-    besedilo = 'Urnik' + ' ' + ime_priimek + ' ' + 'za prihodnje dni.'
+    besedilo = 'Urnik' + ' ' + ime_priimek + ' ' + 'za prihodnje dni'
     
 
     cur.execute("""

@@ -1,20 +1,21 @@
 % setdefault('napaka', '')
-% setdefault('podnaslov', 'Urnik')
+% setdefault('podnaslov', '')
 %rebase('osnova.html', napaka=napaka, podnaslov=podnaslov)
 
 
-%if vloga == 'usluzbenec':
-<div class="tabs is-toggle is-fullwidth is-large">
+%if ali_je_sef == 2:
 
-        <li class="is-active">
-            <a>
-              <span>Zaposleni</span>
-            </a>
-          </li>
-        </ul>
+<div class="tabs is-centered is-boxed is-medium">
+  <ul>
+    <li class="is-active">
+      <a><span>Zaposleni</span></a>
+    </li>
+    
+  </ul>
 </div>
 
-<label class="label">Izberite zaposlenega.</label>
+
+<label class="label">Izberite zaposlenega, katerega urnik si želite ogledati</label>
   %for id_usluzbenec, ime_priimek in usluzbenci:    
     <a href="/urnik/{{id_usluzbenec}}" class="dropdown-item">
       {{ime_priimek}}

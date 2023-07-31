@@ -1,6 +1,6 @@
 
 % setdefault('napaka', '')
-% setdefault('podnaslov', 'Urnik')
+% setdefault('podnaslov', '')
 %rebase('osnova.html', napaka=napaka, podnaslov='')
 
 
@@ -10,7 +10,7 @@
     <div class="tabs is-centered is-boxed is-medium">
         <ul>
           <li class="is-active">
-            <a><span>Urnik</span></a>
+            <a><span>{{besedilo}}</span></a>
           </li>
         </ul>
       </div>
@@ -43,6 +43,13 @@
 
        
        %else:
+       <div class="tabs is-centered is-boxed is-medium">
+        <ul>
+          <li class="is-active">
+            <a><span>{{besedilo}}</span></a>
+          </li>
+        </ul>
+      </div>
        <div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd"></div>
        <div class="column is-narrow">
          <aside class="menu">
@@ -90,6 +97,18 @@
 
 % else:
        %if st_vrstic is None:
+       <div class="tabs is-centered is-boxed is-medium">
+        <ul>
+          <li>
+            <a href="/urnik"><span href="/urnik">Zaposleni</span></a>
+          </li>
+          <li class="is-active">
+            <a>
+              <span>{{besedilo}}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
         <div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd">
             <div class="column is-narrow">
               <aside class="menu">
@@ -108,7 +127,7 @@
           
                 <p class="menu-label">O zaposlenih</p>
                   <ul class="menu-list">
-                    <li><a href="/usluzbenci class">Pregled in urejanje zaposlenih</a></li>
+                    <li><a href="/usluzbenci">Pregled in urejanje zaposlenih</a></li>
                     <li><a href="/urnik" class="is-active">Urnik zaposlenih</a></li>
                   </ul>
           
@@ -118,6 +137,18 @@
      
 
         %else:
+        <div class="tabs is-centered is-boxed is-medium">
+          <ul>
+            <li>
+              <a href="/urnik"><span href="/urnik">Zaposleni</span></a>
+            </li>
+            <li class="is-active">
+              <a>
+                <span>{{besedilo}}</span>
+              </a>
+            </li>
+          </ul>
+        </div>
         <div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd">
             <div class="column is-narrow">
               <aside class="menu">
@@ -136,7 +167,7 @@
           
                 <p class="menu-label">O zaposlenih</p>
                   <ul class="menu-list">
-                    <li><a href="/usluzbenci class">Pregled in urejanje zaposlenih</a></li>
+                    <li><a href="/usluzbenci">Pregled in urejanje zaposlenih</a></li>
                     <li><a href="/urnik" class="is-active">Urnik zaposlenih</a></li>
                   </ul>
           
