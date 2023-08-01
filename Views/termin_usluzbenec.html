@@ -1,5 +1,5 @@
 % setdefault('napaka', '')
-% setdefault('podnaslov', 'Termin')
+% setdefault('podnaslov', '')
 %rebase('osnova.html', napaka=napaka, podnaslov=podnaslov)
 
 <div class="tabs is-toggle is-fullwidth is-large">
@@ -39,7 +39,7 @@
     </ul>
   </div>
   
-  <label class="label">Izberite uslužbenca, za katereha želite, da opravi izbrano storitev</label>
+  <label class="label">Izberite uslužbenca, za katerega želite, da opravi izbrano storitev</label>
   %for id_usluzbenec, ime_priimek in usluzbenci_storitve:    
     <a href="/termin/{{id_storitev}}/{{id_usluzbenec}}" class="dropdown-item">
       {{ime_priimek}}

@@ -1,35 +1,64 @@
 % setdefault('napaka', '')
-% setdefault('podnaslov', 'Poslovanje')
+% setdefault('podnaslov', '')
 %rebase('osnova.html', napaka=napaka, podnaslov=podnaslov)
 
 % if ali_je_sef == 2:
+<div class="tabs is-centered is-boxed is-medium">
+  <ul>
+    <li class="is-active">
+      <a><span>Poslovanje</span></a>
+    </li>
+  </ul>
+</div>
 
-  <table class="table table-striped">
-    <tr>
-      <th>Leto</th>
-      <th>Mesec</th>
-      <th>Prihodki</th>
-      <th>Odhodki</th>
-      <th>Dobiček</th>
-    </tr>
+<div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd">
+  <div class="column is-narrow">
+      <aside class="menu">
 
-    %for leto, mesec, prihodki, odhodki, dobicek in poslovanje:
-    <tr>
-      <td>{{leto}}</td>
-      <td>{{mesec}}</td>
-      <td>{{prihodki}}€</td>
-      <td>{{odhodki}}€</td>
-      <td>{{dobicek}}€</td>
-    </tr>
-    %end
+      <p class="menu-label">Splošno</p>
+          <ul class="menu-list">
+          <li><a href="{{url('zacetek')}}">Cenik storitev</a></li>
+          <li><a href="{{url('pregled_terminov')}}">Pregled rezerviranih terminov</a></li>
+          <li><a href="{{url('poslovanje')}}" class="is-active">Poslovanje in dobiček</a></li>
+          </ul>
 
-  </table>
+      <p class="menu-label">O strankah</p>
+          <ul class="menu-list">
+          <li><a href="{{url('stranke')}}">Podatki strank in dodajanje novih</a></li>
+          </ul>
 
-  <div class="container-fluid" style="margin-top:40px">                           
-    <iframe id="igraph" scrolling="no" style="border:none;" 
-    seamless="seamless" src="/Views/graphs/poslovanje.html" width="100%" height="300"></iframe>                                                 
+      <p class="menu-label">O zaposlenih</p>
+          <ul class="menu-list">
+          <li><a href="{{url('usluzbenci')}}">Pregled in urejanje zaposlenih</a></li>
+          <li><a href="{{url('urnik')}}">Urnik zaposlenih</a></li>
+          </ul>
+
+      </aside>
   </div>
 
+  <div class="column is-narrow">
+    <table class="table table-striped">
+      <tr>
+        <th>Leto</th>
+        <th>Mesec</th>
+        <th>Prihodki</th>
+        <th>Odhodki</th>
+        <th>Dobiček</th>
+      </tr>
+
+      %for leto, mesec, prihodki, odhodki, dobicek in poslovanje:
+      <tr>
+        <td>{{leto}}</td>
+        <td>{{mesec}}</td>
+        <td>{{prihodki}} €</td>
+        <td>{{odhodki}} €</td>
+        <td>{{dobicek}} €</td>
+      </tr>
+      %end
+
+  </table>
+</div>
 
   %else:
   <p>Nimaš pravic.</p>
+%end

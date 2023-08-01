@@ -1,5 +1,5 @@
 % setdefault('napaka', '')
-% setdefault('podnaslov', 'Termin')
+% setdefault('podnaslov', '')
 %rebase('osnova.html', napaka=napaka, podnaslov=podnaslov)
 
 <div class="tabs is-toggle is-fullwidth is-large">
@@ -50,7 +50,7 @@
                   <tr>
                     <td>
                         <div class="control has-icons-left">
-                            <label for="ura">Ura</label>
+                            <label for="ura">Izberite želeni čas termina</label>
                             <select class="input is-small" type="time" aria-label="Default select example"
                             id="ura" name="ura" placeholder="hh:mm:ss">
                                 % for zacetek, konec in ura:

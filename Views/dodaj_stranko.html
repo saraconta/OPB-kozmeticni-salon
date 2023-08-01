@@ -1,8 +1,48 @@
 % setdefault('napaka', '')
-% setdefault('podnaslov', 'Stranke')
+% setdefault('podnaslov', '')
 %rebase('osnova.html', napaka=napaka, podnaslov=podnaslov)
 
+<div class="tabs is-centered is-boxed is-medium">
+    <ul>
+      <li>
+        <a href="{{url('stranke')}}"><span>Seznam strank</span></a>
+      </li>
+      <li class="is-active">
+        <a>
+          <span>Dodaj stranko</span>
+        </a>
+      </li>
+    </ul>
+  </div>
 
+
+%if ali_je_sef == 2:
+
+
+  <div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd">
+    <div class="column is-narrow">
+      <aside class="menu">
+  
+        <p class="menu-label">Splošno</p>
+          <ul class="menu-list">
+            <li><a href="{{url('zacetek')}}">Cenik storitev</a></li>
+            <li><a href="{{url('pregled_terminov')}}">Pregled rezerviranih terminov</a></li>
+            <li><a href="{{url('poslovanje')}}">Poslovanje in dobiček</a></li>
+          </ul>
+  
+        <p class="menu-label">O strankah</p>
+          <ul class="menu-list">
+            <li><a href="{{url('stranke')}}" class="is-active">Podatki strank in dodajanje novih</a></li>
+          </ul>
+  
+        <p class="menu-label">O zaposlenih</p>
+          <ul class="menu-list">
+            <li><a href="{{url('usluzbenci')}}">Pregled in urejanje zaposlenih</a></li>
+            <li><a href="{{url('urnik')}}">Urnik zaposlenih</a></li>
+          </ul>
+  
+      </aside>
+    </div>
 
 <label class="label">Vpišite podatke o novi stranki:</label>
 <table class="table is-hoverable is-fullwidth">
@@ -62,7 +102,100 @@
                                 <button class="button is-link">Dodaj</button>
                             </div>
                             <div class="control">
-                                <a class="button is-link is-light" href="/stranke">Prekliči</a>
+                                <a class="button is-link is-light" href="{{url('stranke')}}">Prekliči</a>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            </form>
+        </tr>
+    </thead>
+</table>
+
+%elif ali_je_sef == 1:
+<div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd">
+    <div class="column is-narrow">
+      <aside class="menu">
+
+        <p class="menu-label">Splošno</p>
+          <ul class="menu-list">
+            <li><a href="{{url('zacetek')}}">Cenik storitev</a></li>
+            <li><a href="{{url('urnik')}}">Urnik</a></li>
+          </ul>
+
+        <p class="menu-label">O strankah</p>
+          <ul class="menu-list">
+            <li><a href="{{url('stranke')}}" class="is-active">Podatki strank in dodajanje novih</a></li>
+            <li><a href="{{url('pregled_terminov')}}">Pregled rezerviranih terminov</a></li>
+          </ul>
+
+        <p class="menu-label">O zaposlenih</p>
+          <ul class="menu-list">
+            <li><a href="{{url('usluzbenci')}}">Pregled sodelavcev</a></li>
+          </ul>
+
+      </aside>
+    </div>
+
+    <label class="label">Vpišite podatke o novi stranki:</label>
+<table class="table is-hoverable is-fullwidth">
+    <thead>
+        <tr>
+            <form action="{{url('dodaj_stranko_post')}}" method="POST">
+                <td></td>
+                <tr>
+                    <td>
+                        <div class="control has-icons-left">
+                            <label for="ime_priimek">Ime in priimek</label>
+                            <input class="input is-small" type="text" 
+                                id="ime_priimek" name="ime_priimek" placeholder="Ime in priimek" required
+                                oninput="this.setCustomValidity('')"
+                                oninvalid="this.setCustomValidity('Obvezno polje')"
+                            />
+                            <span class="icon is-small is-left">
+                                <i class="far fa-clipboard-check"></i>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="control has-icons-left">
+                            <label for="telefon">Telefonska številka</label>
+                            <input class="input is-small" type="text" 
+                                id="telefon" name="telefon" placeholder="Telefonska številka" required
+                                oninput="this.setCustomValidity('')"
+                                oninvalid="this.setCustomValidity('Obvezno polje')"
+                            />
+                            <span class="icon is-small is-left">
+                                <i class="far fa-clipboard-check"></i>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="control has-icons-left">
+                            <label for="mail">Elektronski naslov</label>
+                            <input class="input is-small" type="text" 
+                                id="mail" name="mail" placeholder="Elektronski naslov" required
+                                oninput="this.setCustomValidity('')"
+                                oninvalid="this.setCustomValidity('Obvezno polje')"
+                            />
+                            <span class="icon is-small is-left">
+                                <i class="far fa-clipboard-check"></i>
+                            </span>
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <div class="field is-grouped">
+                            <div class="control">
+                                <button class="button is-link">Dodaj</button>
+                            </div>
+                            <div class="control">
+                                <a class="button is-link is-light" href="{{url('stranke')}}">Prekliči</a>
                             </div>
                         </div>
                     </td>
@@ -73,3 +206,5 @@
 </table>
 
 
+%else:
+<p>Nimaš pravic.</p>

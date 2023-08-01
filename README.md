@@ -16,6 +16,6 @@ Direktorica po drugi strani ima unikaten pogled. Ob prijavi ima dostop tako do p
 
 ## ER diagram
 
-![ER diagram](https://github.com/saraconta/OPB-kozmeticni-salon/blob/main/er_diagram/ER-diagram.jpg)
+![ER diagram](https://github.com/saraconta/OPB-kozmeticni-salon/blob/main/er_diagram/graf.jpg)
 
 Avtorice: Klara Travnik, Sara Conta, Maja Komic

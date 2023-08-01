@@ -56,21 +56,3 @@ class Termin:
     ime_storitve: str = field(default="")
     ime_priimek_usluzbenca: str = field(default="")
     koda: str = field(default="")
-
-# @dataclass_json
-# @dataclass
-# class Uporabnik:
-#     username: str = field(default="")
-#     role: str = field(default="")
-#     password_hash: str = field(default="")
-#     last_login: str = field(default="")
-
-# @dataclass
-# class UporabnikDto:
-#     username: str = field(default="")
-#    role: str = field(default="")
-
-
-
-
-

@@ -1,11 +1,47 @@
 % setdefault('napaka', '')
-% setdefault('podnaslov', 'Storitve')
-%rebase('osnova.html', napaka=napaka, podnaslov=podnaslov)
+% setdefault('podnaslov', '')
+%rebase('osnova.html', napaka=napaka, podnaslov='')
 
+%if ali_je_sef == 1:
+
+<div class="tabs is-centered is-boxed is-medium">
+    <ul>
+      <li>
+        <a href="{{url('usluzbenci')}}"><span href="{{url('usluzbenci')}}">Seznam zaposlenih</span></a>
+      </li>
+      <li class="is-active">
+        <a><span>{{besedilo}}</span></a></li>
+    </ul>
+  </div>
+
+  <div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd">
+    <div class="column is-narrow">
+      <aside class="menu">
+        <p class="menu-label">Splošno</p>
+          <ul class="menu-list">
+            <li><a href="{{url('zacetek')}}">Cenik storitev</a></li>
+            <li><a href="{{url('urnik')}}">Urnik</a></li>
+          </ul>
+
+        <p class="menu-label">O strankah</p>
+          <ul class="menu-list">
+            <li><a href="{{url('stranke')}}">Podatki strank in dodajanje novih</a></li>
+            <li><a href="{{url('pregled_terminov')}}">Pregled rezerviranih terminov</a></li>
+          </ul>
+
+        <p class="menu-label">O zaposlenih</p>
+          <ul class="menu-list">
+            <li><a href="{{url('usluzbenci')}}" class="is-active">Pregled sodelavcev</a></li>
+          </ul>
+
+      </aside>
+    </div>
+
+<div class="column is-narrow">
 <table class="table table-striped"> 
     <thead>
         <tr>
-            <th>Storitev</th>
+            <th>Storitve</th>
         </tr>
     </thead>
 
@@ -15,3 +51,112 @@
             </tr>
         %end
 </table>
+</div>
+
+%elif ali_je_sef==2:
+<div class="tabs is-centered is-boxed is-medium">
+    <ul>
+      <li>
+        <a href="{{url('usluzbenci')}}"><span href="{{url('usluzbenci')}}">Seznam zaposlenih</span></a>
+      </li>
+      <li class="is-active">
+        <a><span>{{besedilo}}</span></a></li>
+      <li>
+        <a href="{{url('dodaj_usluzbenca_get')}}">
+          <span href="{{url('dodaj_usluzbenca_get')}}">Dodaj uslužbenca</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+
+<div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd">
+    <div class="column is-narrow">
+      <aside class="menu">
+  
+        <p class="menu-label">Splošno</p>
+          <ul class="menu-list">
+            <li><a href="{{url('zacetek')}}">Cenik storitev</a></li>
+            <li><a href="{{url('pregled_terminov')}}">Pregled rezerviranih terminov</a></li>
+            <li><a href="{{url('poslovanje')}}">Poslovanje in dobiček</a></li>
+          </ul>
+  
+        <p class="menu-label">O strankah</p>
+          <ul class="menu-list">
+            <li><a href="{{url('stranke')}}">Podatki strank in dodajanje novih</a></li>
+          </ul>
+  
+        <p class="menu-label">O zaposlenih</p>
+          <ul class="menu-list">
+            <li><a href="{{url('usluzbenci')}}" class="is-active">Pregled in urejanje zaposlenih</a></li>
+            <li><a href="{{url('urnik')}}">Urnik zaposlenih</a></li>
+          </ul>
+  
+      </aside>
+    </div>
+    <div class="column is-narrow">
+        <table class="table table-striped"> 
+            <thead>
+                <tr>
+                    <th>Storitve</th>
+                </tr>
+            </thead>
+        
+                %for ime1, ime2 in storitve:
+                    <tr>
+                        <td>{{ime1}}</td>
+                    </tr>
+                %end
+        </table>
+        </div>
+
+
+%else:
+<div class="tabs is-centered is-boxed is-medium">
+    <ul>
+      <li>
+        <a href="{{url('usluzbenci')}}"><span href="{{url('usluzbenci')}}">Seznam zaposlenih</span></a>
+      </li>
+      <li class="is-active">
+        <a><span>{{besedilo}}</span></a></li>
+    </ul>
+  </div>
+
+
+  <div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd">
+    <div class="column is-narrow">
+      <aside class="menu">
+        <p class="menu-label">Splošno</p>
+          <ul class="menu-list">
+            <li><a href="{{url('stranke')}}">Vaši podatki</a></li>
+            <li><a href="{{url('zacetek')}}">Cenik storitev</a></li>
+          </ul>
+  
+        <p class="menu-label">Termin</p>
+          <ul class="menu-list">
+            <li><a href="{{url('termin')}}">Nov termin</a></li>
+            <li><a href="{{url('pregled_terminov')}}">Pregled in odpoved termina</a></li>
+          </ul>
+  
+        <p class="menu-label">O zaposlenih</p>
+          <ul class="menu-list">
+            <li><a href="{{url('usluzbenci')}}" class="is-active">Pregled in ocenjevanje zaposlenih</a></li>
+          </ul>
+  
+      </aside>
+    </div>
+
+    <div class="column is-narrow">
+        <table class="table table-striped"> 
+            <thead>
+                <tr>
+                    <th>Storitve</th>
+                </tr>
+            </thead>
+        
+                %for ime1, ime2 in storitve:
+                    <tr>
+                        <td>{{ime1}}</td>
+                    </tr>
+                %end
+        </table>
+        </div>

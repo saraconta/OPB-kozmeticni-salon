@@ -1,5 +1,5 @@
 % setdefault('napaka', '')
-% setdefault('podnaslov', 'Prijava')
+% setdefault('podnaslov', '')
 %rebase('osnova.html', napaka=napaka, podnaslov=podnaslov)
 
 <div class="columns">
@@ -9,16 +9,16 @@
           Prijava
         </p>
         <ul class="menu-list">
-          <li><a href="/prijava_stranka">Prijava za stranke</a></li>
-          <li><a href="/prijava_usluzbenec" class="is-active">Prijava za uslužbence</a></li>
+          <li><a href="{{url('prijava_stranka')}}">Prijava za stranke</a></li>
+          <li><a href="{{url('prijava_usluzbenec')}}" class="is-active">Prijava za uslužbence</a></li>
         </ul>
   
         <p class="menu-label">
           Registracija
         </p>
         <ul class="menu-list">
-          <li><a href="/registracija_stranka">Registracija za stranke</a></li>
-          <li><a href="/registracija_usluzbenec">Registracija za uslužbence</a></li>
+          <li><a href="{{url('registracija_stranka')}}">Registracija za stranke</a></li>
+          <li><a href="{{url('registracija_usluzbenec')}}">Registracija za uslužbence</a></li>
   
       </aside>
     </div>
@@ -27,7 +27,7 @@
         <table class="table is-hoverable is-fullwidth">
             <thead>
                 <tr>
-                    <form method="POST" action="/prijava_usluzbenec">
+                    <form method="POST" action="{{url('prijava_usluzbenec_post')}}">
                         <td><strong>PRIJAVA ZA USLUŽBENCE</strong></td>
                         <tr>
                             <td>
@@ -63,10 +63,10 @@
                             <td>
                                 <div class="field is-grouped">
                                     <div class="control">
-                                        <button class="button is-link" href="/zacetek" type="submit">Prijava</button>
+                                        <button class="button is-link" href="{{url('zacetek')}}" type="submit">Prijava</button>
                                     </div>
                                     <div class="control">
-                                        <a class="button is-link is-light" href="/prijava">Prekliči</a>
+                                        <a class="button is-link is-light" href="{{url('prijava')}}">Prekliči</a>
                                     </div>
                                 </div>
                             </td>
@@ -88,5 +88,5 @@
 </div>
 
 <div>
-    <p>Še niste registrirani? To lahko storite <a href="/registracija_usluzbenec">tukaj</a>.</p>
+    <p>Še niste registrirani? To lahko storite <a href="{{url('registracija_usluzbenec')}}">tukaj</a>.</p>
 </div>
