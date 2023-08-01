@@ -7,6 +7,11 @@
   <title>Kozmetični salon</title>
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bulma@0.8.2/css/bulma.min.css">
   <script defer src="https://use.fontawesome.com/releases/v5.3.1/js/all.js"></script>
+  <script type="text/javascript">
+        function preventBack() { window.history.forward(); }
+        setTimeout("preventBack()", 0);
+        window.onunload = function () { null };
+    </script>
 </head>
 
 <body>
@@ -24,7 +29,7 @@
             <div class="level-right">
               <div class="columns">
                 <div class="column is-narrow">
-                  <a class="button is-primary" href="{{url('/')}}">
+                  <a class="button is-primary" href="{{url('/zacetek')}}">
                     <span class="icon-text">
                       <span class="icon">
                         <i class="fas fa-home"></i>
