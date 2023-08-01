@@ -14,6 +14,20 @@ Tudi uslužbenci se ob vstopu v aplikacijo prijavijo v svoj račun. Omogočeno j
 
 Direktorica po drugi strani ima unikaten pogled. Ob prijavi ima dostop tako do podatkov strank kot uslužbencev. 
 
+## Testni podatki za vstop
+
+Stranka: 
+- uporabniško ime: tomas123
+- geslo: marjetica
+
+Uslužbenec:
+- uporabniško ime: nadia
+- geslo: marjetica
+
+Šef: 
+- uporabniško ime: clarisa
+- geslo: marjetica
+
 ## ER diagram
 
 ![ER diagram](https://github.com/saraconta/OPB-kozmeticni-salon/blob/main/er_diagram/er_diagram.jpg)
