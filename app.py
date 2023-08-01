@@ -840,6 +840,7 @@ def pregled_termina(id_stranka):
 
     ime_priimek = cur.fetchone()[0]
     besedilo = 'Prihodnji rezervirani termini stranke' + ' ' + ime_priimek 
+    
 
     cur.execute("""
         SELECT id_termin, datum, ime_storitve FROM termin1
@@ -918,7 +919,7 @@ def prikazi_urnik(id_usluzbenec):
 
     ime_priimek = cur.fetchone()[0]
     besedilo = 'Urnik' + ' ' + ime_priimek + ' ' + 'za prihodnje dni'
-    
+    besedilo2 = ime_priimek + ' ' 'v prihodnjih dneh nima naročenih strank.'
 
     cur.execute("""
         SELECT ime_priimek_stranke, datum, ime_storitve
@@ -930,7 +931,7 @@ def prikazi_urnik(id_usluzbenec):
     """, [id_usluzbenec])
     st_vrstic = cur.fetchone()
     return template('urnik_usluzbenca.html', id_usluzbenec=id_usluzbenec, urnik=cur, ime_priimek=ime_priimek, besedilo=besedilo,
-                    st_vrstic=st_vrstic, ali_je_sef=ali_je_sef)
+                    st_vrstic=st_vrstic, ali_je_sef=ali_je_sef, besedilo2=besedilo2)
 
 
 ######################################################################################################
