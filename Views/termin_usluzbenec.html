@@ -2,7 +2,7 @@
 % setdefault('podnaslov', '')
 %rebase('osnova.html', napaka=napaka, podnaslov=podnaslov)
 
-<div class="tabs is-toggle is-fullwidth is-large">
+<div class="tabs is-centered is-boxed is-medium">
     <ul>
 
       <li>
@@ -41,7 +41,7 @@
   
   <label class="label">Izberite uslužbenca, za katerega želite, da opravi izbrano storitev</label>
   %for id_usluzbenec, ime_priimek in usluzbenci_storitve:    
-    <a href="/termin/{{id_storitev}}/{{id_usluzbenec}}" class="dropdown-item">
+    <a href="{{url('termin_stranka', id_usluzbenec=id_usluzbenec, id_storitev=id_storitev)}}" class="dropdown-item">
       {{ime_priimek}}
     </a> 
   %end

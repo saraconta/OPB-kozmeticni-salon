@@ -9,8 +9,8 @@
       <a><span>Seznam zaposlenih</span></a>
     </li>
     <li>
-      <a href="/dodaj_usluzbenca">
-        <span href="/dodaj_usluzbenca">Dodaj uslužbenca</span>
+      <a href="{{url('dodaj_usluzbenca_get')}}">
+        <span href="{{url('dodaj_usluzbenca_get')}}">Dodaj uslužbenca</span>
       </a>
     </li>
   </ul>
@@ -22,20 +22,20 @@
   
         <p class="menu-label">Splošno</p>
           <ul class="menu-list">
-            <li><a href="/zacetek">Cenik storitev</a></li>
-            <li><a href="/pregled_terminov">Pregled rezerviranih terminov</a></li>
-            <li><a href="/poslovanje">Poslovanje in dobiček</a></li>
+            <li><a href="{{url('zacetek')}}">Cenik storitev</a></li>
+            <li><a href="{{url('pregled_terminov')}}">Pregled rezerviranih terminov</a></li>
+            <li><a href="{{url('poslovanje')}}">Poslovanje in dobiček</a></li>
           </ul>
   
         <p class="menu-label">O strankah</p>
           <ul class="menu-list">
-            <li><a href="/stranke">Podatki strank in dodajanje novih</a></li>
+            <li><a href="{{url('stranke')}}">Podatki strank in dodajanje novih</a></li>
           </ul>
   
         <p class="menu-label">O zaposlenih</p>
           <ul class="menu-list">
-            <li><a href="/usluzbenci" class="is-active">Pregled in urejanje zaposlenih</a></li>
-            <li><a href="/urnik">Urnik zaposlenih</a></li>
+            <li><a href="{{url('usluzbenci')}}" class="is-active">Pregled in urejanje zaposlenih</a></li>
+            <li><a href="{{url('urnik')}}">Urnik zaposlenih</a></li>
           </ul>
   
       </aside>
@@ -56,13 +56,13 @@
           <tr>
             <td>{{ime_priimek}}</td> 
             <td>
-              <a href="/storitve/{{id_usluzbenec}}" class="button is-primary is-light">
+              <a href="{{url('storitve', id_usluzbenec=id_usluzbenec)}}" class="button is-primary is-light">
                 Poglej
               </a>
             </td>
             <td>{{povprecna_ocena}}</td> 
             <td>
-              <a href="/dodaj_storitev/{{id_usluzbenec}}" class="button is-primary is-light">
+              <a href="{{url('dodaj_storitev', id_usluzbenec=id_usluzbenec)}}" class="button is-primary is-light">
                 +
               </a>
             </td>
@@ -88,19 +88,19 @@
       <aside class="menu">
         <p class="menu-label">Splošno</p>
           <ul class="menu-list">
-            <li><a href="/zacetek">Cenik storitev</a></li>
-            <li><a href="/urnik">Urnik</a></li>
+            <li><a href="{{url('zacetek')}}">Cenik storitev</a></li>
+            <li><a href="{{url('urnik')}}">Urnik</a></li>
           </ul>
 
         <p class="menu-label">O strankah</p>
           <ul class="menu-list">
-            <li><a href="/stranke">Podatki strank in dodajanje novih</a></li>
-            <li><a href="/pregled_terminov">Pregled rezerviranih terminov</a></li>
+            <li><a href="{{url('stranke')}}">Podatki strank in dodajanje novih</a></li>
+            <li><a href="{{url('pregled_terminov')}}">Pregled rezerviranih terminov</a></li>
           </ul>
 
         <p class="menu-label">O zaposlenih</p>
           <ul class="menu-list">
-            <li><a href="/usluzbenci" class="is-active">Pregled sodelavcev</a></li>
+            <li><a href="{{url('usluzbenci')}}" class="is-active">Pregled sodelavcev</a></li>
           </ul>
 
       </aside>
@@ -120,7 +120,7 @@
           <tr>
             <td>{{ime_priimek}}</td> 
             <td>
-              <a href="/storitve/{{id_usluzbenec}}" class="button is-primary is-light">
+              <a href="{{url('storitve', id_usluzbenec=id_usluzbenec)}}" class="button is-primary is-light">
                 Poglej
               </a>
             </td>
@@ -146,19 +146,19 @@
       <aside class="menu">
         <p class="menu-label">Splošno</p>
           <ul class="menu-list">
-            <li><a href="/stranke">Vaši podatki</a></li>
-            <li><a href="/zacetek">Cenik storitev</a></li>
+            <li><a href="{{url('stranke')}}">Vaši podatki</a></li>
+            <li><a href="{{url('zacetek')}}">Cenik storitev</a></li>
           </ul>
   
         <p class="menu-label">Termin</p>
           <ul class="menu-list">
-            <li><a href="/termin">Nov termin</a></li>
-            <li><a href="/pregled_terminov">Pregled in odpoved termina</a></li>
+            <li><a href="{{url('termina_storitev')}}">Nov termin</a></li>
+            <li><a href="{{url('pregled_terminov')}}">Pregled in odpoved termina</a></li>
           </ul>
   
         <p class="menu-label">O zaposlenih</p>
           <ul class="menu-list">
-            <li><a href="/usluzbenci" class="is-active">Pregled in ocenjevanje zaposlenih</a></li>
+            <li><a href="{{url('usluzbenci')}}" class="is-active">Pregled in ocenjevanje zaposlenih</a></li>
           </ul>
   
       </aside>
@@ -178,13 +178,13 @@
         <tr>
            <td>{{ime_priimek}}</td> 
            <td>
-            <a href="/storitve/{{id_usluzbenec}}" class="button is-primary is-light">
+            <a href="{{url('storitve', id_usluzbenec=id_usluzbenec)}}" class="button is-primary is-light">
               Poglej
             </a>
            </td>
            <td>{{povprecna_ocena}}</td> 
            <td>
-            <a href="/dodaj_oceno/{{id_usluzbenec}}" class="button is-primary is-light">
+            <a href="{{url('dodaj_oceno', id_usluzbenec=id_usluzbenec)}}" class="button is-primary is-light">
               +
             </a>
            </td>

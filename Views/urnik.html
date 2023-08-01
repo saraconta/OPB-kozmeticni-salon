@@ -14,13 +14,41 @@
   </ul>
 </div>
 
+<div class="columns is-variable is-1-mobile is-0-tablet is-3-desktop is-8-widescreen is-2-fullhd">
+  <div class="column is-narrow">
+    <aside class="menu">
 
-<label class="label">Izberite zaposlenega, katerega urnik si želite ogledati</label>
-  %for id_usluzbenec, ime_priimek in usluzbenci:    
-    <a href="/urnik/{{id_usluzbenec}}" class="dropdown-item">
-      {{ime_priimek}}
-    </a> 
-  %end
+      <p class="menu-label">Splošno</p>
+        <ul class="menu-list">
+          <li><a href="{{url('zacetek')}}" class="is-active">Cenik storitev</a></li>
+          <li><a href="{{url('pregled_terminov')}}">Pregled rezerviranih terminov</a></li>
+          <li><a href="{{url('poslovanje')}}">Poslovanje in dobiček</a></li>
+        </ul>
+
+      <p class="menu-label">O strankah</p>
+        <ul class="menu-list">
+          <li><a href="{{url('stranke')}}">Podatki strank in dodajanje novih</a></li>
+        </ul>
+
+      <p class="menu-label">O zaposlenih</p>
+        <ul class="menu-list">
+          <li><a href="{{url('usluzbenci')}}">Pregled in urejanje zaposlenih</a></li>
+          <li><a href="{{url('urnik')}}">Urnik zaposlenih</a></li>
+        </ul>
+
+    </aside>
+  </div>
+
+  <div class="column is-narrow">
+    <label class="label">Izberite zaposlenega, katerega urnik si želite ogledati</label>
+      %for id_usluzbenec, ime_priimek in usluzbenci:    
+        <a href="{{url('prikazi_urnik', id_usluzbenec=id_usluzbenec)}}" class="dropdown-item">
+          {{ime_priimek}}
+        </a> 
+      %end
+  </div>
+</div>
 
 % else:
 <p>Nimaš pravic.</p>
+%end

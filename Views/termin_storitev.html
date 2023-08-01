@@ -7,7 +7,7 @@
 
 
 
-<div class="tabs is-toggle is-fullwidth is-large">
+<div class="tabs is-centered is-boxed is-medium">
   <ul>
 
     <li class="is-active">
@@ -47,7 +47,7 @@
 
 <label class="label">Izberite storitev, na katero se želite naročiti</label>
 %for id_storitev, ime_storitve in storitve:    
-  <a href="/termin/{{id_storitev}}" class="dropdown-item">
+  <a href="{{url('termina_usluzbenec', id_storitev=id_storitev)}}" class="dropdown-item">
     {{ime_storitve}}
   </a> 
 %end
