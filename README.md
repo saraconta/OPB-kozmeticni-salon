@@ -1,8 +1,6 @@
 # OPB-kozmeticni-salon
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/saraconta/OPB-kozmeticni-salon/main?labpath=proxy%2F8080)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/majbc1999/OPB-kozmeticni-salon/main?labpath=proxy%2F8081)
 
-.. image:: https://mybinder.org/badge_logo.svg
- :target: https://mybinder.org/v2/gh/saraconta/OPB-kozmeticni-salon/main?labpath=proxy%2F8080
 ## Opis
 
 Aplikacija omogoča prijavo strankam na termine različnih storitev kozmetičnega salona. Ob prvi uporabi si uporabnik z registracijo ustvari svoj račun, do katerega v prihodnje dostopa preko prijave. Nekatere svoje podatke lahko uporabnik spreminja tudi naknadno.  
