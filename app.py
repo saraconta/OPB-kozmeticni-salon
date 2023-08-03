@@ -984,4 +984,4 @@ error(404)
 def error_404(error):
     return "Ta stran ne obstaja!"
 
-run(host='localhost', port=SERVER_PORT, reloader=RELOADER))
+run(host='localhost', port=SERVER_PORT, reloader=RELOADER)
