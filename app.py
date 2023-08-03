@@ -359,7 +359,7 @@ def vpis_stranke_v_bazo_post():
     return template('dodaj_stranko.html', ime_priimek=ime_priimek, telefon=telefon, mail=mail,
         napaka='Zgodila se je napaka: (%s, %s, %s)' % ex)
   
-  redirect(url('/prijava'))
+  redirect(url('prijava'))
 
 
 @get('/dodaj_stranko')
@@ -401,7 +401,7 @@ def dodaj_stranko_post():
     return template('dodaj_stranko.html', ime_priimek=ime_priimek, telefon=telefon, mail=mail,
         napaka='Zgodila se je napaka: (%s, %s, %s)' % ex)
   
-  redirect(url('/zacetek'))
+  redirect(url('zacetek'))
 
 
 ##################################################################################################
@@ -477,7 +477,7 @@ def dodaj_usluzbenca_post():
       return template('dodaj_usluzbenca.html', ime_priimek=ime_priimek, storitev=storitev,
         napaka='Zgodila se je napaka: %s' % ex)
   
-  redirect(url('/usluzbenci'))
+  redirect(url('usluzbenci'))
 
 
 ###############################################################################################
@@ -516,7 +516,7 @@ def dodaj_oceno_post(id_usluzbenec):
         """, (ime_priimek, ocena))
     
     conn.commit()
-    redirect(url('/usluzbenci'))
+    redirect(url('usluzbenci'))
 
 
 @get('/storitve/<id_usluzbenec:int>')
@@ -592,7 +592,7 @@ def dodaj_storitev_post(id_usluzbenec):
     """, (id_usluzbenec, storitev))
   
   conn.commit()
-  redirect(url('/usluzbenci'))
+  redirect(url('usluzbenci'))
 
 
 @get('/storitev_usluzbenci_get/<id_storitev:int>')
@@ -861,7 +861,7 @@ def pobrisi_termin():
     """, [id_termin])
 
     conn.commit()
-    redirect(url('/pregled_terminov'))
+    redirect(url('pregled_terminov'))
 
 
 #########################################################################################
