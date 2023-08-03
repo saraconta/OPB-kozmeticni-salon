@@ -980,8 +980,8 @@ def poslovanje():
 #if __name__ == "__main__":
 #    run(host='localhost', port=SERVER_PORT, reloader=RELOADER)
 
-@bottle.error(404)
+error(404)
 def error_404(error):
     return "Ta stran ne obstaja!"
 
-bottle.run(reload=True, debug=True)
+run(host='localhost', port=SERVER_PORT, reloader=RELOADER))
