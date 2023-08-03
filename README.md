@@ -1,5 +1,5 @@
 # OPB-kozmeticni-salon
-[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/majbc1999/OPB-kozmeticni-salon/main?urlpath=proxy%2F8080)
+[![Binder](https://mybinder.org/badge_logo.svg)](https://mybinder.org/v2/gh/saraconta/OPB-kozmeticni-salon/main?urlpath=proxy%2F8080)
 
 ## Opis
 
