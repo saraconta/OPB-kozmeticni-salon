@@ -6,22 +6,14 @@ from bottleext import *
 import sqlite3
 
 # uvozimo ustrezne podatke za povezavo
-
 from Data.model import *
-#from Database import Repo
+import Data.auth as auth
 
-# from Data.services import AuthService
 from functools import wraps
-
-import os
-#import bottle    #izbrisemo zaradi Beamerja
-
 from datetime import date
 
+import os
 import hashlib
-
-
-import Data.auth as auth
 
 # uvozimo psycopg2
 import psycopg2, psycopg2.extensions, psycopg2.extras
@@ -44,10 +36,7 @@ cur = conn.cursor(cursor_factory=psycopg2.extras.DictCursor)
 from functools import wraps
 
 
-#repo = Repo()
-
 skrivnost = "ns86uffdDS3LE0u2"
-
 
 def nastaviSporocilo(sporocilo = None):
     staro = request.get_cookie('sporocilo', secret=skrivnost)
